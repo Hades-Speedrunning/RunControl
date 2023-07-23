@@ -1,0 +1,3 @@
+[submodule "ModUtil"]
+	path = ModUtil
+	url = https://github.com/SGG-Modding/ModUtil.git
