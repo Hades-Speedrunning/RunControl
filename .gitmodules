@@ -5,3 +5,7 @@
 	path = PrintUtil
 	url = https://github.com/Hades-Speedrunning/PrintUtil.git
 	branch = submodule
+[submodule "RemoveCutscenes"]
+	path = RemoveCutscenes
+	url = https://github.com/Hades-Speedrunning/RemoveCutscenes.git
+	branch = submodule
