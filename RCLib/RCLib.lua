@@ -1,0 +1,184 @@
+--[[
+    RCLib/RunControlLibrary
+    Author:
+        SleepSoul (Discord: SleepSoul#6006)
+
+    A set of common utility functions used to modify run events and game content in mods like ChaosControl, EnemyControl, etc.
+]]
+ModUtil.Mod.Register("RCLib")
+
+RCLib.KeepsakeGods = { -- Find the god a given keepsake forces
+    ForceZeusBoonTrait = "ZeusUpgrade",
+    ForcePoseidonBoonTrait = "PoseidonUpgrade",
+    ForceAphroditeBoonTrait = "AphroditeUpgrade",
+    ForceArtemisBoonTrait = "ArtemisUpgrade",
+    ForceDionysusBoonTrait = "DionysusUpgrade",
+    ForceAthenaBoonTrait = "AthenaUpgrade",
+    ForceAresBoonTrait = "AresUpgrade",
+    ForceDemeterBoonTrait = "DemeterUpgrade",
+}
+RCLib.GodKeepsakes = { -- Find the keepsake used to force a given god
+    ZeusUpgrade = "ForceZeusBoonTrait",
+    PoseidonUpgrade = "ForcePoseidonBoonTrait",
+    AphroditeUpgrade = "ForceAphroditeBoonTrait",
+    ArtemisUpgrade = "ForceArtemisBoonTrait",
+    DionysusUpgrade = "ForceDionysusBoonTrait",
+    AthenaUpgrade = "ForceAthenaBoonTrait",
+    AresUpgrade = "ForceAresBoonTrait",
+    DemeterUpgrade = "ForceDemeterBoonTrait",
+}
+RCLib.SpareWealth = { -- The spare wealth consumable used ingame as a fallback
+    ItemName = "FallbackMoneyDrop",
+    Type = "Consumable",
+    Rarity = "Common"
+}
+RCLib.AbsoluteChamber = 1 -- TODO
+RCLib.CurrentBiome = "Tartarus" -- TODO
+
+function RCLib.GetEligible( inputTable,lookupTable ) -- Read a table of bools, returning a table of the names of all that are true. Optionally use a lookup table to convert the names in inputTable.
+    local eligible = {}
+    for name, bool in pairs( inputTable ) do
+        if bool then
+            if lookupTable ~= nil then
+                table.insert( eligible, lookupTable[name] )
+            else
+                table.insert( eligible, name )
+            end
+        end
+    end
+    return eligible
+end
+
+function RCLib.RemoveIneligibleBools( inputTable, baseTable, lookupTable ) -- Read two tables of bools, returning a table with all the values set to true in baseTable minus all the values set to false in inputTable. Optionally use a lookup table to convert the names in inputTable.
+    local eligible = {}
+    local match = false
+    for name, bool in pairs( baseTable ) do
+        match = false
+        if bool then
+            if next( inputTable ) == nil then
+                table.insert( eligible, name )
+            else
+                for name2, bool2 in pairs( inputTable ) do
+                    if lookupTable ~= nil and lookupTable[name2] == name and not bool2 then
+                        match = true
+                    elseif name2 == name and not bool2 then
+                        match = true
+                    end
+                end
+                if match == false then
+                    table.insert( eligible, name )
+                end
+            end
+        end
+    end
+    return eligible
+end
+
+function RCLib.RemoveIneligibleStrings( inputTable, baseTable, lookupTable ) -- Read a table of bools and a table of strings, returning a table with all the strings in baseTable minus all the values set to false in inputTable. Optionally use a lookup table to convert the names in inputTable.
+    local eligible = {}
+    local match = false
+    for _, name in ipairs( baseTable ) do
+        match = false
+        if next( inputTable ) == nil then
+            table.insert( eligible, name )
+        else
+            for name2, bool in pairs( inputTable ) do
+                if lookupTable ~= nil and lookupTable[name2] == name and not bool then
+                    match = true
+                elseif name2 == name and not bool then
+                    match = true
+                end
+            end
+            if match == false then
+                table.insert( eligible, name )
+            end
+        end
+    end
+    return eligible
+end
+
+function RCLib.PopulateMinLength( targetTable, inputTable, minLength ) -- Populates a target table with the contents of an input table, repeatedly inserting until a minimum length is reached.
+    local i = 0
+    while i < minLength do
+        for _, name in pairs( inputTable ) do
+            table.insert( targetTable, name )
+            i = i + 1
+        end
+    end
+end
+
+function RCLib.BuildEligibleList( sourceList, inheritList, inheritBool, lookupTable )
+    local eligible = {}
+    if sourceList ~= nil then
+        if inheritBool then
+            eligible = RCLib.RemoveIneligibleStrings( sourceList, inheritList, lookupTable )
+        else
+            eligible = RCLib.GetEligible( sourceList, lookupTable )
+        end
+    else
+        eligible = inheritList
+    end
+    return eligible
+end
+
+function RCLib.GetAspectName()
+    for aspect, name in pairs( RCLib.CodeToName.Aspects ) do
+		if HeroHasTrait( aspect ) then
+            return name
+        end
+    end
+end
+
+function RCLib.GetAspectCode()
+    for aspect, name in pairs( RCLib.CodeToName.Aspects ) do
+		if HeroHasTrait( aspect ) then
+            return aspect
+        end
+    end
+end
+
+function RCLib.GetKeepsakeCharges()
+    local keepsakeCharges = 0
+    for k, data in ipairs( CurrentRun.Hero.Traits ) do
+        if data.Name == GameState.LastAwardTrait and data.Uses then
+            keepsakeCharges = data.Uses
+        end
+    end
+    return keepsakeCharges
+end
+
+function RCLib.GetFromList( list, conditions )
+    list = list or {}
+    conditions = conditions or {}
+	conditions.chamberNum = GetRunDepth( CurrentRun )
+	conditions.biome = RCLib.CurrentBiome
+    if list.ListType == "Indexed" then
+        return RCLib.GetFromIndexedList( list.List, list.IndexedBy, conditions )
+    end
+end
+
+function RCLib.GetFromIndexedList( list, indexedBy, conditions )
+    indexedBy = indexedBy or {}
+    conditions = conditions or {}
+    local force = list or {}
+    local output = {}
+
+    for _, condition in ipairs( indexedBy ) do
+        DebugPrint({ Text = condition.." is "..conditions[condition] or "NIL" })
+        force = force[conditions[condition]] or {}
+    end
+    if RCLib.CheckConditions( force.NeededConditions, conditions ) then
+        output = force.Data or {}
+    end
+
+    return output
+end
+
+function RCLib.GetFromPrioritisedList( list, conditions ) -- TODO
+end
+
+function RCLib.CheckConditions( table, conditions ) -- TODO
+    table = table or {}
+    conditions = conditions or {}
+    return true
+end
