@@ -7,6 +7,11 @@
 ]]
 ModUtil.Mod.Register("RunControl")
 
+local config = {
+    modpackVersion = "0.1.0"
+}
+RunControl.config = config
+
 RunControl.CurrentRunData = {}
 
 ModUtil.LoadOnce( function()
