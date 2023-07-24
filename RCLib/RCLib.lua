@@ -165,6 +165,7 @@ function RCLib.GetFromIndexedList( list, indexedBy, conditions )
 
     for _, condition in ipairs( indexedBy ) do
         DebugPrint({ Text = condition.." is "..conditions[condition] or "NIL" })
+        if force.Data then break end
         force = force[conditions[condition]] or {}
     end
     if RCLib.CheckConditions( force.NeededConditions, conditions ) then
