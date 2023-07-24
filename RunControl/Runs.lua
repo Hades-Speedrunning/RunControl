@@ -100,6 +100,33 @@ RunControl.Runs.SleepSoul607Talos = { -- WIP
                 }
             }
         }
+    },
+    Rewards = {
+        ListType = "Indexed",
+        IndexedBy = { "chamberNum" },
+        List = {
+            [1] = {
+                Data = {
+                    { Reward = "PitchBlackDarkness" },
+                }
+            },
+            [2] = {
+                Data = {
+                    { Reward = "VintageNectar" },
+                }
+            },
+            [3] = {
+                Data = {
+                    { Reward = "CentaurHeart" },
+                    { Reward = "DaedalusHammer" },
+                }
+            },
+            [4] = {
+                Data = {
+                    { Reward = "Boon", Name = "Ares" }
+                }
+            }
+        }
     }
 }
 

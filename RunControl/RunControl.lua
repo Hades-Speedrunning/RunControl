@@ -8,7 +8,7 @@
 ModUtil.Mod.Register("RunControl")
 
 local config = {
-    ModpackVersion = "0.1.0"
+    ModpackVersion = "0.2.0"
 }
 RunControl.config = config
 
@@ -35,6 +35,7 @@ end
 ModUtil.LoadOnce( function()
     RunControl.CurrentRunData = RunControl.Runs.SleepSoul607Talos
     BoonControl.CurrentRunData = RunControl.CurrentRunData.Boons or {}
+    RewardControl.CurrentRunData = RunControl.CurrentRunData.Rewards or {}
 end )
 
 OnAnyLoad{ function()
