@@ -1,3 +1,7 @@
 [submodule "ModUtil"]
 	path = ModUtil
 	url = https://github.com/SGG-Modding/ModUtil.git
+[submodule "PrintUtil"]
+	path = PrintUtil
+	url = https://github.com/Hades-Speedrunning/PrintUtil.git
+	branch = submodule
