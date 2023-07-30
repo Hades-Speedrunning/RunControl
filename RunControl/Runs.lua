@@ -199,7 +199,7 @@ RunControl.Runs.SleepSoul607Talos = { -- WIP
         List = {
             [1] = {
                 Data = {
-                    { Reward = "PitchBlackDarkness" },
+                    [2] = { Reward = "PitchBlackDarkness" },
                 }
             },
             [2] = {
