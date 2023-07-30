@@ -7,16 +7,6 @@
 ]]
 ModUtil.Mod.Register("RCLib")
 
-RCLib.KeepsakeGods = { -- Find the god a given keepsake forces
-    ForceZeusBoonTrait = "ZeusUpgrade",
-    ForcePoseidonBoonTrait = "PoseidonUpgrade",
-    ForceAphroditeBoonTrait = "AphroditeUpgrade",
-    ForceArtemisBoonTrait = "ArtemisUpgrade",
-    ForceDionysusBoonTrait = "DionysusUpgrade",
-    ForceAthenaBoonTrait = "AthenaUpgrade",
-    ForceAresBoonTrait = "AresUpgrade",
-    ForceDemeterBoonTrait = "DemeterUpgrade",
-}
 RCLib.GodKeepsakes = { -- Find the keepsake used to force a given god
     ZeusUpgrade = "ForceZeusBoonTrait",
     PoseidonUpgrade = "ForcePoseidonBoonTrait",
@@ -27,6 +17,7 @@ RCLib.GodKeepsakes = { -- Find the keepsake used to force a given god
     AresUpgrade = "ForceAresBoonTrait",
     DemeterUpgrade = "ForceDemeterBoonTrait",
 }
+RCLib.KeepsakeGods = ModUtil.Table.Transpose( RCLib.GodKeepsakes )
 RCLib.SpareWealth = { -- The spare wealth consumable used ingame as a fallback
     ItemName = "FallbackMoneyDrop",
     Type = "Consumable",
@@ -35,7 +26,7 @@ RCLib.SpareWealth = { -- The spare wealth consumable used ingame as a fallback
 RCLib.AbsoluteChamber = 1 -- TODO
 RCLib.CurrentBiome = "Tartarus" -- TODO
 
-function RCLib.GetEligible( inputTable,lookupTable ) -- Read a table of bools, returning a table of the names of all that are true. Optionally use a lookup table to convert the names in inputTable.
+function RCLib.GetEligible( inputTable, lookupTable ) -- Read a table of bools, returning a table of the names of all that are true. Optionally use a lookup table to convert the names in inputTable.
     local eligible = {}
     for name, bool in pairs( inputTable ) do
         if bool then

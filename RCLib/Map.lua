@@ -725,120 +725,120 @@ RCLib.CodeToName = {
     WellItems = {}
 }
 
-RCLib.CodeToName.Aspects = ModUtil.Table.Transpose(RCLib.NameToCode.Aspects)
-RCLib.CodeToName.Boons = ModUtil.Table.Transpose(RCLib.NameToCode.Boons)
-RCLib.CodeToName.BoonSets = ModUtil.Table.Transpose(RCLib.NameToCode.BoonSets)
-RCLib.CodeToName.Bosses = ModUtil.Table.Transpose(RCLib.NameToCode.Bosses)
-RCLib.CodeToName.ChaosBlessings = ModUtil.Table.Transpose(RCLib.NameToCode.ChaosBlessings)
-RCLib.CodeToName.ChaosCurses = ModUtil.Table.Transpose(RCLib.NameToCode.ChaosCurses)
-RCLib.CodeToName.Enemies = ModUtil.Table.Transpose(RCLib.NameToCode.Enemies)
-RCLib.CodeToName.EnemySets = ModUtil.Table.Transpose(RCLib.NameToCode.EnemySets)
-RCLib.CodeToName.Hammers = ModUtil.Table.Transpose(RCLib.NameToCode.Hammers)
-RCLib.CodeToName.Keepsakes = ModUtil.Table.Transpose(RCLib.NameToCode.Keepsakes)
-RCLib.CodeToName.RoomRewards = ModUtil.Table.Transpose(RCLib.NameToCode.RoomRewards)
-RCLib.CodeToName.ShopRewards = ModUtil.Table.Transpose(RCLib.NameToCode.ShopRewards)
-RCLib.CodeToName.WellItems = ModUtil.Table.Transpose(RCLib.NameToCode.WellItems)
+RCLib.CodeToName.Aspects = ModUtil.Table.Transpose( RCLib.NameToCode.Aspects )
+RCLib.CodeToName.Boons = ModUtil.Table.Transpose( RCLib.NameToCode.Boons )
+RCLib.CodeToName.BoonSets = ModUtil.Table.Transpose( RCLib.NameToCode.BoonSets )
+RCLib.CodeToName.Bosses = ModUtil.Table.Transpose( RCLib.NameToCode.Bosses )
+RCLib.CodeToName.ChaosBlessings = ModUtil.Table.Transpose( RCLib.NameToCode.ChaosBlessings )
+RCLib.CodeToName.ChaosCurses = ModUtil.Table.Transpose( RCLib.NameToCode.ChaosCurses )
+RCLib.CodeToName.Enemies = ModUtil.Table.Transpose( RCLib.NameToCode.Enemies )
+RCLib.CodeToName.EnemySets = ModUtil.Table.Transpose( RCLib.NameToCode.EnemySets )
+RCLib.CodeToName.Hammers = ModUtil.Table.Transpose( RCLib.NameToCode.Hammers )
+RCLib.CodeToName.Keepsakes = ModUtil.Table.Transpose( RCLib.NameToCode.Keepsakes )
+RCLib.CodeToName.RoomRewards = ModUtil.Table.Transpose( RCLib.NameToCode.RoomRewards )
+RCLib.CodeToName.ShopRewards = ModUtil.Table.Transpose( RCLib.NameToCode.ShopRewards )
+RCLib.CodeToName.WellItems = ModUtil.Table.Transpose( RCLib.NameToCode.WellItems )
 
-function RCLib.EncodeAspect(name)
+function RCLib.EncodeAspect( name )
     return RCLib.NameToCode.Aspects[name]
 end
 
-function RCLib.DecodeAspect(name)
+function RCLib.DecodeAspect( name )
     return RCLib.CodeToName.Aspects[name]
 end
 
-function RCLib.EncodeBoon(name)
+function RCLib.EncodeBoon( name )
     return RCLib.NameToCode.Boons[name]
 end
 
-function RCLib.DecodeBoon(name)
+function RCLib.DecodeBoon( name )
     return RCLib.CodeToName.Boons[name]
 end
 
-function RCLib.EncodeBoonSet(name)
+function RCLib.EncodeBoonSet( name )
     return RCLib.NameToCode.BoonSets[name]
 end
 
-function RCLib.DecodeBoonSet(name)
+function RCLib.DecodeBoonSet( name )
     return RCLib.CodeToName.BoonSets[name]
 end
 
-function RCLib.EncodeBoss(name)
+function RCLib.EncodeBoss( name )
     return RCLib.NameToCode.Bosses[name]
 end
 
-function RCLib.DecodeBoss(name)
+function RCLib.DecodeBoss( name )
     return RCLib.CodeToName.Bosses[name]
 end
 
-function RCLib.EncodeChaosBlessing(name)
+function RCLib.EncodeChaosBlessing( name )
     return RCLib.NameToCode.ChaosBlessings[name]
 end
 
-function RCLib.DecodeChaosBlessing(name)
+function RCLib.DecodeChaosBlessing( name )
     return RCLib.CodeToName.ChaosBlessings[name]
 end
 
-function RCLib.EncodeChaosCurse(name)
+function RCLib.EncodeChaosCurse( name )
     return RCLib.NameToCode.ChaosCurses[name]
 end
 
-function RCLib.DecodeChaosCurse(name)
+function RCLib.DecodeChaosCurse( name )
     return RCLib.CodeToName.ChaosCurses[name]
 end
 
-function RCLib.EncodeEnemy(name)
+function RCLib.EncodeEnemy( name )
     return RCLib.NameToCode.Enemies[name]
 end
 
-function RCLib.DecodeEnemy(name)
+function RCLib.DecodeEnemy( name )
     return RCLib.CodeToName.Enemies[name]
 end
 
-function RCLib.EncodeEnemySet(name)
+function RCLib.EncodeEnemySet( name )
     return RCLib.NameToCode.EnemySets[name]
 end
 
-function RCLib.DecodeEnemySet(name)
+function RCLib.DecodeEnemySet( name )
     return RCLib.CodeToName.EnemySets[name]
 end
 
-function RCLib.EncodeHammer(name)
+function RCLib.EncodeHammer( name )
     return RCLib.NameToCode.Hammers[name]
 end
 
-function RCLib.DecodeHammer(name)
+function RCLib.DecodeHammer( name )
     return RCLib.CodeToName.Hammers[name]
 end
 
-function RCLib.EncodeKeepsake(name)
+function RCLib.EncodeKeepsake( name )
     return RCLib.NameToCode.Keepsakes[name]
 end
 
-function RCLib.DecodeKeepsake(name)
+function RCLib.DecodeKeepsake( name )
     return RCLib.CodeToName.Keepsakes[name]
 end
 
-function RCLib.EncodeRoomReward(name)
+function RCLib.EncodeRoomReward( name )
     return RCLib.NameToCode.RoomRewards[name]
 end
 
-function RCLib.DecodeRoomReward(name)
+function RCLib.DecodeRoomReward( name )
     return RCLib.CodeToName.RoomRewards[name]
 end
 
-function RCLib.EncodeShopReward(name)
+function RCLib.EncodeShopReward( name )
     return RCLib.NameToCode.ShopRewards[name]
 end
 
-function RCLib.DecodeShopReward(name)
+function RCLib.DecodeShopReward( name )
     return RCLib.CodeToName.ShopRewards[name]
 end
 
-function RCLib.EncodeWellItem(name)
+function RCLib.EncodeWellItem( name )
     return RCLib.NameToCode.WellItems[name]
 end
 
-function RCLib.DecodeWellItem(name)
+function RCLib.DecodeWellItem( name )
     return RCLib.CodeToName.WellItems[name]
 end
