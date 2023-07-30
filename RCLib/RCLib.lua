@@ -152,9 +152,10 @@ function RCLib.GetFromList( list, conditions )
     conditions = conditions or {}
 	conditions.chamberNum = conditions.chamberNum or GetRunDepth( CurrentRun )
 	conditions.biome = conditions.biome or RCLib.CurrentBiome
-    if list.ListType == "Indexed" then
-        return RCLib.GetFromIndexedList( list.List, list.IndexedBy, conditions )
+    if list.IndexedBy then
+        return RCLib.GetFromIndexedList( list.List, list.IndexedBy, conditions ) or {}
     end
+    return {}
 end
 
 function RCLib.GetFromIndexedList( list, indexedBy, conditions )
@@ -172,7 +173,7 @@ function RCLib.GetFromIndexedList( list, indexedBy, conditions )
         output = force.Data or {}
     end
 
-    return output
+    return output or {}
 end
 
 function RCLib.GetFromPrioritisedList( list, conditions ) -- TODO

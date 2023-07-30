@@ -2,7 +2,6 @@ RunControl.Runs = {}
 
 RunControl.Runs.SleepSoul607Talos = { -- WIP
     Boons = {
-        ListType = "Indexed",
         IndexedBy = { "godName", "appearanceNum", "rerollNum" },
         List = {
             Ares = {
@@ -102,7 +101,6 @@ RunControl.Runs.SleepSoul607Talos = { -- WIP
         }
     },
     Rooms = {
-        ListType = "Indexed",
         IndexedBy = { "chamberNum" },
         List = {
             [1] = {
@@ -138,7 +136,7 @@ RunControl.Runs.SleepSoul607Talos = { -- WIP
             [5] = {
                 Data = {
                     Doors = {
-                        [1] = { RoomName = "A_Shop01" },
+                        [2] = { RoomName = "A_Shop01" },
                     },
                 }
             },
@@ -194,7 +192,6 @@ RunControl.Runs.SleepSoul607Talos = { -- WIP
         }
     },
     Rewards = {
-        ListType = "Indexed",
         IndexedBy = { "chamberNum" },
         List = {
             [1] = {
@@ -217,7 +214,43 @@ RunControl.Runs.SleepSoul607Talos = { -- WIP
                 Data = {
                     { Reward = "Boon", Name = "Ares" }
                 }
-            }
+            },
+            [5] = {
+                Data = {
+                    { Reward = "PitchBlackDarkness" }
+                }
+            },
+            [6] = {
+                Data = {
+                    { Reward = "CharonsObol" }
+                }
+            },
+            [7] = {
+                Data = {
+                    { Reward = "Boon", Name = "Zeus" }
+                }
+            },
+            [9] = {
+                Data = {
+                    { Reward = "FatedKey" }
+                }
+            },
+            [10] = {
+                Data = {
+                    { Reward = "CharonsObol" }
+                }
+            },
+            [11] = {
+                Data = {
+                    { Reward = "FatedKey" }
+                }
+            },
+            [12] = {
+                Data = {
+                    { Reward = "CentaurHeart" },
+                    { Reward = "PomOfPower" },
+                }
+            },
         }
     }
 }
