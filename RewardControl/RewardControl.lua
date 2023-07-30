@@ -17,15 +17,15 @@ RewardControl.CurrentRunData = {}
 ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function( baseFunc, run, room )
     local forcedRewards = RCLib.GetFromList( RewardControl.CurrentRunData )
 
-    ModUtil.Path.Wrap( "ChooseRoomReward", function( baseFunc, run, room, rewardStoreName, previouslyChosenRewards, args )
+    ModUtil.Path.Wrap( "ChooseRoomReward", function( baseFunc, ... )
         local doorIndex = ModUtil.Locals.Stacked().index
-        local baseReward = baseFunc( run, room, rewardStoreName, previouslyChosenRewards, args )
+        local baseReward = baseFunc( ... )
 
         if forcedRewards[doorIndex] and forcedRewards[doorIndex].Reward then
             local doorReward = RCLib.EncodeRoomReward( forcedRewards[doorIndex].Reward )
             return doorReward or baseReward
         end
-        
+
         return baseReward
     end, RewardControl )
 
