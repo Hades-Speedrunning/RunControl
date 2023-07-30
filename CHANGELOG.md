@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2023-07-30
+
+### Added
+
+- RoomControl mod to set tiles, as well as special objects like Chaos gates and wells and tile orientation
+- BoonControl now has config option to disallow control of certain gods. Currently set to include Chaos and Poms, as these are not yet implemented
+
+### Changed
+
+- RCLib will no longer override conditions.chamberNum and conditions.biome if they were included in a GetList call
+
 ## [0.2.0] - 2023-07-24
 
 ### Added
