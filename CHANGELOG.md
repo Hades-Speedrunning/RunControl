@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2023-07-30
+
+### Added
+
+- ShopControl mod to set contents of shop rooms
+- RCLib conditions now include roomName for forcing data per-layout
+
+### Changed
+
+- RCLib can now infer the type of a list (currently only Indexed exists), making it no longer necessary to specify
+
+### Fixed
+
+- RCLib now has the correct code for Pitch-Black Darkness
+- RewardControl should now function more correctly and consistently, especially for double-exits
+- RoomControl's RequireForcedSpecials config option should now function correctly
+
 ## [0.3.0] - 2023-07-30
 
 ### Added
