@@ -11,6 +11,10 @@ local config = {
     Enabled = true,
 	DefaultRarity = "Common", -- Default rarity when not specified per-boon. If set to false, rarity will be rolled each time
 	UseSpareWealth = false, -- Use spare wealth as a fallback instead of using the vanilla boon screen
+	DisallowedGods = { -- Prevent certain gods from being affected
+		"StackUpgrade",
+		"TrialUpgrade",
+	}
 }
 BoonControl.config = config
 
@@ -105,14 +109,14 @@ ModUtil.Path.Wrap( "SetTraitsOnLoot", function( baseFunc, lootData, args )
 	args = args or {}
 	conditions = {}
 
-	if not BoonControl.config.Enabled or IsEmpty( BoonControl.CurrentRunData ) then
-		return baseFunc( lootData, args )
-	end
-
 	local godCode = lootData.Name
 	local upgradeChoiceData = LootData[godCode]
 	local forcedBoons = {}
 	local boonOptions = {}
+
+	if not BoonControl.config.Enabled or IsEmpty( BoonControl.CurrentRunData ) or Contains( config.DisallowedGods, godCode ) then
+		return baseFunc( lootData, args )
+	end
 
 	conditions.godName = RCLib.DecodeBoonSet( godCode )
 	conditions.appearanceNum = ( BoonControl.GodAppearances[godCode] or 0 ) + 1
