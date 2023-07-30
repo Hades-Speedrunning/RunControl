@@ -631,7 +631,7 @@ RCLib.NameToCode = {
         Food = "RoomRewardHealDrop", -- lol
 
         -- Upgraded Blue Laurels
-        PitchBlackDarkness = "RoomRewardMetaPointDrop",
+        PitchBlackDarkness = "RoomRewardMetaPointDropRunProgress",
         BrilliantGemstones = "GemDropRunProgress",
         FatedKey = "LockKeyDropRunProgress",
         VintageNectar = "GiftDropRunProgress",
