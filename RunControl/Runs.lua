@@ -101,6 +101,98 @@ RunControl.Runs.SleepSoul607Talos = { -- WIP
             }
         }
     },
+    Rooms = {
+        ListType = "Indexed",
+        IndexedBy = { "chamberNum" },
+        List = {
+            [1] = {
+                Data = {
+                    Special = {
+                        ChaosGate = { Force = true, RoomName = "RoomSecret03" }
+                    },
+                }
+            },
+            [2] = {
+                Data = {
+                    Flipped = false,
+                    Doors = {
+                        [1] = { RoomName = "A_Combat19" },
+                    },
+                }
+            },
+            [3] = {
+                Data = {
+                    Flipped = true,
+                    Doors = {
+                        [2] = { RoomName = "RoomSimple01" },
+                    },
+                }
+            },
+            [4] = {
+                Data = {
+                    Doors = {
+                        [1] = { RoomName = "A_Combat12" },
+                    },
+                }
+            },
+            [5] = {
+                Data = {
+                    Doors = {
+                        [1] = { RoomName = "A_Shop01" },
+                    },
+                }
+            },
+            [6] = {
+                Data = {
+                    Doors = {
+                        [1] = { RoomName = "A_Combat14" },
+                    },
+                }
+            },
+            [7] = {
+                Data = {
+                    Doors = {
+                        [1] = { RoomName = "A_MiniBoss04" },
+                    },
+                }
+            },
+            [8] = {
+                Data = {
+                    Doors = {
+                        [1] = { RoomName = "A_Story01" },
+                    },
+                }
+            },
+            [9] = {
+                Data = {
+                    Doors = {
+                        [1] = { RoomName = "A_Combat03" },
+                    },
+                }
+            },
+            [10] = {
+                Data = {
+                    Doors = {
+                        [1] = { RoomName = "A_Combat10" },
+                    },
+                }
+            },
+            [11] = {
+                Data = {
+                    Doors = {
+                        [2] = { RoomName = "A_Combat18" },
+                    },
+                }
+            },
+            [13] = {
+                Data = {
+                    Doors = {
+                        [1] = { RoomName = "A_Boss03" },
+                    },
+                }
+            },
+        }
+    },
     Rewards = {
         ListType = "Indexed",
         IndexedBy = { "chamberNum" },
