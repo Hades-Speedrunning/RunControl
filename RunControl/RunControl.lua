@@ -35,8 +35,9 @@ end
 ModUtil.LoadOnce( function()
     RunControl.CurrentRunData = RunControl.Runs.SleepSoul607Talos
     BoonControl.CurrentRunData = RunControl.CurrentRunData.Boons or {}
-    RoomControl.CurrentRunData = RunControl.CurrentRunData.Rooms or {}
     RewardControl.CurrentRunData = RunControl.CurrentRunData.Rewards or {}
+    RoomControl.CurrentRunData = RunControl.CurrentRunData.Rooms or {}
+    ShopControl.CurrentRunData = RunControl.CurrentRunData.Shops or {}
 end )
 
 OnAnyLoad{ function()

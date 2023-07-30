@@ -100,6 +100,63 @@ RunControl.Runs.SleepSoul607Talos = { -- WIP
             }
         }
     },
+    Rewards = {
+        IndexedBy = { "chamberNum" },
+        List = {
+            [1] = {
+                Data = {
+                    [2] = { Reward = "PitchBlackDarkness" },
+                }
+            },
+            [2] = {
+                Data = {
+                    { Reward = "VintageNectar" },
+                }
+            },
+            [3] = {
+                Data = {
+                    { Reward = "CentaurHeart" },
+                    { Reward = "DaedalusHammer" },
+                }
+            },
+            [4] = {
+                Data = {
+                    { Reward = "Boon", Name = "Ares" }
+                }
+            },
+            [5] = {
+                Data = {
+                    { Reward = "PitchBlackDarkness" }
+                }
+            },
+            [6] = {
+                Data = {
+                    { Reward = "CharonsObol" }
+                }
+            },
+            [7] = {
+                Data = {
+                    { Reward = "Boon", Name = "Zeus" }
+                }
+            },
+            [9] = {
+                Data = {
+                    { Reward = "FatedKey" }
+                }
+            },
+            [10] = {
+                Data = {
+                    { Reward = "CharonsObol" }
+                }
+            },
+            [11] = {
+                Data = {
+                    { Reward = "CentaurHeart" },
+                    { Reward = "PomOfPower" }
+                }
+            },
+        }
+    },
     Rooms = {
         IndexedBy = { "chamberNum" },
         List = {
@@ -135,6 +192,7 @@ RunControl.Runs.SleepSoul607Talos = { -- WIP
             },
             [5] = {
                 Data = {
+                    Flipped = true,
                     Doors = {
                         [2] = { RoomName = "A_Shop01" },
                     },
@@ -191,66 +249,16 @@ RunControl.Runs.SleepSoul607Talos = { -- WIP
             },
         }
     },
-    Rewards = {
-        IndexedBy = { "chamberNum" },
+    Shops = {
+        IndexedBy = { "roomName" },
         List = {
-            [1] = {
+            A_Shop01 = {
                 Data = {
-                    [2] = { Reward = "PitchBlackDarkness" },
-                }
-            },
-            [2] = {
-                Data = {
-                    { Reward = "VintageNectar" },
-                }
-            },
-            [3] = {
-                Data = {
+                    { Reward = "Boon", Name = "Athena" },
+                    { Reward = "Food" },
                     { Reward = "CentaurHeart" },
-                    { Reward = "DaedalusHammer" },
                 }
-            },
-            [4] = {
-                Data = {
-                    { Reward = "Boon", Name = "Ares" }
-                }
-            },
-            [5] = {
-                Data = {
-                    { Reward = "PitchBlackDarkness" }
-                }
-            },
-            [6] = {
-                Data = {
-                    { Reward = "CharonsObol" }
-                }
-            },
-            [7] = {
-                Data = {
-                    { Reward = "Boon", Name = "Zeus" }
-                }
-            },
-            [9] = {
-                Data = {
-                    { Reward = "FatedKey" }
-                }
-            },
-            [10] = {
-                Data = {
-                    { Reward = "CharonsObol" }
-                }
-            },
-            [11] = {
-                Data = {
-                    { Reward = "FatedKey" }
-                }
-            },
-            [12] = {
-                Data = {
-                    { Reward = "CentaurHeart" },
-                    { Reward = "PomOfPower" },
-                }
-            },
+            }
         }
     }
 }
