@@ -19,21 +19,23 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function( baseFunc, run, room )
 
     ModUtil.Path.Wrap( "ChooseRoomReward", function( baseFunc, ... )
         local doorIndex = ModUtil.Locals.Stacked().index
+        local doorReward
         local baseReward = baseFunc( ... )
 
         if forcedRewards[doorIndex] and forcedRewards[doorIndex].Reward then
-            local doorReward = RCLib.EncodeRoomReward( forcedRewards[doorIndex].Reward )
-            return doorReward or baseReward
+            doorReward = RCLib.EncodeRoomReward( forcedRewards[doorIndex].Reward )
         end
 
-        return baseReward
+        return doorReward or baseReward
     end, RewardControl )
 
     ModUtil.Path.Wrap( "SetupRoomReward", function( baseFunc, currentRun, room, previouslyChosenRewards, args )
         local doorIndex = ModUtil.Locals.Stacked().index
+
         if room.ChosenRewardType == "Boon" and not room.ForceLootName and forcedRewards[doorIndex] and forcedRewards[doorIndex].Name then
             room.ForceLootName = RCLib.EncodeBoonSet( forcedRewards[doorIndex].Name )
         end
+        
         baseFunc( currentRun, room, previouslyChosenRewards, args )
     end, RewardControl )
 end, RewardControl )
