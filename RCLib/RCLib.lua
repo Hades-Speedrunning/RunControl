@@ -141,8 +141,9 @@ end
 function RCLib.GetFromList( list, conditions )
     list = list or {}
     conditions = conditions or {}
-	conditions.chamberNum = conditions.chamberNum or GetRunDepth( CurrentRun )
 	conditions.biome = conditions.biome or RCLib.CurrentBiome
+	conditions.chamberNum = conditions.chamberNum or GetRunDepth( CurrentRun )
+    conditions.roomName = conditions.roomName or CurrentRun.CurrentRoom.Name
     if list.IndexedBy then
         return RCLib.GetFromIndexedList( list.List, list.IndexedBy, conditions ) or {}
     end
