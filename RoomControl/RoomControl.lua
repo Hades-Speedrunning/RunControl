@@ -46,7 +46,7 @@ ModUtil.Path.Context.Wrap( "HandleSecretSpawns", function( baseFunc, ... )
     ModUtil.Path.Wrap( "IsSecretDoorEligible", function( baseFunc, ... ) -- Chaos gate spawn
         local isChaosForced = ModUtil.Path.Get( "Special.ChaosGate.Force", roomData )
         if RoomControl.config.RequireForcedSpecials then
-            isChaosForced = isChaosForced or false
+            return isChaosForced or false
         end
         return isChaosForced or baseFunc( ... )
     end, RoomControl )
@@ -63,7 +63,7 @@ ModUtil.Path.Context.Wrap( "HandleSecretSpawns", function( baseFunc, ... )
     ModUtil.Path.Wrap( "IsShrinePointDoorEligible", function( baseFunc, ... ) -- Erebus gate spawn
         local isErebusForced = ModUtil.Path.Get( "Special.ErebusGate.Force", roomData )
         if RoomControl.config.RequireForcedSpecials then
-            isErebusForced = isErebusForced or false
+            return isErebusForced or false
         end
         return isErebusForced or baseFunc( ... )
     end, RoomControl )
@@ -71,7 +71,7 @@ ModUtil.Path.Context.Wrap( "HandleSecretSpawns", function( baseFunc, ... )
     ModUtil.Path.Wrap( "IsChallengeSwitchEligible", function( baseFunc, ... ) -- Trove spawn
         local isTroveForced = ModUtil.Path.Get( "Special.Trove.Force", roomData )
         if RoomControl.config.RequireForcedSpecials then
-            isTroveForced = isTroveForced or false
+            return isTroveForced or false
         end
         return isTroveForced or baseFunc( ... )
     end, RoomControl )
@@ -79,7 +79,7 @@ ModUtil.Path.Context.Wrap( "HandleSecretSpawns", function( baseFunc, ... )
     ModUtil.Path.Wrap( "IsWellShopEligible", function( baseFunc, ... ) -- Well spawn
         local isWellForced = ModUtil.Path.Get( "Special.Well.Force", roomData )
         if RoomControl.config.RequireForcedSpecials then
-            isWellForced = isWellForced or false
+            return isWellForced or false
         end
         return isWellForced or baseFunc( ... )
     end, RoomControl )
@@ -87,7 +87,7 @@ ModUtil.Path.Context.Wrap( "HandleSecretSpawns", function( baseFunc, ... )
     ModUtil.Path.Wrap( "IsSellTraitShopEligible", function( baseFunc, ... ) -- Sell well spawn
         local isSellWellForced = ModUtil.Path.Get( "Special.SellWell.Force", roomData )
         if RoomControl.config.RequireForcedSpecials then
-            isSellWellForced = isSellWellForced or false
+            return isSellWellForced or false
         end
         return isSellWellForced or baseFunc( ... )
     end, RoomControl )
