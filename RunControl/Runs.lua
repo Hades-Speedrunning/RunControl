@@ -100,6 +100,77 @@ RunControl.Runs.SleepSoul607Talos = { -- WIP
             }
         }
     },
+    Encounters = {
+        IndexedBy = { "chamberNum" },
+        List = {
+            [1] = {
+                Data = {
+                    Name = "OpeningGenerated",
+                    Waves = {
+                        {{ Enemy = "Skullomat", Num = 1 }},
+                    }
+                }
+            },
+            [3] = {
+                Data = {
+                    Name = "GeneratedTartarus",
+                    Waves = {
+                        {{ Enemy = "Lout", Num = 1 }, { Enemy = "Pest", Num = 4 }},
+                    }
+                }
+            },
+            [4] = {
+                Data = {
+                    Name = "GeneratedTartarus",
+                    Waves = {
+                        {{ Enemy = "Thug", Num = 3 }},
+                        {{ Enemy = "Thug", Num = 2 }, { Enemy = "Numbskull", Num = 2 }},
+                    }
+                }
+            },
+            [5] = {
+                Data = {
+                    Name = "GeneratedTartarus",
+                    Waves = {
+                        {{ Enemy = "ArmoredPest", Num = 4 }},
+                    }
+                }
+            },
+            [7] = {
+                Data = {
+                    Name = "GeneratedTartarus",
+                    Waves = {
+                        {{ Enemy = "ArmoredBrimstone", Num = 5 }},
+                    }
+                }
+            },
+            [10] = {
+                Data = {
+                    Name = "GeneratedTartarus",
+                    Waves = {
+                        {{ Enemy = "Wringer", Num = 5 }, { Enemy = "Brimstone", Num = 6 }, { Enemy = "ArmoredWitch", Num = 1 }},
+                    }
+                }
+            },
+            [11] = {
+                Data = {
+                    Name = "GeneratedTartarus",
+                    Waves = {
+                        {{ Enemy = "ArmoredWitch", Num = 5 }},
+                        {{ Enemy = "ArmoredWitch", Num = 3 }, { Enemy = "Thug", Num = 2 }},
+                    }
+                }
+            },
+            [12] = {
+                Data = {
+                    Name = "GeneratedTartarus",
+                    Waves = {
+                        {{ Enemy = "Thug", Num = 11 }, { Enemy = "ArmoredNumbskull", Num = 5 }},
+                    }
+                }
+            },
+        }
+    },
     Rewards = {
         IndexedBy = { "chamberNum" },
         List = {
@@ -146,6 +217,7 @@ RunControl.Runs.SleepSoul607Talos = { -- WIP
             },
             [10] = {
                 Data = {
+                    { Reward = "PomOfPower" },
                     { Reward = "CharonsObol" }
                 }
             },
@@ -229,7 +301,11 @@ RunControl.Runs.SleepSoul607Talos = { -- WIP
             [10] = {
                 Data = {
                     Doors = {
-                        [1] = { RoomName = "A_Combat10" },
+                        [2] = { RoomName = "A_Combat10" },
+                    },
+                    Special = {
+                        ErebusGate = { Force = true },
+                        Trove = { Force = true }
                     },
                 }
             },
@@ -258,6 +334,13 @@ RunControl.Runs.SleepSoul607Talos = { -- WIP
                     { Reward = "Food" },
                     { Reward = "CentaurHeart" },
                 }
+            },
+            A_PreBoss01 = {
+                Data = {
+                    { Reward = "Boon", Name = "Demeter" },
+                    { Reward = "Food" },
+                    { Reward = "PomOfPower" },
+                }
             }
         }
     }
@@ -265,7 +348,6 @@ RunControl.Runs.SleepSoul607Talos = { -- WIP
 
 --[[TEMPLATES
     Boons = {
-        ListType = "Indexed",
         IndexedBy = { "godName", "chamberNum", "rerollNum" },
         List = {
             God = {
