@@ -13,7 +13,6 @@ local config = {
 	UseSpareWealth = false, -- Use spare wealth as a fallback instead of using the vanilla boon screen
 	DisallowedGods = { -- Prevent certain gods from being affected
 		"StackUpgrade",
-		"TrialUpgrade",
 	}
 }
 BoonControl.config = config
@@ -46,6 +45,43 @@ function BoonControl.BuildTraitList( forced, eligible, rarityTable, lookupTable 
 				{
 					ItemName = lookupTable[currentTraitName],
 					Type = "Trait",
+					Rarity = rarityToUse,
+				}
+			)
+		end
+	end
+
+	return traitOptions
+end
+
+function BoonControl.BuildTransformingTraitList( forced, eligible, rarityTable, lookupTable ) -- Chaos
+	local traitOptions = {}
+	local currentTraitName = ""
+	local isValid = false
+	local maxOptions = GetTotalLootChoices() -- TODO possible LootChoiceExt compat
+
+	for trait, _ in pairs( forced ) do
+		currentTrait = forced[trait]
+		currentTemporaryTrait = currentTrait.CurseName
+		currentPermanentTrait = currentTrait.BlessingName
+
+		isValid = ( Contains( eligible.Temporary, currentTemporaryTrait ) and Contains( eligible.Permanent, currentPermanentTrait ) ) or currentTrait.OverridePrereqs
+
+		DebugPrint({ Text = currentTemporaryTrait .. " " .. currentPermanentTrait .. " is valid? " .. tostring(isValid) })
+
+		if isValid and TableLength( traitOptions ) < maxOptions then
+			local rarityToUse = BoonControl.config.DefaultRarity or "Common"
+			if currentTrait.ForcedRarity ~= nil then
+				rarityToUse = currentTrait.ForcedRarity
+			elseif not BoonControl.config.DefaultRarity then
+				rarityToUse = BoonControl.RollRarityForBoon( currentPermanentTrait, rarityTable, lookupTable.Permanent )
+			end
+
+			table.insert( traitOptions, 
+				{
+					ItemName = lookupTable.Permanent[currentPermanentTrait],
+					SecondaryItemName = lookupTable.Temporary[currentTemporaryTrait],
+					Type = "TransformingTrait",
 					Rarity = rarityToUse,
 				}
 			)
@@ -114,7 +150,10 @@ ModUtil.Path.Wrap( "SetTraitsOnLoot", function( baseFunc, lootData, args )
 	local forcedBoons = {}
 	local boonOptions = {}
 
-	if not BoonControl.config.Enabled or IsEmpty( BoonControl.CurrentRunData ) or Contains( config.DisallowedGods, godCode ) then
+	if not BoonControl.config.Enabled
+	or IsEmpty( BoonControl.CurrentRunData )
+	or Contains( config.DisallowedGods, godCode )
+	or upgradeChoiceData.TransformingTraits then -- Chaos is handled in a separate function, which baseFunc will call
 		return baseFunc( lootData, args )
 	end
 
@@ -135,6 +174,57 @@ ModUtil.Path.Wrap( "SetTraitsOnLoot", function( baseFunc, lootData, args )
 	end
 
 	boonOptions = BoonControl.BuildTraitList( forcedBoons, eligibleList, lootData.RarityChances, RCLib.NameToCode[tableName] )
+
+	if IsEmpty( boonOptions ) and BoonControl.config.UseSpareWealth then -- Failsafe; can be triggered by errors in presets but also by no forced boons being eligible
+		table.insert( boonOptions, RCLib.SpareWealth )
+	elseif IsEmpty( boonOptions ) then
+		return baseFunc( lootData, args )
+	end
+
+	lootData.UpgradeOptions = boonOptions
+end, BoonControl )
+
+ModUtil.Path.Wrap( "SetTransformingTraitsOnLoot", function( baseFunc, lootData, args )
+	args = args or {}
+	local conditions = {}
+
+	local godCode = lootData.Name
+	local upgradeChoiceData = LootData[godCode]
+	local forcedBoons = {}
+	local boonOptions = {}
+
+	if not BoonControl.config.Enabled
+	or IsEmpty( BoonControl.CurrentRunData )
+	or Contains( config.DisallowedGods, godCode ) then
+		return baseFunc( lootData, args )
+	end
+
+	conditions.godName = RCLib.DecodeBoonSet( godCode )
+	conditions.appearanceNum = ( BoonControl.GodAppearances[godCode] or 0 ) + 1
+	conditions.rerollNum = ( BoonControl.GodRerollNums[godCode] or 0 ) + 1
+	
+	forcedBoons = RCLib.GetFromList( BoonControl.CurrentRunData, conditions ) or {}
+
+	local eligibleUpgradeSet = {}
+	eligibleUpgradeSet.Temporary = GetEligibleTransformingTrait( upgradeChoiceData.TemporaryTraits )
+	eligibleUpgradeSet.Permanent = GetEligibleTransformingTrait( upgradeChoiceData.PermanentTraits )
+	BoonControl.DumpSet = eligibleUpgradeSet
+
+	local eligibleList = {}
+	eligibleList.Temporary = {}
+	eligibleList.Permanent = {}
+	for index, trait in ipairs( eligibleUpgradeSet.Temporary ) do
+		table.insert( eligibleList.Temporary, RCLib.CodeToName.ChaosCurses[trait] )
+	end
+	for index, trait in ipairs( eligibleUpgradeSet.Permanent ) do
+		table.insert( eligibleList.Permanent, RCLib.CodeToName.ChaosBlessings[trait] )
+	end
+	BoonControl.DumpList = eligibleList
+	local lookupTables = {}
+	lookupTables.Temporary = RCLib.NameToCode.ChaosCurses
+	lookupTables.Permanent = RCLib.NameToCode.ChaosBlessings
+
+	boonOptions = BoonControl.BuildTransformingTraitList( forcedBoons, eligibleList, lootData.RarityChances, lookupTables )
 
 	if IsEmpty( boonOptions ) and BoonControl.config.UseSpareWealth then -- Failsafe; can be triggered by errors in presets but also by no forced boons being eligible
 		table.insert( boonOptions, RCLib.SpareWealth )

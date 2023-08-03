@@ -80,6 +80,17 @@ RunControl.Runs.SleepSoul607Talos = { -- WIP
                     },
                 },
             },
+            Chaos = {
+                [1] = {
+                    [1] = {
+                        Data = {
+                            { CurseName = "Addled", BlessingName = "Affluence", ForcedRarity = "Epic" },
+                            { CurseName = "Flayed", BlessingName = "Soul" },
+                            { CurseName = "Abyssal", BlessingName = "Assault", ForcedRarity = "Epic" },
+                        }
+                    }
+                }
+            },
             Hermes = {
                 [1] = { -- Chamber 18
                     [1] = { -- Menu 1
