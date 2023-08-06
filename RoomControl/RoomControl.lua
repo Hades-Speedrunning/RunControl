@@ -19,8 +19,7 @@ ModUtil.Path.Context.Wrap( "LeaveRoom", function( baseFunc, ... )
     local roomData = RCLib.GetFromList( RoomControl.CurrentRunData, { chamberNum = GetRunDepth( CurrentRun ) + 1 } )
 
     ModUtil.Path.Wrap( "RunShopGeneration", function( baseFunc, ... )
-        local flipped = roomData.Flipped
-        CurrentRun.CurrentRoom.Flipped = flipped or CurrentRun.CurrentRoom.Flipped
+        CurrentRun.CurrentRoom.Flipped = roomData.Flipped or CurrentRun.CurrentRoom.Flipped
         baseFunc( ... )
     end, RoomControl )
 end, RoomControl )
