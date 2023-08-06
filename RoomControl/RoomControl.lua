@@ -91,3 +91,40 @@ ModUtil.Path.Context.Wrap( "HandleSecretSpawns", function( baseFunc, ... )
         return isSellWellForced or baseFunc( ... )
     end, RoomControl )
 end, RoomControl )
+
+ModUtil.Path.Wrap( "HandleBreakableSwap", function( baseFunc, currentRoom )
+    local roomData = RCLib.GetFromList( RoomControl.CurrentRunData )
+    local goldPotNum = ModUtil.Path.Get( "Special.GoldPotNum", roomData )
+    if not goldPotNum and RoomControl.config.RequireForcedSpecials then
+        return
+    elseif not goldPotNum then
+        return baseFunc( currentRoom )
+    end
+
+	local roomBreakableData = currentRoom.BreakableValueOptions
+	local legalBreakables = FindAllSwappableBreakables()
+	if IsEmpty( legalBreakables ) then
+		return
+	end
+
+    goldPotNum = math.min( goldPotNum, TableLength( legalBreakables ) )
+
+    for index = 1, goldPotNum, 1 do
+		local breakableData = RemoveRandomValue( legalBreakables )
+		if breakableData == nil then
+			return
+		end
+		local valueOptions = breakableData.ValueOptions
+		for k, swapOption in ipairs( valueOptions ) do
+			if swapOption.GameStateRequirements == nil or IsGameStateEligible( CurrentRun, swapOption, swapOption.GameStateRequirements ) then
+                SetAnimation({ DestinationId = breakableData.ObjectId, Name = swapOption.Animation, OffsetY = swapOption.OffsetY or 0 })
+                RecordObjectState( currentRoom, breakableData.ObjectId, "Animation", swapOption.Animation )
+                breakableData.MoneyDropOnDeath = swapOption.MoneyDropOnDeath
+                RecordObjectState( currentRoom, breakableData.ObjectId, "MoneyDropOnDeath", breakableData.MoneyDropOnDeath )
+                DebugPrint({ Text = "HandleBreakableSwap: an up-valued breakable has spawned somewhere in this room." })
+                OverwriteTableKeys(breakableData, swapOption.DataOverrides)
+                break
+			end
+		end
+    end
+end, RoomControl )
