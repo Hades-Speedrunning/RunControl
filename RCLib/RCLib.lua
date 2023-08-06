@@ -138,6 +138,24 @@ function RCLib.GetKeepsakeCharges()
     return keepsakeCharges
 end
 
+function RCLib.InferItemType( item )
+    local itemType = nil
+    if TraitData[item] then
+        itemType = "Trait"
+    end
+    if ConsumableData[item] then
+        itemType = "Consumable"
+    end
+    if item == "RandomLoot" then
+        itemType = "Boon"
+    end
+    return itemType
+end
+
+function RCLib.InferItemData( item )
+    return TraitData[item] or ConsumableData[item] or {}
+end
+
 function RCLib.GetFromList( list, conditions )
     list = list or {}
     conditions = conditions or {}
