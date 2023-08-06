@@ -11,9 +11,7 @@ local config = {
     Enabled = true,
 	DefaultRarity = "Common", -- Default rarity when not specified per-boon. If set to false, rarity will be rolled each time
 	UseSpareWealth = false, -- Use spare wealth as a fallback instead of using the vanilla boon screen
-	DisallowedGods = { -- Prevent certain gods from being affected
-		"StackUpgrade",
-	}
+	DisallowedGods = {} -- Prevent certain gods from being affected
 }
 BoonControl.config = config
 
@@ -238,9 +236,12 @@ end, BoonControl )
 ModUtil.Path.Context.Wrap( "AttemptPanelReroll", function( )
 	ModUtil.Path.Wrap( "UpdateRerollUI", function( baseFunc, ... )
 		local locals = ModUtil.Locals.Stacked()
-		local godCode = locals.screen.SubjectName
-		local godRerollId = locals.button.RerollId
-		BoonControl.GodRerollNums[godCode] = CurrentRun.CurrentRoom.SpentRerolls[godRerollId]
+
+		if locals.screen.Name ~= "Store" then
+			local godCode = locals.screen.SubjectName
+			local godRerollId = locals.button.RerollId
+			BoonControl.GodRerollNums[godCode] = CurrentRun.CurrentRoom.SpentRerolls[godRerollId]
+		end
 		baseFunc( ... )
 	end, BoonControl )
 end, BoonControl )
