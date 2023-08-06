@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0] - 2023-08-06
+
+### Added
+
+- BoonControl now supports Chaos
+- ShopControl now supports wells
+
+### Changed
+
+- RunControl now has a Runs folder instead of a single Runs.lua file. This makes adding runs easier
+
+### Fixed
+
+- BoonControl will no longer cause a crash when you reroll a well
+
 ## [0.5.0] - 2023-08-01
 
 ### Added
