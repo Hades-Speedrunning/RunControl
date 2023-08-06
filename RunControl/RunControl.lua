@@ -8,11 +8,13 @@
 ModUtil.Mod.Register("RunControl")
 
 local config = {
-    ModpackVersion = "0.5.0"
+    ModpackVersion = "0.5.0",
+    SelectedRun = "SleepSoul607Talos",
 }
 RunControl.config = config
 
 RunControl.CurrentRunData = {}
+RunControl.Runs = {}
 
 function RunControl.DisplayVersion()
     local text_config_table = DeepCopyTable(UIData.CurrentRunDepth.TextFormat)
@@ -33,7 +35,7 @@ function RunControl.DisplayVersion()
 end
 
 ModUtil.LoadOnce( function()
-    RunControl.CurrentRunData = RunControl.Runs.SleepSoul607Talos
+    RunControl.CurrentRunData = RunControl.Runs[RunControl.config.SelectedRun] or {}
     BoonControl.CurrentRunData = RunControl.CurrentRunData.Boons or {}
     EncounterControl.CurrentRunData = RunControl.CurrentRunData.Encounters or {}
     RewardControl.CurrentRunData = RunControl.CurrentRunData.Rewards or {}
