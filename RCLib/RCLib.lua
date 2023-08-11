@@ -1,8 +1,6 @@
 --[[
     RCLib/RunControlLibrary
-    Author:
-        SleepSoul (Discord: SleepSoul#6006)
-
+    Author: SleepSoul (Discord: SleepSoul#6006)
     A set of common utility functions used to modify run events and game content in mods like ChaosControl, EnemyControl, etc.
 ]]
 ModUtil.Mod.Register("RCLib")
