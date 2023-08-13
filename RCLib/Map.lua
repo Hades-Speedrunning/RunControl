@@ -652,15 +652,18 @@ RCLib.NameToCode = {
         Ambrosia = "SuperGiftDrop",
     },
     ShopRewards = {
+        -- Slot 1 Items
         Boon = "RandomLoot",
         RandomBag = "BlindBoxLoot", -- No official name
 
+        -- Slot 2 Items
         Darkness = "StoreRewardMetaPointDrop",
         Gemstones = "StoreRewardGemDrop",
         ChthonicKey = "StoreRewardLockKeyDrop",
         Nectar = "GiftDrop", -- Cannot appear ingame due to a bug
         Food = "RoomRewardHealDrop",
 
+        -- Slot 3 Items
         CentaurHeart = "RoomRewardMaxHealthDrop",
         DaedalusHammer = "WeaponUpgradeDrop",
         Hermes = "HermesUpgradeDrop",
@@ -668,9 +671,14 @@ RCLib.NameToCode = {
         PomOfPower = "StackUpgradeDrop",
         PomSlice = "StoreRewardRandomStack",
 
+        -- Styx Exclusives
         AnvilOfFates = "ChaosWeaponUpgrade",
-        UpgradedPomOfPower = "StackUpgradeDropRare", -- No official name. Appears in Styx
-        UpgradedBoon = "BoostedRandomLoot", -- No official name. Appears in Styx
+        UpgradedPomOfPower = "StackUpgradeDropRare", -- No official name
+        UpgradedBoon = "BoostedRandomLoot", -- No official name
+        
+        TitansBlood = "SuperLockKeyDrop",
+        Diamond = "SuperGemDrop",
+        Ambrosia = "SuperGiftDrop",
     },
     WellItems = {
         -- Uses in-game names for well items.
