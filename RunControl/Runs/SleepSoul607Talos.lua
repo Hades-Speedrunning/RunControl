@@ -1,6 +1,6 @@
 --[[
 Seed from the 6:07.44 Talos speedrun achieved on 2022-03-22 by SleepSoul in Any Heat (Unseeded, Modded)
-Written for RunControl version 0.6.0. Work in progress
+Written for RunControl version 0.7.0. Work in progress
 ]]
 
 RunControl.Runs.SleepSoul607Talos = {
