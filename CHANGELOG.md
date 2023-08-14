@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0] - 2023-08-14
+
+### Added
+
+- SellControl mod to allow forcing the contents of sell wells.
+- RoomControl now has a field for number of gold pots in a room.
+- RoomControl can now force miniboss wings in Styx.
+- ShopControl now supports bounties, as well as rewards with overrides (such as Styx Hermes).
+
+### Fixed
+
+- BoonControl will no longer cause a crash when you reroll a sell well.
+- Fixed a rare EncounterControl crash on door unlock.
+
 ## [0.6.0] - 2023-08-06
 
 ### Added
