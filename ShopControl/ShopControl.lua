@@ -1,7 +1,6 @@
 --[[
     ShopControl
-    Authors:
-        SleepSoul (Discord: SleepSoul#6006)
+    Author: SleepSoul (Discord: SleepSoul#6006)
     Dependencies: ModUtil, RCLib
     Force the contents of shops.
 ]]
@@ -14,10 +13,10 @@ ShopControl.config = config
 
 ShopControl.CurrentRunData = {}
 
-ShopControl.StoreRerollNum = 1
+ShopControl.WellRerollNum = 1
 
 ModUtil.Path.Wrap( "StartRoom", function( baseFunc, currentRun, currentRoom )
-	ShopControl.StoreRerollNum = 1 -- Always 1 at the start of a room. Added to when a menu is rerolld
+	ShopControl.WellRerollNum = 1 -- Always 1 at the start of a room. Added to when a menu is rerolled
 	baseFunc( currentRun, currentRoom )
 end, ShopControl )
 
@@ -28,27 +27,32 @@ ModUtil.Path.Wrap( "FillInShopOptions", function( baseFunc, args )
 
     local store = {}
     local options = {}
-    local forced = RCLib.GetFromList( ShopControl.CurrentRunData, { rerollNum = ShopControl.StoreRerollNum } )
+    local forced = RCLib.GetFromList( ShopControl.CurrentRunData, { rerollNum = ShopControl.WellRerollNum } )
     local lookupTable = RCLib.NameToCode.WellItems
     if CurrentRun.CurrentRoom.ChosenRewardType == "Shop" then
         lookupTable = RCLib.NameToCode.ShopRewards
     end
 
     for index, data in ipairs( forced ) do
+        local forcedItem = {}
         local itemCode = lookupTable[data.Item] or nil
         local itemType = RCLib.InferItemType( itemCode )
         local godCode = RCLib.EncodeBoonSet( data.Name ) or GetEligibleInteractedGod()
+        local overrides = data.Overrides or {}
 
-        options[index] = { Name = itemCode, Type = itemType }
+        forcedItem = { Name = itemCode, Type = itemType }
         if data.Item == "Boon" then
-            options[index].Type = "Boon"
-            options[index].Args = {
+            forcedItem.Type = "Boon"
+            forcedItem.Args = {
                 ForceLootName = godCode,
                 BoughtFromShop = true,
                 DoesNotBlockExit = true,
                 Cost = GetProcessedValue( ConsumableData.RandomLoot.Cost )
             }
         end
+
+        ModUtil.Table.Merge( forcedItem, overrides )
+        options[index] = forcedItem
     end
     store.StoreOptions = options
 
@@ -62,12 +66,11 @@ end, ShopControl )
 ModUtil.Path.Context.Wrap( "AttemptPanelReroll", function( )
 	ModUtil.Path.Wrap( "UpdateRerollUI", function( baseFunc, ... )
 		local locals = ModUtil.Locals.Stacked()
+        local screenName = ModUtil.Path.Get( "screen.Name", locals )
 
-		if locals.screen.Name == "Store" then
-			local godCode = locals.screen.SubjectName
-			local godRerollId = locals.button.RerollId
-			ShopControl.StoreRerollNum = CurrentRun.CurrentRoom.SpentRerolls.Store + 1
-		end
+		if screenName == "Store" then
+			ShopControl.WellRerollNum = CurrentRun.CurrentRoom.SpentRerolls[screenName] + 1
+        end
 		baseFunc( ... )
 	end, ShopControl )
 end, ShopControl )
