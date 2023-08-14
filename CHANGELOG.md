@@ -11,67 +11,67 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- BoonControl now supports Chaos
-- ShopControl now supports wells
+- BoonControl now supports Chaos.
+- ShopControl now supports wells.
 
 ### Changed
 
-- RunControl now has a Runs folder instead of a single Runs.lua file. This makes adding runs easier
+- RunControl now has a Runs folder instead of a single Runs.lua file. This makes adding runs easier.
 
 ### Fixed
 
-- BoonControl will no longer cause a crash when you reroll a well
+- BoonControl will no longer cause a crash when you reroll a well.
 
 ## [0.5.0] - 2023-08-01
 
 ### Added
 
-- EncounterControl mod to set events of ingame encounters
+- EncounterControl mod to set events of ingame encounters.
 
 ### Changed
 
-- RCLib now checks roomName more safely
+- RCLib now checks roomName more safely.
 
 ## [0.4.0] - 2023-07-30
 
 ### Added
 
-- ShopControl mod to set contents of shop rooms
-- RCLib conditions now include roomName for forcing data per-layout
+- ShopControl mod to set contents of shop rooms.
+- RCLib conditions now include roomName for forcing data per-layout.
 
 ### Changed
 
-- RCLib can now infer the type of a list (currently only Indexed exists), making it no longer necessary to specify
+- RCLib can now infer the type of a list (currently only Indexed exists), making it no longer necessary to specify.
 
 ### Fixed
 
-- RCLib now has the correct code for Pitch-Black Darkness
-- RewardControl should now function more correctly and consistently, especially for double-exits
-- RoomControl's RequireForcedSpecials config option should now function correctly
+- RCLib now has the correct code for Pitch-Black Darkness.
+- RewardControl should now function more correctly and consistently, especially for double-exits.
+- RoomControl's RequireForcedSpecials config option should now function correctly.
 
 ## [0.3.0] - 2023-07-30
 
 ### Added
 
-- RoomControl mod to set tiles, as well as special objects like Chaos gates and wells and tile orientation
-- BoonControl now has config option to disallow control of certain gods. Currently set to include Chaos and Poms, as these are not yet implemented
+- RoomControl mod to set tiles, as well as special objects like Chaos gates and wells and tile orientation.
+- BoonControl now has config option to disallow control of certain gods. Currently set to include Chaos and Poms, as these are not yet implemented.
 
 ### Changed
 
-- RCLib will no longer override conditions.chamberNum and conditions.biome if they were included in a GetList call
+- RCLib will no longer override conditions.chamberNum and conditions.biome if they were included in a GetList call.
 
 ## [0.2.0] - 2023-07-24
 
 ### Added
 
 - Dependency: PrintUtil
-- RewardControl mod to set room rewards based on input data
-- RemoveCutscenes mod from speedrunning modpack; Removes intro and outro cutscenes from runs for convenience
+- RewardControl mod to set room rewards based on input data.
+- RemoveCutscenes mod from speedrunning modpack; Removes intro and outro cutscenes from runs for convenience.
 
 ## [0.1.0] - 2023-07-24
 
 ### Added
 
 - Dependencies: ModUtil, RCLib
-- RunControl mod for version display, UI, and config of other mods
-- BoonControl mod to set boon menus based on input data
+- RunControl mod for version display, UI, and config of other mods.
+- BoonControl mod to set boon menus based on input data.
