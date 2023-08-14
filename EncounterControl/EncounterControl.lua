@@ -37,7 +37,8 @@ end
 
 ModUtil.Path.Wrap( "SetupEncounter", function( baseFunc, encounterData, room )
     local chamberNumOverride = GetRunDepth( CurrentRun )
-    if room.Name ~= "RoomOpening" then -- All rooms other than chamber 1 generate their encounter while GetRunDepth is still returning the previous chamber number
+    local roomName = ModUtil.Path.Get( "Name", room )
+    if roomName ~= "RoomOpening" then -- All rooms other than chamber 1 generate their encounter while GetRunDepth is still returning the previous chamber number
         chamberNumOverride = chamberNumOverride + 1
     end
     local data = RCLib.GetFromList( EncounterControl.CurrentRunData, { chamberNum = chamberNumOverride } )
