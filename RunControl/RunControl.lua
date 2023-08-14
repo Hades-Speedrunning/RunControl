@@ -40,6 +40,7 @@ ModUtil.LoadOnce( function()
     EncounterControl.CurrentRunData = RunControl.CurrentRunData.Encounters or {}
     RewardControl.CurrentRunData = RunControl.CurrentRunData.Rewards or {}
     RoomControl.CurrentRunData = RunControl.CurrentRunData.Rooms or {}
+    SellControl.CurrentRunData = RunControl.CurrentRunData.SellWells or {}
     ShopControl.CurrentRunData = RunControl.CurrentRunData.Shops or {}
 end )
 
