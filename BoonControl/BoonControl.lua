@@ -236,12 +236,15 @@ end, BoonControl )
 ModUtil.Path.Context.Wrap( "AttemptPanelReroll", function( )
 	ModUtil.Path.Wrap( "UpdateRerollUI", function( baseFunc, ... )
 		local locals = ModUtil.Locals.Stacked()
+		local godCode = locals.screen.SubjectName
+		local godRerollId = locals.button.RerollId
 
-		if locals.screen.Name ~= "Store" then
-			local godCode = locals.screen.SubjectName
-			local godRerollId = locals.button.RerollId
+		BoonControl.DumpScreen = locals.screen
+
+		if godCode and godRerollId then
 			BoonControl.GodRerollNums[godCode] = CurrentRun.CurrentRoom.SpentRerolls[godRerollId]
 		end
+
 		baseFunc( ... )
 	end, BoonControl )
 end, BoonControl )
