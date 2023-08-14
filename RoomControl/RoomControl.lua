@@ -24,6 +24,16 @@ ModUtil.Path.Context.Wrap( "LeaveRoom", function( baseFunc, ... )
     end, RoomControl )
 end, RoomControl )
 
+ModUtil.Path.Wrap( "DoUnlockRoomExits", function( baseFunc, run, room )
+    local forcedDoors = RCLib.GetFromList( RoomControl.CurrentRunData ).Doors or {}
+
+    if not IsEmpty( forcedDoors ) then
+        run.CurrentRoom.FirstAppearanceNumExitOverrides = nil
+    end
+
+    return baseFunc( run, room )
+end, RoomControl )
+
 ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function( baseFunc, run, room )
     local forcedDoors = RCLib.GetFromList( RoomControl.CurrentRunData ).Doors or {}
 
@@ -36,6 +46,20 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function( baseFunc, run, room )
         end
 
         return baseFunc( currentRun, args )
+    end, RoomControl )
+
+    ModUtil.Path.Wrap( "CreateRoom", function( baseFunc, roomData, args)
+        local room = baseFunc( roomData, args )
+
+        local doorIndex = ModUtil.Locals.Stacked().index
+        if forcedDoors[doorIndex] and forcedDoors[doorIndex].IsMinibossWing then
+            room.UseOptionalOverrides = true
+            for key, value in pairs( room.OptionalOverrides ) do
+                room[key] = value
+            end
+        end
+
+        return room
     end, RoomControl )
 end, RoomControl )
 
