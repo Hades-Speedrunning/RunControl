@@ -94,8 +94,11 @@ RCLib.NameToCode = {
         HolyShield = "AthenaRetaliateTrait",
         SureFooting = "TrapDamageTrait",
         BronzeSkin = "EnemyDamageTrait",
-        LastStand = "LastStandHealTrait",
-        DeathlessStand = "LastStandDurationTrait",
+        -- Internally, you are offered a consumable LastStandHealDrop in boon menus, which then gives you the boon trait LastStandHealTrait.
+        -- Ergo, Last Stand and Deathless Stand both have two codes. Those chosen here are those needed for BoonControl to work correctly, which may not work in all cases.
+        -- Here be dragons
+        LastStand = "LastStandHealDrop",
+        DeathlessStand = "LastStandDurationDrop",
         ProudBearing = "PreloadSuperGenerationTrait",
 
         DivineProtection = "ShieldHitTrait",
