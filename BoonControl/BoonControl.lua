@@ -239,8 +239,6 @@ ModUtil.Path.Context.Wrap( "AttemptPanelReroll", function( )
 		local godCode = locals.screen.SubjectName
 		local godRerollId = locals.button.RerollId
 
-		BoonControl.DumpScreen = locals.screen
-
 		if godCode and godRerollId then
 			BoonControl.GodRerollNums[godCode] = CurrentRun.CurrentRoom.SpentRerolls[godRerollId]
 		end
