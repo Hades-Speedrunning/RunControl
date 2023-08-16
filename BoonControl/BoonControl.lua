@@ -22,27 +22,30 @@ BoonControl.GodRerollNums = {}
 
 function BoonControl.BuildTraitList( forced, eligible, rarityTable, lookupTable )
 	local traitOptions = {}
-	local currentTraitName = ""
 	local isValid = false
 	local maxOptions = GetTotalLootChoices() -- TODO possible LootChoiceExt compat
 
 	for trait, _ in pairs( forced ) do
-		currentTrait = forced[trait]
-		currentTraitName = currentTrait.Name
-		isValid = Contains( eligible, currentTraitName ) or currentTrait.OverridePrereqs
+		local currentBoon = forced[trait]
+		local currentBoonName = currentBoon.Name
+		isValid = Contains( eligible, currentBoonName ) or currentBoon.OverridePrereqs
 
 		if isValid and TableLength( traitOptions ) < maxOptions then
+			local boonCode = lookupTable[currentBoonName]
+			local boonType = RCLib.InferItemType( boonCode )
+			DebugPrint({ Text = boonCode })
+			DebugPrint({ Text = boonType })
 			local rarityToUse = BoonControl.config.DefaultRarity or "Common"
-			if currentTrait.ForcedRarity ~= nil then
-				rarityToUse = currentTrait.ForcedRarity
+			if currentBoon.ForcedRarity ~= nil then
+				rarityToUse = currentBoon.ForcedRarity
 			elseif not BoonControl.config.DefaultRarity then
-				rarityToUse = BoonControl.RollRarityForBoon( currentTraitName, rarityTable, lookupTable )
+				rarityToUse = BoonControl.RollRarityForBoon( currentBoonName, rarityTable, lookupTable )
 			end
 
 			table.insert( traitOptions, 
 				{
-					ItemName = lookupTable[currentTraitName],
-					Type = "Trait",
+					ItemName = boonCode,
+					Type = boonType,
 					Rarity = rarityToUse,
 				}
 			)
@@ -54,23 +57,22 @@ end
 
 function BoonControl.BuildTransformingTraitList( forced, eligible, rarityTable, lookupTable ) -- Chaos
 	local traitOptions = {}
-	local currentTraitName = ""
 	local isValid = false
 	local maxOptions = GetTotalLootChoices() -- TODO possible LootChoiceExt compat
 
 	for trait, _ in pairs( forced ) do
-		currentTrait = forced[trait]
-		currentTemporaryTrait = currentTrait.CurseName
-		currentPermanentTrait = currentTrait.BlessingName
+		local currentBoon = forced[trait]
+		local currentTemporaryTrait = currentBoon.CurseName
+		local currentPermanentTrait = currentBoon.BlessingName
 
-		isValid = ( Contains( eligible.Temporary, currentTemporaryTrait ) and Contains( eligible.Permanent, currentPermanentTrait ) ) or currentTrait.OverridePrereqs
+		isValid = ( Contains( eligible.Temporary, currentTemporaryTrait ) and Contains( eligible.Permanent, currentPermanentTrait ) ) or currentBoon.OverridePrereqs
 
 		DebugPrint({ Text = currentTemporaryTrait .. " " .. currentPermanentTrait .. " is valid? " .. tostring(isValid) })
 
 		if isValid and TableLength( traitOptions ) < maxOptions then
 			local rarityToUse = BoonControl.config.DefaultRarity or "Common"
-			if currentTrait.ForcedRarity ~= nil then
-				rarityToUse = currentTrait.ForcedRarity
+			if currentBoon.ForcedRarity ~= nil then
+				rarityToUse = currentBoon.ForcedRarity
 			elseif not BoonControl.config.DefaultRarity then
 				rarityToUse = BoonControl.RollRarityForBoon( currentPermanentTrait, rarityTable, lookupTable.Permanent )
 			end
@@ -98,7 +100,7 @@ function BoonControl.RollRarityForBoon( boon, rarityChances, lookupTable )
 		Heroic = false,
 		Legendary = false,
 	}
-	local rarityLevels = nil
+	local rarityLevels = RCLib.InferItemData( boonName )
 
 	if TraitData[boonName] ~= nil and TraitData[boonName].RarityLevels ~= nil then
 		rarityLevels = TraitData[boonName].RarityLevels
@@ -161,6 +163,8 @@ ModUtil.Path.Wrap( "SetTraitsOnLoot", function( baseFunc, lootData, args )
 
 	forcedBoons = RCLib.GetFromList( BoonControl.CurrentRunData, conditions ) or {}
 
+	BoonControl.DumpForced = forcedBoons
+
 	local eligibleUpgradeSet = GetEligibleUpgrades( upgradeOptions, lootData, upgradeChoiceData )
 	local tableName = "Boons"
 	if conditions.godName == "Hammer" then
@@ -170,6 +174,9 @@ ModUtil.Path.Wrap( "SetTraitsOnLoot", function( baseFunc, lootData, args )
 	for key, trait in pairs( eligibleUpgradeSet ) do
 		table.insert( eligibleList, RCLib.CodeToName[tableName][trait.ItemName] )
 	end
+
+	BoonControl.DumpEligibleSet = eligibleUpgradeSet
+	BoonControl.DumpEligibleList = eligibleList
 
 	boonOptions = BoonControl.BuildTraitList( forcedBoons, eligibleList, lootData.RarityChances, RCLib.NameToCode[tableName] )
 
