@@ -205,6 +205,7 @@ ModUtil.Path.Wrap( "SetTransformingTraitsOnLoot", function( baseFunc, lootData, 
 		return baseFunc( lootData, args )
 	end
 
+	conditions.dataType = "boonMenu"
 	conditions.godName = RCLib.DecodeBoonSet( godCode )
 	conditions.appearanceNum = ( BoonControl.GodAppearances[godCode] or 0 ) + 1
 	conditions.rerollNum = ( BoonControl.GodRerollNums[godCode] or 0 ) + 1
