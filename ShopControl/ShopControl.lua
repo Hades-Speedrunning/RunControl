@@ -27,7 +27,7 @@ ModUtil.Path.Wrap( "FillInShopOptions", function( baseFunc, args )
 
     local store = {}
     local options = {}
-    local forced = RCLib.GetFromList( ShopControl.CurrentRunData, { rerollNum = ShopControl.WellRerollNum } )
+    local forced = RCLib.GetFromList( ShopControl.CurrentRunData, { dataType = "shop", rerollNum = ShopControl.WellRerollNum } )
     local lookupTable = RCLib.NameToCode.WellItems
     if CurrentRun.CurrentRoom.ChosenRewardType == "Shop" then
         lookupTable = RCLib.NameToCode.ShopRewards

@@ -9,14 +9,14 @@ ModUtil.Mod.Register("RoomControl")
 
 local config = {
     Enabled = true,
-    RequireForcedSpecials = true, -- Will not spawn special objects (Chaos gates, wells, etc) unless they are forced
+    RequireForcedFeatures = true, -- Will not spawn special objects (Chaos gates, wells, etc) unless they are forced
 }
 RoomControl.config = config
 
 RoomControl.CurrentRunData = {}
 
 ModUtil.Path.Context.Wrap( "LeaveRoom", function( baseFunc, ... )
-    local roomData = RCLib.GetFromList( RoomControl.CurrentRunData, { chamberNum = GetRunDepth( CurrentRun ) + 1 } )
+    local roomData = RCLib.GetFromList( RoomControl.CurrentRunData, { dataType = "roomFeatures", chamberNum = GetRunDepth( CurrentRun ) + 1 } )
 
     ModUtil.Path.Wrap( "RunShopGeneration", function( baseFunc, ... )
         CurrentRun.CurrentRoom.Flipped = roomData.Flipped or CurrentRun.CurrentRoom.Flipped
@@ -25,7 +25,7 @@ ModUtil.Path.Context.Wrap( "LeaveRoom", function( baseFunc, ... )
 end, RoomControl )
 
 ModUtil.Path.Wrap( "DoUnlockRoomExits", function( baseFunc, run, room )
-    local forcedDoors = RCLib.GetFromList( RoomControl.CurrentRunData ).Doors or {}
+    local forcedDoors = RCLib.GetFromList( RoomControl.CurrentRunData, { dataType = "exitDoors" } ) or {}
 
     if not IsEmpty( forcedDoors ) then
         run.CurrentRoom.FirstAppearanceNumExitOverrides = nil
@@ -35,7 +35,7 @@ ModUtil.Path.Wrap( "DoUnlockRoomExits", function( baseFunc, run, room )
 end, RoomControl )
 
 ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function( baseFunc, run, room )
-    local forcedDoors = RCLib.GetFromList( RoomControl.CurrentRunData ).Doors or {}
+    local forcedDoors = RCLib.GetFromList( RoomControl.CurrentRunData, { dataType = "exitDoors" } ) or {}
 
     ModUtil.Path.Wrap( "ChooseNextRoomData", function( baseFunc, currentRun, args )
         args = args or {}
@@ -64,11 +64,11 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function( baseFunc, run, room )
 end, RoomControl )
 
 ModUtil.Path.Context.Wrap( "HandleSecretSpawns", function( baseFunc, ... )
-    local roomData = RCLib.GetFromList( RoomControl.CurrentRunData )
+    local roomData = RCLib.GetFromList( RoomControl.CurrentRunData, { dataType = "roomFeatures" } )
 
     ModUtil.Path.Wrap( "IsSecretDoorEligible", function( baseFunc, ... ) -- Chaos gate spawn
-        local isChaosForced = ModUtil.Path.Get( "Special.ChaosGate.Force", roomData )
-        if RoomControl.config.RequireForcedSpecials then
+        local isChaosForced = ModUtil.Path.Get( "ChaosGate.Force", roomData )
+        if RoomControl.config.RequireForcedFeatures then
             return isChaosForced or false
         end
         return isChaosForced or baseFunc( ... )
@@ -77,39 +77,39 @@ ModUtil.Path.Context.Wrap( "HandleSecretSpawns", function( baseFunc, ... )
     ModUtil.Path.Wrap( "ChooseNextRoomData", function( baseFunc, currentRun, args ) -- Chaos room choice
         args = args or {}
 
-        local forcedRoomName = ModUtil.Path.Get( "Special.ChaosGate.RoomName", roomData )
+        local forcedRoomName = ModUtil.Path.Get( "ChaosGate.RoomName", roomData )
         args.ForceNextRoom = forcedRoomName or args.ForceNextRoom
 
         return baseFunc( currentRun, args )
     end, RoomControl )
 
     ModUtil.Path.Wrap( "IsShrinePointDoorEligible", function( baseFunc, ... ) -- Erebus gate spawn
-        local isErebusForced = ModUtil.Path.Get( "Special.ErebusGate.Force", roomData )
-        if RoomControl.config.RequireForcedSpecials then
+        local isErebusForced = ModUtil.Path.Get( "ErebusGate.Force", roomData )
+        if RoomControl.config.RequireForcedFeatures then
             return isErebusForced or false
         end
         return isErebusForced or baseFunc( ... )
     end, RoomControl )
 
     ModUtil.Path.Wrap( "IsChallengeSwitchEligible", function( baseFunc, ... ) -- Trove spawn
-        local isTroveForced = ModUtil.Path.Get( "Special.Trove.Force", roomData )
-        if RoomControl.config.RequireForcedSpecials then
+        local isTroveForced = ModUtil.Path.Get( "Trove.Force", roomData )
+        if RoomControl.config.RequireForcedFeatures then
             return isTroveForced or false
         end
         return isTroveForced or baseFunc( ... )
     end, RoomControl )
     
     ModUtil.Path.Wrap( "IsWellShopEligible", function( baseFunc, ... ) -- Well spawn
-        local isWellForced = ModUtil.Path.Get( "Special.Well.Force", roomData )
-        if RoomControl.config.RequireForcedSpecials then
+        local isWellForced = ModUtil.Path.Get( "Well.Force", roomData )
+        if RoomControl.config.RequireForcedFeatures then
             return isWellForced or false
         end
         return isWellForced or baseFunc( ... )
     end, RoomControl )
         
     ModUtil.Path.Wrap( "IsSellTraitShopEligible", function( baseFunc, ... ) -- Sell well spawn
-        local isSellWellForced = ModUtil.Path.Get( "Special.SellWell.Force", roomData )
-        if RoomControl.config.RequireForcedSpecials then
+        local isSellWellForced = ModUtil.Path.Get( "SellWell.Force", roomData )
+        if RoomControl.config.RequireForcedFeatures then
             return isSellWellForced or false
         end
         return isSellWellForced or baseFunc( ... )
@@ -118,8 +118,8 @@ end, RoomControl )
 
 ModUtil.Path.Wrap( "HandleBreakableSwap", function( baseFunc, currentRoom )
     local roomData = RCLib.GetFromList( RoomControl.CurrentRunData )
-    local goldPotNum = ModUtil.Path.Get( "Special.GoldPotNum", roomData )
-    if not goldPotNum and RoomControl.config.RequireForcedSpecials then
+    local goldPotNum = ModUtil.Path.Get( "GoldPotNum", roomData )
+    if not goldPotNum and RoomControl.config.RequireForcedFeatures then
         return
     elseif not goldPotNum then
         return baseFunc( currentRoom )

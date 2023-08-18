@@ -22,7 +22,7 @@ ModUtil.Path.Wrap( "StartRoom", function( baseFunc, currentRun, currentRoom )
 end, SellControl )
 
 ModUtil.Path.Wrap( "GenerateSellTraitShop", function( baseFunc, currentRun, currentRoom, args )
-    local forced = RCLib.GetFromList( SellControl.CurrentRunData, { rerollNum = SellControl.SellWellRerollNum } )
+    local forced = RCLib.GetFromList( SellControl.CurrentRunData, { dataType = "sellWell", rerollNum = SellControl.SellWellRerollNum } )
     
     if not SellControl.config.Enabled or IsEmpty( forced ) then
         return baseFunc( currentRun, currentRoom, args )

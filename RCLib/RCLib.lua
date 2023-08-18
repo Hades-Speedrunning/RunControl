@@ -174,6 +174,7 @@ function RCLib.GetFromIndexedList( list, indexedBy, conditions )
 
     for _, condition in ipairs( indexedBy ) do
         if force.Data then break end
+        if force.IndexedBy then return RCLib.GetFromList( force, conditions ) end
         force = force[conditions[condition]] or {}
     end
     if RCLib.CheckConditions( force.NeededConditions, conditions ) then

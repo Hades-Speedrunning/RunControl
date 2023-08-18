@@ -143,7 +143,6 @@ end, BoonControl )
 
 ModUtil.Path.Wrap( "SetTraitsOnLoot", function( baseFunc, lootData, args )
 	args = args or {}
-	local conditions = {}
 
 	local godCode = lootData.Name
 	local upgradeChoiceData = LootData[godCode]
@@ -157,6 +156,8 @@ ModUtil.Path.Wrap( "SetTraitsOnLoot", function( baseFunc, lootData, args )
 		return baseFunc( lootData, args )
 	end
 
+	local conditions = {}
+	conditions.dataType = "boonMenu"
 	conditions.godName = RCLib.DecodeBoonSet( godCode )
 	conditions.appearanceNum = ( BoonControl.GodAppearances[godCode] or 0 ) + 1
 	conditions.rerollNum = ( BoonControl.GodRerollNums[godCode] or 0 ) + 1

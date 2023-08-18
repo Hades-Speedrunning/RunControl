@@ -15,15 +15,15 @@ RewardControl.config = config
 RewardControl.CurrentRunData = {}
 
 ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function( baseFunc, run, room )
-    local forcedRewards = RCLib.GetFromList( RewardControl.CurrentRunData )
+    local forcedDoors = RCLib.GetFromList( RewardControl.CurrentRunData, { dataType = "exitDoors" } )
 
     ModUtil.Path.Wrap( "ChooseRoomReward", function( baseFunc, ... )
         local doorIndex = ModUtil.Locals.Stacked().index
         local doorReward
         local baseReward = baseFunc( ... )
 
-        if forcedRewards[doorIndex] and forcedRewards[doorIndex].Reward then
-            doorReward = RCLib.EncodeRoomReward( forcedRewards[doorIndex].Reward )
+        if forcedDoors[doorIndex] and forcedDoors[doorIndex].Reward then
+            doorReward = RCLib.EncodeRoomReward( forcedDoors[doorIndex].Reward )
         end
 
         return doorReward or baseReward
@@ -32,8 +32,8 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function( baseFunc, run, room )
     ModUtil.Path.Wrap( "SetupRoomReward", function( baseFunc, currentRun, room, previouslyChosenRewards, args )
         local doorIndex = ModUtil.Locals.Stacked().index
 
-        if room.ChosenRewardType == "Boon" and not room.ForceLootName and forcedRewards[doorIndex] and forcedRewards[doorIndex].Name then
-            room.ForceLootName = RCLib.EncodeBoonSet( forcedRewards[doorIndex].Name )
+        if room.ChosenRewardType == "Boon" and not room.ForceLootName and forcedDoors[doorIndex] and forcedDoors[doorIndex].GodName then
+            room.ForceLootName = RCLib.EncodeBoonSet( forcedDoors[doorIndex].GodName )
         end
         
         baseFunc( currentRun, room, previouslyChosenRewards, args )

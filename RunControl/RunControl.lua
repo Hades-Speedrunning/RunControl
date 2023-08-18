@@ -9,7 +9,7 @@ ModUtil.Mod.Register("RunControl")
 
 local config = {
     ModpackVersion = "0.7.1",
-    SelectedRun = "SleepSoul607Talos",
+    SelectedRun = "DebugRun",
 }
 RunControl.config = config
 
@@ -36,12 +36,12 @@ end
 
 ModUtil.LoadOnce( function()
     RunControl.CurrentRunData = RunControl.Runs[RunControl.config.SelectedRun] or {}
-    BoonControl.CurrentRunData = RunControl.CurrentRunData.Boons or {}
-    EncounterControl.CurrentRunData = RunControl.CurrentRunData.Encounters or {}
-    RewardControl.CurrentRunData = RunControl.CurrentRunData.Rewards or {}
-    RoomControl.CurrentRunData = RunControl.CurrentRunData.Rooms or {}
-    SellControl.CurrentRunData = RunControl.CurrentRunData.SellWells or {}
-    ShopControl.CurrentRunData = RunControl.CurrentRunData.Shops or {}
+    BoonControl.CurrentRunData = RunControl.CurrentRunData
+    EncounterControl.CurrentRunData = RunControl.CurrentRunData
+    RewardControl.CurrentRunData = RunControl.CurrentRunData
+    RoomControl.CurrentRunData = RunControl.CurrentRunData
+    SellControl.CurrentRunData = RunControl.CurrentRunData
+    ShopControl.CurrentRunData = RunControl.CurrentRunData
 end )
 
 OnAnyLoad{ function()
