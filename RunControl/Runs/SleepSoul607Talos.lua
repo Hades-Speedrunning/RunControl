@@ -193,13 +193,22 @@ RunControl.Runs.SleepSoul607Talos = {
                 [3] = {
                     [1] = {
                         Data = {
+                            { Name = "CurseOfAgony" },
+                            { Name = "ElectricShot" },
+                            { Name = "DivineDash" },
+                        },
+                    },
+                },
+                [4] = {
+                    [1] = {
+                        Data = {
                             { Name = "DivineFlourish" },
                             { Name = "ImpendingDoom" },
                             { Name = "ProudBearing" },
                         },
                     },
                 },
-                [4] = {
+                [5] = {
                     [1] = {
                         Data = {
                             { Name = "ElectricShot" },
@@ -215,7 +224,7 @@ RunControl.Runs.SleepSoul607Talos = {
                         },
                     },
                 },
-                [5] = {
+                [6] = {
                     [1] = {
                         Data = {
                             { Name = "CurseOfAgony" },
@@ -734,7 +743,7 @@ RunControl.Runs.SleepSoul607Talos = {
                     Special = {
                         ChaosGate = { Force = true, RoomName = "RoomSecret03" },
                     },
-                }
+                },
             },
             [27] = {
                 Data = {
@@ -746,7 +755,7 @@ RunControl.Runs.SleepSoul607Talos = {
             },
             [28] = {
                 Data = {
-                    Flipped = false,
+                    Flipped = true,
                     Doors = {
                         [2] = { RoomName = "C_Shop01" }
                     },
@@ -766,7 +775,7 @@ RunControl.Runs.SleepSoul607Talos = {
             [30] = {
                 Data = {
                     Doors = {
-                        { RoomName = "C_Combat02" }
+                        [2] = { RoomName = "C_Combat02" }
                     },
                     Special = {
                         ErebusGate = { Force = true },
@@ -999,23 +1008,29 @@ RunControl.Runs.SleepSoul607Talos = {
         List = {
             [15] = { -- Pre-Aspho Midbiome
                 [1] = {
-                    { Name = "SnowBurst", Value = 140 },
-                    { Name = "DireMisfortune", Value = 140 },
-                    { Name = "ElectricShot", Value = 85 },
+                    Data = {
+                        { Name = "SnowBurst", Value = 140 },
+                        { Name = "DireMisfortune", Value = 140 },
+                        { Name = "ElectricShot", Value = 85 },
+                    }
                 },
             },
-            [25] = { -- Pre-Aspho Midbiome
+            [25] = { -- Pre-Ely Midbiome
                 [1] = {
-                    { Name = "ElectricShot", Value = 70 },
-                    { Name = "DivineFlourish", Value = 70 },
-                    { Name = "DivineDash", Value = 45 },
+                    Data = {
+                        { Name = "ElectricShot", Value = 70 },
+                        { Name = "DivineFlourish", Value = 70 },
+                        { Name = "DivineDash", Value = 45 },
+                    },
                 },
             },
-            [37] = { -- Pre-Aspho Midbiome
+            [37] = { -- Pre-Styx Midbiome
                 [1] = {
-                    { Name = "ElectricShot", Value = 75 },
-                    { Name = "DivineDash", Value = 50 },
-                    { Name = "CurseOfAgony", Value = 250 },
+                    Data = {
+                        { Name = "ElectricShot", Value = 75 },
+                        { Name = "DivineDash", Value = 50 },
+                        { Name = "CurseOfAgony", Value = 250 },
+                    },
                 },
             },
         },
