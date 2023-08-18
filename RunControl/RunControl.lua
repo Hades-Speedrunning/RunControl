@@ -8,7 +8,7 @@
 ModUtil.Mod.Register("RunControl")
 
 local config = {
-    ModpackVersion = "0.7.0",
+    ModpackVersion = "0.7.1",
     SelectedRun = "SleepSoul607Talos",
 }
 RunControl.config = config
