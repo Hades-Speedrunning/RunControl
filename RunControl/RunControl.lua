@@ -17,7 +17,7 @@ RunControl.CurrentRunData = {}
 RunControl.Runs = {}
 
 function RunControl.DisplayVersion()
-    local text_config_table = DeepCopyTable(UIData.CurrentRunDepth.TextFormat)
+    local text_config_table = DeepCopyTable( UIData.CurrentRunDepth.TextFormat )
     local versionString = "RunControl "..RunControl.config.ModpackVersion
 
     PrintUtil.createOverlayLine(
