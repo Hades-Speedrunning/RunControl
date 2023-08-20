@@ -33,8 +33,6 @@ function BoonControl.BuildTraitList( forced, eligible, rarityTable, lookupTable 
 		if isValid and TableLength( traitOptions ) < maxOptions then
 			local boonCode = lookupTable[currentBoonName]
 			local boonType = RCLib.InferItemType( boonCode )
-			DebugPrint({ Text = boonCode })
-			DebugPrint({ Text = boonType })
 			local rarityToUse = BoonControl.config.DefaultRarity or "Common"
 			if currentBoon.ForcedRarity ~= nil then
 				rarityToUse = currentBoon.ForcedRarity
@@ -66,8 +64,6 @@ function BoonControl.BuildTransformingTraitList( forced, eligible, rarityTable, 
 		local currentPermanentTrait = currentBoon.BlessingName
 
 		isValid = ( Contains( eligible.Temporary, currentTemporaryTrait ) and Contains( eligible.Permanent, currentPermanentTrait ) ) or currentBoon.OverridePrereqs
-
-		DebugPrint({ Text = currentTemporaryTrait .. " " .. currentPermanentTrait .. " is valid? " .. tostring(isValid) })
 
 		if isValid and TableLength( traitOptions ) < maxOptions then
 			local rarityToUse = BoonControl.config.DefaultRarity or "Common"
