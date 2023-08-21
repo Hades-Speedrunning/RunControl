@@ -5,7 +5,7 @@
     Dependencies: ModUtil, RCLib
     Define the events of an in-game encounter.
 ]]
-ModUtil.Mod.Register("EncounterControl")
+ModUtil.Mod.Register( "EncounterControl" )
 
 local config = {
     Enabled = true,

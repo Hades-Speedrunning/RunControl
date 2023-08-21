@@ -3,7 +3,7 @@
     Author: SleepSoul (Discord: SleepSoul#6006)
     A set of common utility functions used to modify run events and game content in mods like ChaosControl, EnemyControl, etc.
 ]]
-ModUtil.Mod.Register("RCLib")
+ModUtil.Mod.Register( "RCLib" )
 
 RCLib.GodKeepsakes = { -- Find the keepsake used to force a given god
     ZeusUpgrade = "ForceZeusBoonTrait",

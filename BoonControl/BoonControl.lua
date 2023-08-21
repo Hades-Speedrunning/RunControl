@@ -5,7 +5,7 @@
     Dependencies: ModUtil, RCLib
     Force Olympians and Hammers to provide certain options, either based on how many times they've appeared thus far, or overall.
 ]]
-ModUtil.Mod.Register("BoonControl")
+ModUtil.Mod.Register( "BoonControl" )
 
 local config = {
     Enabled = true,

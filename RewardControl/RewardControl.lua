@@ -5,7 +5,7 @@
     Dependencies: ModUtil, RCLib
     Force certain rewards to appear, per-chamber.
 ]]
-ModUtil.Mod.Register("RewardControl")
+ModUtil.Mod.Register( "RewardControl" )
 
 local config = {
     Enabled = true,

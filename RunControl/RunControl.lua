@@ -5,7 +5,7 @@
     Dependencies: ModUtil, RCLib
     Central mod used to set the run data for all mods in the RunControl modpack.
 ]]
-ModUtil.Mod.Register("RunControl")
+ModUtil.Mod.Register( "RunControl" )
 
 local config = {
     ModpackVersion = "0.7.1",

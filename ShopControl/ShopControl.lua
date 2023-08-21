@@ -4,7 +4,7 @@
     Dependencies: ModUtil, RCLib
     Force the contents of shops.
 ]]
-ModUtil.Mod.Register("ShopControl")
+ModUtil.Mod.Register( "ShopControl" )
 
 local config = {
     Enabled = true,

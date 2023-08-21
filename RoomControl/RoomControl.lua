@@ -5,7 +5,7 @@
     Dependencies: ModUtil, RCLib
     Force certain rooms to be offered on each chamber door.
 ]]
-ModUtil.Mod.Register("RoomControl")
+ModUtil.Mod.Register( "RoomControl" )
 
 local config = {
     Enabled = true,
