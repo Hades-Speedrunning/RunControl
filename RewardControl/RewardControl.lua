@@ -40,14 +40,21 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function( baseFunc, run, room ) 
 
     ModUtil.Path.Wrap( "ChooseRoomReward", function( baseFunc, ... )
         local doorIndex = ModUtil.Locals.Stacked().index
-        local doorReward
-        local baseReward = baseFunc( ... )
+        local forcedReward = ModUtil.IndexArray.Get( forcedDoors, { doorIndex } ) or {}
+        local rewardName
 
-        if RewardControl.config.Enabled and forcedDoors[doorIndex] and forcedDoors[doorIndex].Reward then
-            doorReward = RCLib.EncodeRoomReward( forcedDoors[doorIndex].Reward )
+        if RewardControl.config.Enabled and forcedReward.Reward then
+            rewardName = RCLib.EncodeRoomReward( forcedReward.Reward )
+            if forcedReward.IsEliteRoom then
+                forcedReward.Overrides = forcedReward.Overrides or {}
+                local eliteOverrides = RCLib.EliteRewardOverrides[forcedReward.Reward] or {}
+
+                ModUtil.Table.Merge( forcedReward.Overrides, eliteOverrides )
+            end
+            room.RewardOverrides = forcedReward.Overrides
         end
 
-        return doorReward or baseReward
+        return rewardName or baseFunc( ... )
     end, RewardControl )
 
     ModUtil.Path.Wrap( "SetupRoomReward", function( baseFunc, currentRun, room, previouslyChosenRewards, args )

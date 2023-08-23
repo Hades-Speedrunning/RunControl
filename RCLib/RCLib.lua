@@ -16,11 +16,74 @@ RCLib.GodKeepsakes = { -- Find the keepsake used to force a given god
     DemeterUpgrade = "ForceDemeterBoonTrait",
 }
 RCLib.KeepsakeGods = ModUtil.Table.Transpose( RCLib.GodKeepsakes )
+RCLib.EliteRewardOverrides = { -- The overrides used when a given reward is an elite room
+    Darkness = {
+        MakeHardEncounter = true,
+        RewardPreviewIcon = "RoomElitePreview",
+        RewardPreviewFx = "RoomRewardAvailableRareSparkles",
+        RewardBoostedAnimation = "RoomRewardAvailableRareSparkles",
+        AddResources =
+        {
+            MetaPoints = 25,
+        },
+    },
+    Gemstones = {
+        MakeHardEncounter = true,
+        RewardPreviewIcon = "RoomElitePreview",
+        RewardPreviewFx = "RoomRewardAvailableRareSparkles",
+        RewardBoostedAnimation = "RoomRewardAvailableRareSparkles",
+        AddResources =
+        {
+            Gems = 10,
+        },
+    },
+    ChthonicKey = {
+        MakeHardEncounter = true,
+        RewardPreviewIcon = "RoomElitePreview",
+        RewardPreviewFx = "RoomRewardAvailableRareSparkles",
+        RewardBoostedAnimation = "RoomRewardAvailableRareSparkles",
+        AddResources =
+        {
+            LockKeys = 2,
+        },
+    },
+    PitchBlackDarkness = {
+        MakeHardEncounter = true,
+        RewardPreviewIcon = "RoomElitePreview",
+        RewardPreviewFx = "RoomRewardAvailableRareSparkles",
+        RewardBoostedAnimation = "RoomRewardAvailableRareSparkles",
+        AddResources =
+        {
+            MetaPoints = 30,
+        },
+    },
+    BrilliantGemstones = {
+        MakeHardEncounter = true,
+        RewardPreviewIcon = "RoomElitePreview",
+        RewardPreviewFx = "RoomRewardAvailableRareSparkles",
+        RewardBoostedAnimation = "RoomRewardAvailableRareSparkles",
+        AddResources =
+        {
+            Gems = 15,
+        },
+    },
+    FatedKeys = {
+        MakeHardEncounter = true,
+        RewardPreviewIcon = "RoomElitePreview",
+        RewardPreviewFx = "RoomRewardAvailableRareSparkles",
+        RewardBoostedAnimation = "RoomRewardAvailableRareSparkles",
+        AddResources =
+        {
+            LockKeys = 2,
+        },
+    },
+}
 RCLib.SpareWealth = { -- The spare wealth consumable used ingame as a fallback
     ItemName = "FallbackMoneyDrop",
     Type = "Consumable",
     Rarity = "Common"
 }
+
 RCLib.AbsoluteChamber = 1 -- TODO
 RCLib.CurrentBiome = "Tartarus" -- TODO
 
