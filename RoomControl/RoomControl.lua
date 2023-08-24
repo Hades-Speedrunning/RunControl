@@ -41,15 +41,20 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function( baseFunc, run, room )
 
     ModUtil.Path.Wrap( "CreateRoom", function( baseFunc, roomData, args)
         local room = baseFunc( roomData, args )
-
         local doorIndex = ModUtil.Locals.Stacked().index
-        if forcedDoors[doorIndex] and forcedDoors[doorIndex].IsMinibossWing then
+        local forcedRoom = ModUtil.IndexArray.Get( forcedDoors, { doorIndex } ) or {}
+
+        if forcedRoom.IsMinibossWing then
             room.UseOptionalOverrides = true
             for key, value in pairs( room.OptionalOverrides ) do
                 room[key] = value
             end
         end
-
+        if forcedRoom.Laurel then
+            room.ForcedRewardStore = RCLib.EncodeLaurel( forcedRoom.Laurel )
+        elseif forcedRoom.Reward then
+            room.ForcedRewardStore = RCLib.RewardLaurels[forcedRoom.Reward]
+        end
         return room
     end, RoomControl )
 end, RoomControl )
@@ -108,7 +113,7 @@ ModUtil.Path.Context.Wrap( "HandleSecretSpawns", function( baseFunc, ... )
 end, RoomControl )
 
 ModUtil.Path.Wrap( "HandleBreakableSwap", function( baseFunc, currentRoom )
-    local roomData = RCLib.GetFromList( RoomControl.CurrentRunData )
+    local roomData = RCLib.GetFromList( RoomControl.CurrentRunData, { dataType = "roomFeatures" } )
     local goldPotNum = ModUtil.Path.Get( "GoldPotNum", roomData )
     if not goldPotNum and RoomControl.config.RequireForcedFeatures then
         return
