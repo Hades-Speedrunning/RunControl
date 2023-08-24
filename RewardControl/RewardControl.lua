@@ -38,7 +38,7 @@ end, RewardControl)
 ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function( baseFunc, run, room ) -- All other rewards
     local forcedDoors = RCLib.GetFromList( RewardControl.CurrentRunData, { dataType = "exitDoors" } )
 
-    ModUtil.Path.Wrap( "ChooseRoomReward", function( baseFunc, ... )
+    ModUtil.Path.Wrap( "ChooseRoomReward", function( baseFunc, run, room, rewardStoreName, previouslyChosenRewards, args )
         local doorIndex = ModUtil.Locals.Stacked().index
         local forcedReward = ModUtil.IndexArray.Get( forcedDoors, { doorIndex } ) or {}
         local rewardName
@@ -54,7 +54,7 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function( baseFunc, run, room ) 
             room.RewardOverrides = forcedReward.Overrides
         end
 
-        return rewardName or baseFunc( ... )
+        return rewardName or baseFunc( run, room, rewardStoreName, previouslyChosenRewards, args )
     end, RewardControl )
 
     ModUtil.Path.Wrap( "SetupRoomReward", function( baseFunc, currentRun, room, previouslyChosenRewards, args )
