@@ -16,6 +16,26 @@ RCLib.GodKeepsakes = { -- Find the keepsake used to force a given god
     DemeterUpgrade = "ForceDemeterBoonTrait",
 }
 RCLib.KeepsakeGods = ModUtil.Table.Transpose( RCLib.GodKeepsakes )
+RCLib.RewardLaurels = { -- Check what laurel a given reward has assigned to it
+    Darkness = "MetaProgress",
+    Gemstones = "MetaProgress",
+    ChthonicKey = "MetaProgress",
+    Nectar = "MetaProgress",
+    Food = "MetaProgress",
+
+    PitchBlackDarkness = "MetaProgress",
+    BrilliantGemstones = "MetaProgress",
+    FatedKey = "MetaProgress",
+    VintageNectar = "MetaProgress",
+
+    Boon = "RunProgress",
+    CentaurHeart = "RunProgress",
+    DaedalusHammer = "RunProgress",
+    Hermes = "RunProgress",
+    CharonsObol = "RunProgress",
+    PomOfPower = "RunProgress",
+    Trial = "RunProgress",
+}
 RCLib.EliteRewardOverrides = { -- The overrides used when a given reward is an elite room
     Darkness = {
         MakeHardEncounter = true,

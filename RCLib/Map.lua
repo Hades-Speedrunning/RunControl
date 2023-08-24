@@ -625,6 +625,10 @@ RCLib.NameToCode = {
         PomBlossom = "ChamberStackTrait",
         SigilOfTheDead = "HadesShoutKeepsake",
     },
+    Laurels = {
+        Blue = "MetaProgress",
+        Gold = "RunProgress",
+    },
     RoomRewards = {
         -- Blue Laurels
         Darkness = "RoomRewardMetaPointDrop",
@@ -746,6 +750,7 @@ RCLib.CodeToName.Enemies = ModUtil.Table.Transpose( RCLib.NameToCode.Enemies )
 RCLib.CodeToName.EnemySets = ModUtil.Table.Transpose( RCLib.NameToCode.EnemySets )
 RCLib.CodeToName.Hammers = ModUtil.Table.Transpose( RCLib.NameToCode.Hammers )
 RCLib.CodeToName.Keepsakes = ModUtil.Table.Transpose( RCLib.NameToCode.Keepsakes )
+RCLib.CodeToName.Laurels = ModUtil.Table.Transpose( RCLib.NameToCode.Laurels )
 RCLib.CodeToName.RoomRewards = ModUtil.Table.Transpose( RCLib.NameToCode.RoomRewards )
 RCLib.CodeToName.ShopRewards = ModUtil.Table.Transpose( RCLib.NameToCode.ShopRewards )
 RCLib.CodeToName.WellItems = ModUtil.Table.Transpose( RCLib.NameToCode.WellItems )
@@ -828,6 +833,14 @@ end
 
 function RCLib.DecodeKeepsake( name )
     return RCLib.CodeToName.Keepsakes[name]
+end
+
+function RCLib.EncodeLaurel( name )
+    return RCLib.NameToCode.Laurels[name]
+end
+
+function RCLib.DecodeLaurel( name )
+    return RCLib.CodeToName.Laurels[name]
 end
 
 function RCLib.EncodeRoomReward( name )
