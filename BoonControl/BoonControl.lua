@@ -160,8 +160,6 @@ ModUtil.Path.Wrap( "SetTraitsOnLoot", function( baseFunc, lootData, args )
 
 	forcedBoons = RCLib.GetFromList( BoonControl.CurrentRunData, conditions ) or {}
 
-	BoonControl.DumpForced = forcedBoons
-
 	local eligibleUpgradeSet = GetEligibleUpgrades( upgradeOptions, lootData, upgradeChoiceData )
 	local tableName = "Boons"
 	if conditions.godName == "Hammer" then
@@ -171,9 +169,6 @@ ModUtil.Path.Wrap( "SetTraitsOnLoot", function( baseFunc, lootData, args )
 	for key, trait in pairs( eligibleUpgradeSet ) do
 		table.insert( eligibleList, RCLib.CodeToName[tableName][trait.ItemName] )
 	end
-
-	BoonControl.DumpEligibleSet = eligibleUpgradeSet
-	BoonControl.DumpEligibleList = eligibleList
 
 	boonOptions = BoonControl.BuildTraitList( forcedBoons, eligibleList, lootData.RarityChances, RCLib.NameToCode[tableName] )
 
