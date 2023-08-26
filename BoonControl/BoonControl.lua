@@ -10,6 +10,7 @@ ModUtil.Mod.Register( "BoonControl" )
 local config = {
     Enabled = true,
 	DefaultRarity = "Common", -- Default rarity when not specified per-boon. If set to false, rarity will be rolled each time
+	FillWithEligible = true, -- If true, any empty slots in a forced boon screen will be automatically filled with eligible boons
 	UseSpareWealth = false, -- Use spare wealth as a fallback instead of using the vanilla boon screen
 	DisallowedGods = {} -- Prevent certain gods from being affected
 }
@@ -96,14 +97,7 @@ function BoonControl.RollRarityForBoon( boon, rarityChances, lookupTable )
 		Heroic = false,
 		Legendary = false,
 	}
-	local rarityLevels = RCLib.InferItemData( boonName )
-
-	if TraitData[boonName] ~= nil and TraitData[boonName].RarityLevels ~= nil then
-		rarityLevels = TraitData[boonName].RarityLevels
-	end
-	if ConsumableData[boonName] ~= nil and ConsumableData[boonName].RarityLevels ~= nil then
-		rarityLevels = ConsumableData[boonName].RarityLevels
-	end
+	local rarityLevels = RCLib.InferItemData( boonName ).RarityLevels
 
 	if rarityLevels == nil then
 		rarityLevels = { Common = true }
@@ -160,7 +154,7 @@ ModUtil.Path.Wrap( "SetTraitsOnLoot", function( baseFunc, lootData, args )
 
 	forcedBoons = RCLib.GetFromList( BoonControl.CurrentRunData, conditions ) or {}
 
-	local eligibleUpgradeSet = GetEligibleUpgrades( upgradeOptions, lootData, upgradeChoiceData )
+	local eligibleUpgradeSet = GetEligibleUpgrades( boonOptions, lootData, upgradeChoiceData )
 	local tableName = "Boons"
 	if conditions.godName == "Hammer" then
 		tableName = "Hammers"
@@ -172,6 +166,25 @@ ModUtil.Path.Wrap( "SetTraitsOnLoot", function( baseFunc, lootData, args )
 
 	boonOptions = BoonControl.BuildTraitList( forcedBoons, eligibleList, lootData.RarityChances, RCLib.NameToCode[tableName] )
 
+	if BoonControl.config.FillWithEligible then
+		local baseData = ModUtil.Table.Copy( lootData )
+		baseFunc( baseData, args )
+		
+		for key, trait in ipairs( baseData.UpgradeOptions ) do
+			if TableLength( boonOptions ) >= GetTotalLootChoices() then break end
+
+			local isValid = true
+			for _, forcedTrait in ipairs( boonOptions ) do
+				if trait.ItemName == forcedTrait.ItemName then
+					isValid = false
+				end
+			end
+
+			if isValid then
+				table.insert( boonOptions, key, trait )
+			end
+		end
+	end
 	if IsEmpty( boonOptions ) and BoonControl.config.UseSpareWealth then -- Failsafe; can be triggered by errors in presets but also by no forced boons being eligible
 		table.insert( boonOptions, RCLib.SpareWealth )
 	elseif IsEmpty( boonOptions ) then
