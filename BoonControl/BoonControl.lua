@@ -10,6 +10,7 @@ ModUtil.Mod.Register( "BoonControl" )
 local config = {
     Enabled = true,
 	DefaultRarity = "Common", -- Default rarity when not specified per-boon. If set to false, rarity will be rolled each time
+	InferReplaces = true, -- If true, any boon that would take up an occupied slot will be offered as a replace. If false, boons will not appear as replaces unless you specify Replace = true.
 	FillWithEligible = true, -- If true, any empty slots in a forced boon screen will be automatically filled with eligible boons
 	UseSpareWealth = false, -- Use spare wealth as a fallback instead of using the vanilla boon screen
 	DisallowedGods = {} -- Prevent certain gods from being affected
@@ -23,13 +24,12 @@ BoonControl.GodRerollNums = {}
 
 function BoonControl.BuildTraitList( forced, eligible, rarityTable, lookupTable )
 	local traitOptions = {}
-	local isValid = false
 	local maxOptions = GetTotalLootChoices() -- TODO possible LootChoiceExt compat
 
 	for trait, _ in pairs( forced ) do
 		local currentBoon = forced[trait]
 		local currentBoonName = currentBoon.Name
-		isValid = Contains( eligible, currentBoonName ) or currentBoon.OverridePrereqs
+		local isValid = ( Contains( eligible, currentBoonName ) or currentBoon.OverridePrereqs ) and not currentBoon.Replace or false
 
 		if isValid and TableLength( traitOptions ) < maxOptions then
 			local boonCode = lookupTable[currentBoonName]
@@ -48,6 +48,13 @@ function BoonControl.BuildTraitList( forced, eligible, rarityTable, lookupTable 
 					Rarity = rarityToUse,
 				}
 			)
+		end
+
+		if not isValid and ( currentBoon.Replace or BoonControl.config.InferReplaces ) and TableLength( traitOptions ) < maxOptions then
+			local replaceData = BoonControl.GetReplaceData( currentBoonName )
+			if replaceData then
+				table.insert( traitOptions, replaceData )
+			end
 		end
 	end
 
@@ -120,6 +127,33 @@ function BoonControl.RollRarityForBoon( boon, rarityChances, lookupTable )
 		chosenRarity = "Rare"
 	end
 	return chosenRarity
+end
+
+function BoonControl.GetReplaceData( boon ) -- If a boon can be used as a replace, get the data for that replace. Otherwise, return nil.
+	local boonCode = RCLib.EncodeBoon( boon )
+	local boonData = RCLib.InferItemData( boonCode )
+
+	if not IsGameStateEligible( CurrentRun, boonData )
+	or HeroHasTrait( boonCode )
+	or not boonData.Slot then
+		return nil
+	end
+
+	for i, existingBoon in pairs( CurrentRun.Hero.Traits ) do
+		if existingBoon.Slot == boonData.Slot then
+			local oldRarity = existingBoon.Rarity
+			local newRarity = GetUpgradedRarity( oldRarity )
+			return {
+				ItemName = boonCode,
+				Type = "Trait",
+				TraitToReplace = existingBoon.Name,
+				OldRarity = oldRarity,
+				Rarity = newRarity,
+			}
+		end
+	end
+
+	return nil
 end
 
 ModUtil.Path.Wrap( "StartRoom", function( baseFunc, currentRun, currentRoom )
