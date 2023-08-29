@@ -59,8 +59,35 @@ ModUtil.Path.Wrap( "FillInShopOptions", function( baseFunc, args )
     if IsEmpty( store.StoreOptions ) then
         return baseFunc( args )
     end
-    
+
     return store
+end, ShopControl )
+
+ModUtil.Path.Wrap( "CreateStoreButtons", function( baseFunc )
+    baseFunc( )
+
+    if not ShopControl.config.Enabled
+    or CurrentRun.CurrentRoom.ChosenRewardType == "Shop"
+    then return end
+
+    local forced = RCLib.GetFromList( ShopControl.CurrentRunData, { dataType = "shop", rerollNum = ShopControl.WellRerollNum } )
+
+    for index, data in ipairs( forced ) do
+        if data.Item == "FatefulTwist" and data.Contents then
+            local forcedContents = RCLib.EncodeWellItem( data.Contents )
+            local contentsType = RCLib.InferItemType( forcedContents )
+            local forcedArgs = { Traits = {}, Consumables = {} }
+
+            if contentsType == "Trait" then
+                table.insert( forcedArgs.Traits, forcedContents )
+            end
+            if contentsType == "Consumable" then
+                table.insert( forcedArgs.Consumables, forcedContents )
+            end
+
+            CurrentRun.CurrentRoom.Store.StoreOptions[index].UseFunctionArgs = forcedArgs
+        end
+    end
 end, ShopControl )
 
 ModUtil.Path.Context.Wrap( "AttemptPanelReroll", function( )
