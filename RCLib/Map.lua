@@ -264,14 +264,14 @@ RCLib.NameToCode = {
         LavaLernie = "HydraHeadImmortalLavaMaker",
         BlueLernie = "HydraHeadImmortalSlammer",
         GreenLernie = "HydraHeadImmortalSummoner",
-        PinkLernie = "HydraHeadImmortalWaveMaker",
+        PinkLernie = "HydraHeadImmortalWavemaker",
         
         -- Side Lernie Heads
         OrangeLernieHead = "HydraHeadDartmaker",
         LavaLernieHead = "HydraHeadLavaMaker",
         BlueLernieHead = "HydraHeadSlammer",
         GreenLernieHead = "HydraHeadSummoner",
-        PinkLernieHead = "HydraHeadWaveMaker",
+        PinkLernieHead = "HydraHeadWavemaker",
 
         LernieEgg = "HydraTooth",
         EliteLernieEgg = "HydraTooth2",
