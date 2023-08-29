@@ -65,4 +65,47 @@ ModUtil.Path.Wrap( "SetupEncounter", function( baseFunc, encounterData, room )
 
     ModUtil.Table.Merge( encounterData, overrides )
     return baseFunc( encounterData, room )
-end, EncounterControl)
+end, EncounterControl )
+
+ModUtil.Path.Wrap( "PickHydraVariant", function( baseFunc, eventSource, args )
+    local lernieData = RCLib.GetFromList( EncounterControl.CurrentRunData, { dataType = "lernieEncounter" } )
+    local forcedSideHeads = lernieData.SideHeads or {}
+
+    if not EncounterControl.config.Enabled or IsEmpty( lernieData ) then
+        return baseFunc( eventSource, args )
+    end
+
+    eventSource.HydraVariant = RCLib.EncodeBoss( lernieData.MainHead )
+
+    if not eventSource.HydraVariant then
+        local eligibleOptions = {}
+        for k, variantName in pairs(args.Options) do
+            if IsEnemyEligible(variantName, eventSource.Encounter) then
+                table.insert(eligibleOptions, variantName)
+            end
+        end
+        eventSource.HydraVariant = GetRandomValue(eligibleOptions)
+    end
+
+    eventSource.Encounter.EnemySet = {}
+    for _, headName in ipairs( forcedSideHeads ) do
+        table.insert( eventSource.Encounter.EnemySet, RCLib.EncodeBoss( headName ) )
+    end
+    
+    if IsEmpty( eventSource.Encounter.EnemySet ) then
+        eventSource.Encounter.EnemySet = ShallowCopyTable(EnemySets.HydraHeads)
+        for k, removeValue in pairs(eventSource.Encounter.BlockHeadsByHydraVariant[eventSource.HydraVariant]) do
+            RemoveAllValues(eventSource.Encounter.EnemySet, removeValue)
+        end
+        while TableLength(eventSource.Encounter.EnemySet) > args.MaxSideHeadTypes do
+            RemoveRandomValue(eventSource.Encounter.EnemySet)
+        end
+    end
+
+    CancelSpawnsOnKill = { eventSource.HydraVariant }
+	eventSource.Encounter.WipeEnemiesOnKill = eventSource.HydraVariant
+
+	for k, enemyName in pairs(eventSource.Encounter.EnemySet) do
+		PreLoadBinks({ Names = EnemyData[enemyName].Binks })
+	end
+end, EncounterControl )
