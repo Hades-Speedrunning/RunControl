@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.0] - 2023-08-30
+
+### Added
+
+- RewardControl now supports a startingReward data type to set the reward given in chamber 1.
+- RewardControl now supports setting rooms to be elite encounters.
+- RoomControl now supports setting laurel colour for rooms.
+- BoonControl has a new config feature called FillWithEligible; if this is enabled, any empty slots in a boon menu will be filled with eligible boons from the vanilla menu.
+- BoonControl now supports replace boons. Also added a config option to either infer that a boon is a replace (based on whether we already have the slot filled), or require it to be specified.
+- EncounterControl now supports a lernieEncounter data type. Currently, this is quite primitive, but it still allows setting the colour of the main and side heads.
+- ShopControl now allows you to specify the contents of a Fateful Twist.
+
+### Changed
+
+- Run files now allow you to sort by dataType in a single central table, rather than requiring sub-tables for each mod. This shrinks the files slightly and makes them much more readable.
+
+### Fixed
+
+- Room orientation will now be set correctly.
+
 ## [0.7.1] - 2023-08-18
 
 ### Fixed
