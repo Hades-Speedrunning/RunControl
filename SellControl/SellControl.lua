@@ -9,6 +9,7 @@ ModUtil.Mod.Register( "SellControl" )
 local config = {
     Enabled = true,
     FillIfEmpty = false, -- If true, will default to a vanilla sell well if you define an empty one
+    DeterministicOrder = true,
 }
 SellControl.config = config
 
@@ -49,7 +50,7 @@ ModUtil.Path.Wrap( "GenerateSellTraitShop", function( baseFunc, currentRun, curr
     end
 end, SellControl )
 
-ModUtil.Path.Context.Wrap( "AttemptPanelReroll", function( )
+ModUtil.Path.Context.Wrap( "AttemptPanelReroll", function()
 	ModUtil.Path.Wrap( "UpdateRerollUI", function( baseFunc, ... )
 		local locals = ModUtil.Locals.Stacked()
         local screenName = ModUtil.Path.Get( "screen.Name", locals )
