@@ -67,7 +67,10 @@ ModUtil.Path.Context.Wrap( "HandleSecretSpawns", function( baseFunc, ... )
         if RoomControl.config.RequireForcedFeatures then
             return HasHeroTraitValue( "ForceSecretDoor" ) or isChaosForced or false
         end
-        return isChaosForced or baseFunc( ... )
+        if isChaosForced == nil then
+            return baseFunc( ... )
+        end
+        return isChaosForced
     end, RoomControl )
 
     ModUtil.Path.Wrap( "ChooseNextRoomData", function( baseFunc, currentRun, args ) -- Chaos room choice
@@ -84,7 +87,10 @@ ModUtil.Path.Context.Wrap( "HandleSecretSpawns", function( baseFunc, ... )
         if RoomControl.config.RequireForcedFeatures then
             return isErebusForced or false
         end
-        return isErebusForced or baseFunc( ... )
+        if isErebusForced == nil then
+            return baseFunc( ... )
+        end
+        return isErebusForced
     end, RoomControl )
 
     ModUtil.Path.Wrap( "IsChallengeSwitchEligible", function( baseFunc, ... ) -- Trove spawn
@@ -92,7 +98,10 @@ ModUtil.Path.Context.Wrap( "HandleSecretSpawns", function( baseFunc, ... )
         if RoomControl.config.RequireForcedFeatures then
             return HasHeroTraitValue( "ForceChallengeSwitch" ) or isTroveForced or false
         end
-        return isTroveForced or baseFunc( ... )
+        if isTroveForced == nil then
+            return baseFunc( ... )
+        end
+        return isTroveForced
     end, RoomControl )
 
     ModUtil.Path.Wrap( "IsWellShopEligible", function( baseFunc, ... ) -- Well spawn
@@ -100,7 +109,10 @@ ModUtil.Path.Context.Wrap( "HandleSecretSpawns", function( baseFunc, ... )
         if RoomControl.config.RequireForcedFeatures then
             return isWellForced or false
         end
-        return isWellForced or baseFunc( ... )
+        if isWellForced == nil then
+            return baseFunc( ... )
+        end
+        return isWellForced
     end, RoomControl )
 
     ModUtil.Path.Wrap( "IsSellTraitShopEligible", function( baseFunc, ... ) -- Sell well spawn
@@ -108,7 +120,10 @@ ModUtil.Path.Context.Wrap( "HandleSecretSpawns", function( baseFunc, ... )
         if RoomControl.config.RequireForcedFeatures then
             return isSellWellForced or false
         end
-        return isSellWellForced or baseFunc( ... )
+        if isSellWellForced == nil then
+            return baseFunc( ... )
+        end
+        return isSellWellForced
     end, RoomControl )
 
     ModUtil.Path.Wrap( "IsFishingEligible", function( baseFunc, ... ) -- Fishing point spawn
@@ -116,7 +131,10 @@ ModUtil.Path.Context.Wrap( "HandleSecretSpawns", function( baseFunc, ... )
         if RoomControl.config.RequireForcedFeatures then
             return HasHeroTraitValue( "ForceFishingPoint" ) or isFishingPointForced or false
         end
-        return isFishingPointForced or baseFunc( ... )
+        if isFishingPointForced == nil then
+            return baseFunc( ... )
+        end
+        return isFishingPointForced
     end, RoomControl )
 end, RoomControl )
 
