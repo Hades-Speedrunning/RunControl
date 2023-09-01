@@ -9,7 +9,6 @@ ModUtil.Mod.Register( "SellControl" )
 local config = {
     Enabled = true,
     FillIfEmpty = false, -- If true, will default to a vanilla sell well if you define an empty one
-    DeterministicOrder = true,
 }
 SellControl.config = config
 
