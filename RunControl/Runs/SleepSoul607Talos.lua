@@ -342,7 +342,7 @@ RunControl.Runs.SleepSoul607Talos = {
             },
             exitDoors = {
                 Data = {
-                    [2] = { Reward = "Hermes" },
+                    { Reward = "Hermes" },
                 },
             },
         },
@@ -481,7 +481,7 @@ RunControl.Runs.SleepSoul607Talos = {
             },
             exitDoors = {
                 Data = {
-                    { Reward = "Boon", GodName = "Athena" },
+                    [2] = { Reward = "Boon", GodName = "Athena" },
                 },
             },
         },
@@ -545,8 +545,8 @@ RunControl.Runs.SleepSoul607Talos = {
             },
             exitDoors = {
                 Data = {
-                    [2] = { Reward = "DaedalusHammer" },
-                    [3] = { Reward = "CharonsObol" },
+                    { Reward = "CharonsObol" },
+                    { Reward = "DaedalusHammer" },
                 },
             },
         },
@@ -583,7 +583,7 @@ RunControl.Runs.SleepSoul607Talos = {
             },
             roomFeatures = {
                 Data = {
-                    Flipped = true,
+                    Flipped = false,
                     Well = { Force = true },
                 },
             },
@@ -662,9 +662,9 @@ RunControl.Runs.SleepSoul607Talos = {
             },
             exitDoors = {
                 Data = {
-                    { Reward = "CharonsObol" },
                     { RoomName = "C_Combat02", Reward = "CentaurHeart" },
                     { RoomName = "C_Combat02", Reward = "DaedalusHammer" },
+                    { Reward = "CharonsObol" },
                 },
             },
         },
@@ -773,8 +773,19 @@ RunControl.Runs.SleepSoul607Talos = {
         },
         [37] = { -- Pre-Styx Midbiome
             roomFeatures = {
-                Well = { Force = true },
-                SellWell = { Force = true },
+                Data = {
+                    Well = { Force = true },
+                    SellWell = { Force = true },
+                },
+            },
+            shop = {
+                [1] = {
+                    Data = {
+                        { Item = "LifeEssence" },
+                        { Item = "GaeasTreasure" },
+                        { Item = "TingeOfErebus" },
+                    },
+                },
             },
             sellWell = {
                 [1] = {
