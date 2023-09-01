@@ -28,9 +28,6 @@ ModUtil.Path.Wrap( "ChooseRoomReward", function( baseFunc, run, room, rewardStor
     if forcedReward.Reward then
         rewardToUse = RCLib.EncodeRoomReward( forcedReward.Reward ) or rewardToUse
     end
-    if forcedReward.Name then
-        room.ForceLootName = RCLib.EncodeBoonSet( forcedReward.Name )
-    end
 
     return rewardToUse
 end, RewardControl)
