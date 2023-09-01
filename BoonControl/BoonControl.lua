@@ -204,14 +204,25 @@ ModUtil.Path.Wrap( "SetTraitsOnLoot", function( baseFunc, lootData, args )
 		local baseData = ModUtil.Table.Copy( lootData )
 		baseFunc( baseData, args )
 		
+		local neededEmptySlots = 0
+		for key, trait in ipairs( forcedBoons ) do
+			if trait.EmptySlot then
+				neededEmptySlots = neededEmptySlots + 1
+			end
+		end
+
 		for key, trait in ipairs( baseData.UpgradeOptions ) do
-			if TableLength( boonOptions ) >= GetTotalLootChoices() then break end
+			if TableLength( boonOptions ) + neededEmptySlots >= GetTotalLootChoices() then break end
 
 			local isValid = true
 			for _, forcedTrait in ipairs( boonOptions ) do
 				if trait.ItemName == forcedTrait.ItemName then
 					isValid = false
 				end
+			end
+
+			if forcedBoons[key].EmptySlot then
+				isValid = false
 			end
 
 			if isValid then
