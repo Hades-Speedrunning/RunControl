@@ -65,7 +65,7 @@ ModUtil.Path.Context.Wrap( "HandleSecretSpawns", function( baseFunc, ... )
     ModUtil.Path.Wrap( "IsSecretDoorEligible", function( baseFunc, ... ) -- Chaos gate spawn
         local isChaosForced = ModUtil.Path.Get( "ChaosGate.Force", roomData )
         if RoomControl.config.RequireForcedFeatures then
-            return isChaosForced or false
+            return HasHeroTraitValue( "ForceSecretDoor" ) or isChaosForced or false
         end
         return isChaosForced or baseFunc( ... )
     end, RoomControl )
@@ -90,7 +90,7 @@ ModUtil.Path.Context.Wrap( "HandleSecretSpawns", function( baseFunc, ... )
     ModUtil.Path.Wrap( "IsChallengeSwitchEligible", function( baseFunc, ... ) -- Trove spawn
         local isTroveForced = ModUtil.Path.Get( "Trove.Force", roomData )
         if RoomControl.config.RequireForcedFeatures then
-            return isTroveForced or false
+            return HasHeroTraitValue( "ForceChallengeSwitch" ) or isTroveForced or false
         end
         return isTroveForced or baseFunc( ... )
     end, RoomControl )
