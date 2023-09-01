@@ -13,6 +13,7 @@ local config = {
 	InferReplaces = true, -- If true, any boon that would take up an occupied slot will be offered as a replace. If false, boons will not appear as replaces unless you specify Replace = true.
 	FillWithEligible = true, -- If true, any empty slots in a forced boon screen will be automatically filled with eligible boons
 	UseSpareWealth = false, -- Use spare wealth as a fallback instead of using the vanilla boon screen
+	CheckEligibility = true,
 	DisallowedGods = {} -- Prevent certain gods from being affected
 }
 BoonControl.config = config
@@ -29,7 +30,11 @@ function BoonControl.BuildTraitList( forced, eligible, rarityTable, lookupTable 
 	for trait, _ in pairs( forced ) do
 		local currentBoon = forced[trait]
 		local currentBoonName = currentBoon.Name
-		local isValid = ( Contains( eligible, currentBoonName ) or currentBoon.OverridePrereqs ) and not currentBoon.Replace or false
+
+		local isValid = (( Contains( eligible, currentBoonName ) or currentBoon.OverridePrereqs ) and not currentBoon.Replace )
+		or not BoonControl.config.CheckEligibility
+		or currentBoon.OverridePrereqs
+		or false
 
 		if isValid and TableLength( traitOptions ) < maxOptions then
 			local boonCode = lookupTable[currentBoonName]
@@ -71,7 +76,10 @@ function BoonControl.BuildTransformingTraitList( forced, eligible, rarityTable, 
 		local currentTemporaryTrait = currentBoon.CurseName
 		local currentPermanentTrait = currentBoon.BlessingName
 
-		isValid = ( Contains( eligible.Temporary, currentTemporaryTrait ) and Contains( eligible.Permanent, currentPermanentTrait ) ) or currentBoon.OverridePrereqs
+		isValid = ( Contains( eligible.Temporary, currentTemporaryTrait ) and Contains( eligible.Permanent, currentPermanentTrait ) )
+		or not BoonControl.config.CheckEligibility
+		or currentBoon.OverridePrereqs
+		or false
 
 		if isValid and TableLength( traitOptions ) < maxOptions then
 			local rarityToUse = BoonControl.config.DefaultRarity or "Common"
