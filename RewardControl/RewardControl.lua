@@ -55,13 +55,26 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function( baseFunc, run, room ) 
     end, RewardControl )
 
     ModUtil.Path.Wrap( "SetupRoomReward", function( baseFunc, currentRun, room, previouslyChosenRewards, args )
+        baseFunc( currentRun, room, previouslyChosenRewards, args )
+        
+        if not RewardControl.config.Enabled then return end
+        
         local doorIndex = ModUtil.Locals.Stacked().index
         local forcedGodName = ModUtil.IndexArray.Get( forcedDoors, { doorIndex, "GodName" } )
+        local forcedFirstGodName = ModUtil.IndexArray.Get( forcedDoors, { doorIndex, "FirstGodName" } )
+        local forcedSecondGodName = ModUtil.IndexArray.Get( forcedDoors, { doorIndex, "SecondGodName" } )
 
-        if RewardControl.config.Enabled and room.ChosenRewardType == "Boon" and not room.ForceLootName and forcedGodName then
+        if room.ChosenRewardType == "Boon" and forcedGodName then
             room.ForceLootName = RCLib.EncodeBoonSet( forcedGodName )
         end
-        
-        baseFunc( currentRun, room, previouslyChosenRewards, args )
+
+        if room.ChosenRewardType == "Devotion" then
+            if forcedFirstGodName then
+                room.Encounter.LootAName = RCLib.EncodeBoonSet( forcedFirstGodName )
+            end
+            if forcedSecondGodName then
+                room.Encounter.LootBName = RCLib.EncodeBoonSet( forcedSecondGodName )
+            end
+        end
     end, RewardControl )
 end, RewardControl )
