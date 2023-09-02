@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.0] - 2023-09-02
+
+### Added
+
+- You can now force a number of empty slots to appear in a BoonControl menu, even if FillWithEligible is enabled.
+- roomFeatures can now contain fishing points.
+- BoonControl now has a config option to either check the eligibility of boons being forced, or to always force them.
+- RewardControl can now force specific gods to appear in Trials.
+
+### Fixed
+
+- Ixions and Trove Trackers will now work correctly, even when RequireForcedFeatures is enabled in RoomControl.
+- RoomControl can now force features *not* to appear- previously, Force = false would still allow them to show up unless RequireForcedFeatures was on.
+
 ## [0.8.0] - 2023-08-30
 
 ### Added
