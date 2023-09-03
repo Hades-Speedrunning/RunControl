@@ -95,6 +95,7 @@ function BoonControl.BuildTransformingTraitList( forced, eligible, rarityTable, 
 					SecondaryItemName = lookupTable.Temporary[currentTemporaryTrait],
 					Type = "TransformingTrait",
 					Rarity = rarityToUse,
+					BoonControlData = currentBoon,
 				}
 			)
 		end
@@ -272,7 +273,6 @@ ModUtil.Path.Wrap( "SetTransformingTraitsOnLoot", function( baseFunc, lootData, 
 	local eligibleUpgradeSet = {}
 	eligibleUpgradeSet.Temporary = GetEligibleTransformingTrait( upgradeChoiceData.TemporaryTraits )
 	eligibleUpgradeSet.Permanent = GetEligibleTransformingTrait( upgradeChoiceData.PermanentTraits )
-	BoonControl.DumpSet = eligibleUpgradeSet
 
 	local eligibleList = {}
 	eligibleList.Temporary = {}
@@ -283,7 +283,7 @@ ModUtil.Path.Wrap( "SetTransformingTraitsOnLoot", function( baseFunc, lootData, 
 	for index, trait in ipairs( eligibleUpgradeSet.Permanent ) do
 		table.insert( eligibleList.Permanent, RCLib.CodeToName.ChaosBlessings[trait] )
 	end
-	BoonControl.DumpList = eligibleList
+
 	local lookupTables = {}
 	lookupTables.Temporary = RCLib.NameToCode.ChaosCurses
 	lookupTables.Permanent = RCLib.NameToCode.ChaosBlessings
@@ -299,7 +299,33 @@ ModUtil.Path.Wrap( "SetTransformingTraitsOnLoot", function( baseFunc, lootData, 
 	lootData.UpgradeOptions = boonOptions
 end, BoonControl )
 
-ModUtil.Path.Context.Wrap( "AttemptPanelReroll", function( )
+ModUtil.Path.Context.Wrap( "CreateBoonLootButtons", function()
+	ModUtil.Path.Context.Wrap( "GetProcessedTraitData", function()
+		ModUtil.Path.Wrap( "ProcessTraitData", function( baseFunc, args )
+			local processedData = baseFunc( args )
+
+			local locals = ModUtil.Locals.Stacked()
+			local boonOptions = locals.upgradeOptions
+			local boonIndex = locals.itemIndex
+			local forcedBoonData = boonOptions[boonIndex].BoonControlData or {}
+			
+			if RCLib.DecodeChaosBlessing( processedData.Name ) == forcedBoonData.BlessingName then
+				local pathToSet = BoonControl.PathsToSet.ChaosBlessings[forcedBoonData.BlessingName]
+				if forcedBoonData.BlessingValue then ModUtil.IndexArray.Set( processedData, pathToSet, forcedBoonData.BlessingValue ) end
+			end
+
+			if RCLib.DecodeChaosCurse( processedData.Name ) == forcedBoonData.CurseName then
+				local pathToSet = BoonControl.PathsToSet.ChaosCurses[forcedBoonData.CurseName]
+				if forcedBoonData.CurseLength then processedData.RemainingUses = forcedBoonData.CurseLength end
+				if forcedBoonData.CurseValue then ModUtil.IndexArray.Set( processedData, pathToSet, forcedBoonData.CurseValue ) end
+			end
+
+			return processedData
+		end, BoonControl )
+	end, BoonControl )
+end, BoonControl )
+
+ModUtil.Path.Context.Wrap( "AttemptPanelReroll", function()
 	ModUtil.Path.Wrap( "UpdateRerollUI", function( baseFunc, ... )
 		local locals = ModUtil.Locals.Stacked()
 		local godCode = locals.screen.SubjectName
