@@ -1,6 +1,6 @@
 --[[
 Seed from the 6:07.44 Talos speedrun achieved on 2022-03-22 by SleepSoul in Any Heat (Unseeded, Modded)
-Written for RunControl version 0.8.0
+Written for RunControl version 1.0.0
 ]]
 
 RunControl.Runs.SleepSoul607Talos = {
@@ -41,22 +41,42 @@ RunControl.Runs.SleepSoul607Talos = {
             },
             exitDoors = {
                 Data = {
-                    [2] = { Reward = "PitchBlackDarkness" },
+                    [2] = { Reward = "PitchBlackDarkness", ValidRooms = RCLib.StandardCombats },
                 },
             },
         },
         [2] = {
             roomFeatures = {
                 Data = {
-                    Flipped = false,
+                    Flipped = true,
                 },
             },
             boonMenu = {
                 [1] = { -- Menu 1
                     Data = {
-                        { CurseName = "Addled", BlessingName = "Affluence", ForcedRarity = "Epic" },
-                        { CurseName = "Flayed", BlessingName = "Soul" },
-                        { CurseName = "Abyssal", BlessingName = "Assault", ForcedRarity = "Epic" },
+                        {
+                            CurseName = "Addled",
+                            BlessingName = "Affluence",
+                            CurseLength = 3,
+                            CurseValue = 3,
+                            BlessingValue = 1.7,
+                            ForcedRarity = "Epic",
+                        },
+                        {
+                            CurseName = "Flayed",
+                            BlessingName = "Soul",
+                            CurseLength = 3,
+                            CurseValue = 5,
+                            BlessingValue = 30,
+                        },
+                        {
+                            CurseName = "Abyssal",
+                            BlessingName = "Assault",
+                            CurseLength = 3,
+                            CurseValue = 4.35,
+                            BlessingValue = 1.65,
+                            ForcedRarity = "Epic",
+                        },
                     },
                 },
             },
@@ -101,6 +121,8 @@ RunControl.Runs.SleepSoul607Talos = {
             boonMenu = {
                 Data = {
                     { Name = "BreachingCross"},
+                    { EmptySlot = true },
+                    { EmptySlot = true },
                 },
             },
             exitDoors = {
@@ -142,7 +164,7 @@ RunControl.Runs.SleepSoul607Talos = {
             },
             exitDoors = {
                 Data = {
-                    { Reward = "PitchBlackDarkness" },
+                    { Reward = "PitchBlackDarkness", ValidRooms = RCLib.StandardCombats },
                     { RoomName = "A_Shop01" },
                 },
             },
@@ -337,12 +359,12 @@ RunControl.Runs.SleepSoul607Talos = {
         [16] = {
             roomFeatures = {
                 Data = {
-                    ChaosGate = { Force = true, RoomName = "RoomSecret02" },
+                    ChaosGate = { RoomName = "RoomSecret02" },
                 },
             },
             exitDoors = {
                 Data = {
-                    { Reward = "Hermes" },
+                    { Reward = "Hermes", ValidRooms = RCLib.StandardCombats },
                 },
             },
         },
@@ -356,9 +378,27 @@ RunControl.Runs.SleepSoul607Talos = {
             boonMenu = {
                 [1] = {
                     Data = {
-                        { CurseName = "Excruciating", BlessingName = "Grasp", ForcedRarity = "Epic" },
-                        { CurseName = "Enshrouded", BlessingName = "Flourish" },
-                        { CurseName = "Abyssal", BlessingName = "Affluence", ForcedRarity = "Epic" },
+                        {
+                            CurseName = "Excruciating",
+                            BlessingName = "Grasp",
+                            CurseLength = 3,
+                            CurseValue = 1.21,
+                            ForcedRarity = "Epic",
+                        },
+                        {
+                            CurseName = "Enshrouded",
+                            BlessingName = "Flourish",
+                            CurseLength = 5,
+                            BlessingValue = 1.39,
+                        },
+                        {
+                            CurseName = "Abyssal",
+                            BlessingName = "Affluence",
+                            CurseLength = 3,
+                            CurseValue = 3.02,
+                            BlessingValue = 1.8,
+                            ForcedRarity = "Epic"
+                        },
                     },
                 },
             },
@@ -384,6 +424,7 @@ RunControl.Runs.SleepSoul607Talos = {
             roomFeatures = {
                 Data = {
                     Flipped = true,
+                    FishingPoint = { Force = true },
                 },
             },
             boonMenu = {
@@ -397,7 +438,7 @@ RunControl.Runs.SleepSoul607Talos = {
             },
             exitDoors = {
                 Data = {
-                    { Reward = "CentaurHeart" },
+                    { Reward = "CentaurHeart", ValidRooms = RCLib.StandardCombats },
                     { RoomName = "B_Shop01" },
                 },
             },
@@ -540,13 +581,13 @@ RunControl.Runs.SleepSoul607Talos = {
         [26] = {
             roomFeatures = {
                 Data = {
-                    ChaosGate = { Force = true, RoomName = "RoomSecret03" },
+                    ChaosGate = { RoomName = "RoomSecret03" },
                 },
             },
             exitDoors = {
                 Data = {
-                    { Reward = "CharonsObol" },
-                    { Reward = "DaedalusHammer" },
+                    { Reward = "CharonsObol", ValidRooms = RCLib.StandardCombats },
+                    { Reward = "DaedalusHammer", ValidRooms = RCLib.StandardCombats },
                 },
             },
         },
@@ -559,9 +600,28 @@ RunControl.Runs.SleepSoul607Talos = {
             boonMenu = {
                 [1] = {
                     Data = {
-                        { CurseName = "Caustic", BlessingName = "Affluence", ForcedRarity = "Epic" },
-                        { CurseName = "Addled", BlessingName = "Strike", ForcedRarity = "Rare" },
-                        { CurseName = "Enshrouded", BlessingName = "Flourish", ForcedRarity = "Epic" },
+                        {
+                            CurseName = "Caustic",
+                            BlessingName = "Affluence",
+                            CurseLength = 4,
+                            BlessingValue = 1.85,
+                            ForcedRarity = "Epic",
+                        },
+                        {
+                            CurseName = "Addled",
+                            BlessingName = "Strike",
+                            CurseLength = 3,
+                            CurseValue = 3,
+                            BlessingValue = 1.59,
+                            ForcedRarity = "Rare",
+                        },
+                        {
+                            CurseName = "Enshrouded",
+                            BlessingName = "Flourish",
+                            CurseLength = 4,
+                            BlessingValue = 2.18,
+                            ForcedRarity = "Epic",
+                        },
                     },
                 },
             },
@@ -609,12 +669,12 @@ RunControl.Runs.SleepSoul607Talos = {
             },
             exitDoors = {
                 Data = {
-                    { Reward = "Boon", GodName = "Demeter" },
+                    { Reward = "Trial", FirstGodName = "Demeter", SecondGodName = "Athena", ValidRooms = RCLib.StandardCombats },
                     { RoomName = "C_Shop01" },
                 },
             },
         },
-        [29] = {
+        [29] = { -- Ely Midshop
             roomFeatures = {
                 Data = {
                     GoldPotNum = 1,
@@ -633,7 +693,7 @@ RunControl.Runs.SleepSoul607Talos = {
             },
             exitDoors = {
                 Data = {
-                    { Reward = "Boon", GodName = "Demeter" },
+                    { Reward = "Boon", GodName = "Demeter", ValidRooms = RCLib.StandardCombats },
                     { RoomName = "C_MiniBoss02", Reward = "Boon", GodName = "Athena" }
                 },
             },
@@ -690,7 +750,7 @@ RunControl.Runs.SleepSoul607Talos = {
             exitDoors = {
                 Data = {
                     { RoomName = "C_Story01" },
-                    { Reward = "Boon", GodName = "Athena" },
+                    { Reward = "Boon", GodName = "Athena", ValidRooms = RCLib.StandardCombats },
                 },
             },
         },
@@ -701,7 +761,7 @@ RunControl.Runs.SleepSoul607Talos = {
             },
             exitDoors = {
                 Data = {
-                    { Reward = "Hermes" },
+                    { Reward = "Hermes", ValidRooms = RCLib.StandardCombats },
                     { RoomName = "C_Reprieve01", Reward = "DaedalusHammer" },
                 },
             },
@@ -736,6 +796,7 @@ RunControl.Runs.SleepSoul607Talos = {
                 Data = {
                     GoldPotNum = 1,
                     Trove = { Force = true },
+                    FishingPoint = { Force = true },
                 },
             },
             boonMenu = {
@@ -806,6 +867,11 @@ RunControl.Runs.SleepSoul607Talos = {
                     { Item = "Boon", Name = "Athena" },
                     { Item = "UpgradedPomOfPower" },
                     { Item = "Hermes", Overrides = { Cost = 500, UpgradeChance = 1.0, UpgradedCost = 500 }},
+                },
+            },
+            roomFeatures = {
+                Data = {
+                    FishingPoint = { Force = true },
                 },
             },
             exitDoors = {
@@ -891,6 +957,11 @@ RunControl.Runs.SleepSoul607Talos = {
             },
         },
         [45] = { -- Styx Hub (Second entry)
+            roomFeatures = {
+                Data = {
+                    FishingPoint = { Force = true },
+                },
+            },
             exitDoors = {
                 Data = {
                     { RoomName = "D_Mini11" },
