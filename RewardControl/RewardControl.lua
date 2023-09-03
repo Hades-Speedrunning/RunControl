@@ -37,7 +37,7 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function() -- All other rewards
 
     ModUtil.Path.Wrap( "ChooseRoomReward", function( baseFunc, run, room, ... )
         local doorIndex = ModUtil.Locals.Stacked().index
-        local forcedReward = ModUtil.IndexArray.Get( forcedDoors, { doorIndex } ) or {}
+        local forcedReward = forcedDoors[doorIndex] or {}
         local rewardName
 
         if RewardControl.config.Enabled and forcedReward.Reward then
@@ -45,7 +45,7 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function() -- All other rewards
             local overrides = forcedReward.Overrides or {}
 
             if forcedReward.Reward == "Trial" then
-                ModUtil.Table.Merge( overrides, { RewardPreviewIcon = "RoomElitePreview", RewardBoostedAnimation = "RoomRewardAvailableRareSparkles" })
+                ModUtil.Table.Merge( overrides, { RewardPreviewIcon = "RoomElitePreview", RewardBoostedAnimation = "RoomRewardAvailableRareSparkles" } )
             end
 
             if forcedReward.IsEliteRoom then
@@ -65,9 +65,10 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function() -- All other rewards
         if not RewardControl.config.Enabled then return end
 
         local doorIndex = ModUtil.Locals.Stacked().index
-        local forcedGodName = ModUtil.IndexArray.Get( forcedDoors, { doorIndex, "GodName" } )
-        local forcedFirstGodName = ModUtil.IndexArray.Get( forcedDoors, { doorIndex, "FirstGodName" } )
-        local forcedSecondGodName = ModUtil.IndexArray.Get( forcedDoors, { doorIndex, "SecondGodName" } )
+        local forcedDoor = forcedDoors[doorIndex] or {}
+        local forcedGodName = forcedDoor.GodName
+        local forcedFirstGodName = forcedDoor.FirstGodName
+        local forcedSecondGodName = forcedDoor.SecondGodName
 
         if room.ChosenRewardType == "Boon" and forcedGodName then
             room.ForceLootName = RCLib.EncodeBoonSet( forcedGodName )
