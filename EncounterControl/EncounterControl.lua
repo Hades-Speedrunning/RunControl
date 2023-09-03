@@ -19,10 +19,7 @@ function EncounterControl.CreateWaves( waveSet )
     local output = {}
 
     for waveIndex, waveData in ipairs( waveSet ) do
-        DebugPrint({ Text = "EncounterControl: Creating wave "..waveIndex })
-
         for enemyIndex, enemyData in ipairs( waveData ) do
-            DebugPrint({ Text = "Adding "..( enemyData.Num or "1" ).." of "..enemyData.Enemy })
             local enemyCode = RCLib.EncodeEnemy( enemyData.Enemy )
             ModUtil.IndexArray.Set( output, { waveIndex, "Spawns", enemyIndex },  { Name = enemyCode, TotalCount = enemyData.Num or 1 } )
         end
