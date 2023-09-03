@@ -25,24 +25,44 @@ ModUtil.Path.Wrap( "DoUnlockRoomExits", function( baseFunc, run, room )
     return baseFunc( run, room )
 end, RoomControl )
 
-ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function( baseFunc, run, room )
-    local forcedDoors = RCLib.GetFromList( RoomControl.CurrentRunData, { dataType = "exitDoors" } ) or {}
+ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function()
+    local forcedDoors = RCLib.GetFromList( RoomControl.CurrentRunData, { dataType = "exitDoors" } )
 
     ModUtil.Path.Wrap( "ChooseNextRoomData", function( baseFunc, currentRun, args )
         args = args or {}
 
         local doorIndex = ModUtil.Locals.Stacked().index
-        if forcedDoors[doorIndex] and forcedDoors[doorIndex].RoomName then
+        local forcedRoom = forcedDoors[doorIndex] or {}
+        if forcedRoom.RoomName then
             args.ForceNextRoom = forcedDoors[doorIndex].RoomName
         end
 
         return baseFunc( currentRun, args )
     end, RoomControl )
 
+    ModUtil.Path.Context.Wrap( "ChooseNextRoomData", function()
+        ModUtil.Path.Wrap( "IsRoomEligible", function( baseFunc, currentRun, currentRoom, nextRoomData, args )
+            args = args or {}
+
+            if nextRoomData == nil then
+                return false
+            end
+
+            local doorIndex = ModUtil.Locals.Stacked().index
+            local validRoomSet = ModUtil.IndexArray.Get( forcedDoors, { doorIndex, "ValidRooms" } )
+
+            if not IsEmpty( validRoomSet ) and not Contains( validRoomSet, nextRoomData.Name ) then
+                return false
+            end
+
+            return baseFunc( currentRun, currentRoom, nextRoomData, args )
+        end, RoomControl )
+    end, RoomControl )
+
     ModUtil.Path.Wrap( "CreateRoom", function( baseFunc, roomData, args)
         local room = baseFunc( roomData, args )
         local doorIndex = ModUtil.Locals.Stacked().index
-        local forcedRoom = ModUtil.IndexArray.Get( forcedDoors, { doorIndex } ) or {}
+        local forcedRoom = forcedDoors[doorIndex] or {}
 
         if forcedRoom.IsMinibossWing then
             room.UseOptionalOverrides = true
@@ -55,11 +75,12 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function( baseFunc, run, room )
         elseif forcedRoom.Reward then
             room.ForcedRewardStore = RCLib.RewardLaurels[forcedRoom.Reward]
         end
+
         return room
     end, RoomControl )
 end, RoomControl )
 
-ModUtil.Path.Context.Wrap( "HandleSecretSpawns", function( baseFunc, ... )
+ModUtil.Path.Context.Wrap( "HandleSecretSpawns", function()
     local roomData = RCLib.GetFromList( RoomControl.CurrentRunData, { dataType = "roomFeatures" } )
 
     ModUtil.Path.Wrap( "IsSecretDoorEligible", function( baseFunc, ... ) -- Chaos gate spawn
@@ -255,8 +276,6 @@ ModUtil.Path.Override( "LeaveRoom", function( currentRun, door ) -- This overrid
 
     -- CHANGES MADE HERE
     local forcedRoomData = RCLib.GetFromList( RoomControl.CurrentRunData, { dataType = "roomFeatures", chamberNum = GetRunDepth( CurrentRun ) + 1 } )
-    local printFlipped = tostring( forcedRoomData.Flipped ) or "NIL"
-    DebugPrint({ Text = "Should be flipped? " .. printFlipped })
     if forcedRoomData.Flipped ~= nil then
         nextRoom.Flipped = forcedRoomData.Flipped
     else
