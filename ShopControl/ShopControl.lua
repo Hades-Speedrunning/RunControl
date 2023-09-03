@@ -15,14 +15,14 @@ ShopControl.CurrentRunData = {}
 
 ShopControl.WellRerollNum = 1
 
-ModUtil.Path.Wrap( "StartRoom", function( baseFunc, currentRun, currentRoom )
+ModUtil.Path.Wrap( "StartRoom", function( baseFunc, ... )
 	ShopControl.WellRerollNum = 1 -- Always 1 at the start of a room. Added to when a menu is rerolled
-	baseFunc( currentRun, currentRoom )
+	baseFunc( ... )
 end, ShopControl )
 
-ModUtil.Path.Wrap( "FillInShopOptions", function( baseFunc, args )
+ModUtil.Path.Wrap( "FillInShopOptions", function( baseFunc, ... )
     if not ShopControl.config.Enabled then
-        return baseFunc( args )
+        return baseFunc( ... )
     end
 
     local store = {}
@@ -57,14 +57,14 @@ ModUtil.Path.Wrap( "FillInShopOptions", function( baseFunc, args )
     store.StoreOptions = options
 
     if IsEmpty( store.StoreOptions ) then
-        return baseFunc( args )
+        return baseFunc( ... )
     end
 
     return store
 end, ShopControl )
 
 ModUtil.Path.Wrap( "CreateStoreButtons", function( baseFunc )
-    baseFunc( )
+    baseFunc()
 
     if not ShopControl.config.Enabled
     or CurrentRun.CurrentRoom.ChosenRewardType == "Shop"
