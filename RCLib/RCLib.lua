@@ -297,9 +297,14 @@ end
 function RCLib.GetFromList( list, conditions )
     list = list or {}
     conditions = conditions or {}
+    conditions.aspect = conditions.aspect or RCLib.GetAspectName()
 	conditions.biome = conditions.biome or RCLib.CurrentBiome
 	conditions.chamberNum = conditions.chamberNum or GetRunDepth( CurrentRun )
+    conditions.keepsakeCharges = conditions.keepsakeCharges or RCLib.GetKeepsakeCharges()
     conditions.roomName = conditions.roomName or ModUtil.Path.Get( "CurrentRun.CurrentRoom.Name" )
+
+    conditions.listsToIgnore = conditions.listsToIgnore or 0
+
     if list.IndexedBy then
         return RCLib.GetFromIndexedList( list.List, list.IndexedBy, conditions ) or {}
     end
@@ -313,6 +318,7 @@ function RCLib.GetFromIndexedList( list, indexedBy, conditions )
     local output = {}
 
     for _, condition in ipairs( indexedBy ) do
+        if condition == "priority" then return RCLib.GetFromPrioritisedList( force, conditions ) end
         if force.Data then break end
         if force.IndexedBy then return RCLib.GetFromList( force, conditions ) end
         force = force[conditions[condition]] or {}
@@ -321,10 +327,27 @@ function RCLib.GetFromIndexedList( list, indexedBy, conditions )
         output = force.Data or {}
     end
 
-    return output or {}
+    return output
 end
 
-function RCLib.GetFromPrioritisedList( list, conditions ) -- TODO
+function RCLib.GetFromPrioritisedList( list, conditions )
+    list = list or {}
+    conditions = conditions or {}
+    local output = {}
+    local ignore = conditions.listsToIgnore or 0
+
+    for i, sublist in ipairs( list ) do
+        local currentList = RCLib.GetFromList( sublist, conditions )
+        if not IsEmpty( currentList ) and ignore <= 0 then
+            output = currentList
+            break
+        end
+        if not IsEmpty( currentList ) then
+            ignore = ignore - 1
+        end
+    end
+
+    return output
 end
 
 function RCLib.CheckConditions( table, conditions ) -- TODO
