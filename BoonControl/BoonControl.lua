@@ -195,7 +195,7 @@ ModUtil.Path.Wrap( "SetTraitsOnLoot", function( baseFunc, lootData, args )
 	conditions.appearanceNum = ( BoonControl.GodAppearances[godCode] or 0 ) + 1
 	conditions.rerollNum = ( BoonControl.GodRerollNums[godCode] or 0 ) + 1
 
-	forcedBoons = RCLib.GetFromList( BoonControl.CurrentRunData, conditions ) or {}
+	forcedBoons = RCLib.GetFromList( BoonControl.CurrentRunData, conditions )
 
 	local eligibleUpgradeSet = GetEligibleUpgrades( boonOptions, lootData, upgradeChoiceData )
 	local tableName = "Boons"
@@ -230,7 +230,7 @@ ModUtil.Path.Wrap( "SetTraitsOnLoot", function( baseFunc, lootData, args )
 				end
 			end
 
-			if forcedBoons[key].EmptySlot then
+			if ModUtil.IndexArray.Get( forcedBoons, { key, "EmptySlot" } ) then
 				isValid = false
 			end
 
