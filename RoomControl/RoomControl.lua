@@ -27,8 +27,13 @@ end, RoomControl )
 
 ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function()
     local forcedDoors = RCLib.GetFromList( RoomControl.CurrentRunData, { dataType = "exitDoors" } )
+    RoomControl.DumpDoors = forcedDoors
 
     ModUtil.Path.Wrap( "ChooseNextRoomData", function( baseFunc, currentRun, args )
+        if not RoomControl.config.Enabled then
+            return baseFunc( currentRun, args )
+        end
+
         args = args or {}
 
         local doorIndex = ModUtil.Locals.Stacked().index
@@ -42,24 +47,45 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function()
 
     ModUtil.Path.Context.Wrap( "ChooseNextRoomData", function()
         ModUtil.Path.Wrap( "IsRoomEligible", function( baseFunc, currentRun, currentRoom, nextRoomData, args )
-            args = args or {}
+            if not RoomControl.config.Enabled then
+                return baseFunc( currentRun, currentRoom, nextRoomData, args )
+            end
 
             if nextRoomData == nil then
                 return false
             end
 
             local doorIndex = ModUtil.Locals.Stacked().index
-            local validRoomSet = ModUtil.IndexArray.Get( forcedDoors, { doorIndex, "ValidRooms" } )
+            local eligibleRoomSet = ModUtil.IndexArray.Get( forcedDoors, { doorIndex, "EligibleRooms" } )
 
-            if not IsEmpty( validRoomSet ) and not Contains( validRoomSet, nextRoomData.Name ) then
+            if not IsEmpty( eligibleRoomSet ) and not Contains( eligibleRoomSet, nextRoomData.Name ) then
                 return false
+            end
+
+            return baseFunc( currentRun, currentRoom, nextRoomData, args )
+        end, RoomControl )
+
+        ModUtil.Path.Wrap( "IsRoomForced", function( baseFunc, currentRun, currentRoom, nextRoomData, args )
+            if not RoomControl.config.Enabled then
+                return baseFunc( currentRun, currentRoom, nextRoomData, args )
+            end
+
+            local doorIndex = ModUtil.Locals.Stacked().index
+            local forcedRoomSet = ModUtil.IndexArray.Get( forcedDoors, { doorIndex, "ForcedRooms" } )
+
+            if not IsEmpty( forcedRoomSet ) and Contains( forcedRoomSet, nextRoomData.Name ) then
+                return true
             end
 
             return baseFunc( currentRun, currentRoom, nextRoomData, args )
         end, RoomControl )
     end, RoomControl )
 
-    ModUtil.Path.Wrap( "CreateRoom", function( baseFunc, roomData, args)
+    ModUtil.Path.Wrap( "CreateRoom", function( baseFunc, roomData, args )
+        if not RoomControl.config.Enabled then
+            return baseFunc( roomData, args)
+        end
+
         local room = baseFunc( roomData, args )
         local doorIndex = ModUtil.Locals.Stacked().index
         local forcedRoom = forcedDoors[doorIndex] or {}
@@ -162,9 +188,9 @@ end, RoomControl )
 ModUtil.Path.Wrap( "HandleBreakableSwap", function( baseFunc, currentRoom )
     local roomData = RCLib.GetFromList( RoomControl.CurrentRunData, { dataType = "roomFeatures" } )
     local goldPotNum = ModUtil.Path.Get( "GoldPotNum", roomData )
-    if not goldPotNum and RoomControl.config.RequireForcedFeatures then
+    if RoomControl.config.Enabled and not goldPotNum and RoomControl.config.RequireForcedFeatures then
         return
-    elseif not goldPotNum then
+    elseif not RoomControl.config.Enabled or not goldPotNum then
         return baseFunc( currentRoom )
     end
 
@@ -276,7 +302,7 @@ ModUtil.Path.Override( "LeaveRoom", function( currentRun, door ) -- This overrid
 
     -- CHANGES MADE HERE
     local forcedRoomData = RCLib.GetFromList( RoomControl.CurrentRunData, { dataType = "roomFeatures", chamberNum = GetRunDepth( CurrentRun ) + 1 } )
-    if forcedRoomData.Flipped ~= nil then
+    if RoomControl.config.Enabled and forcedRoomData.Flipped ~= nil then
         nextRoom.Flipped = forcedRoomData.Flipped
     else
         local flipMap = false
