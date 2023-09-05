@@ -41,7 +41,7 @@ RunControl.Runs.SleepSoul607Talos = {
             },
             exitDoors = {
                 Data = {
-                    [2] = { Reward = "PitchBlackDarkness", ValidRooms = RCLib.StandardCombats },
+                    [2] = { Reward = "PitchBlackDarkness", EligibleRooms = RCLib.StandardCombats },
                 },
             },
         },
@@ -164,7 +164,7 @@ RunControl.Runs.SleepSoul607Talos = {
             },
             exitDoors = {
                 Data = {
-                    { Reward = "PitchBlackDarkness", ValidRooms = RCLib.StandardCombats },
+                    { Reward = "PitchBlackDarkness", EligibleRooms = RCLib.StandardCombats },
                     { RoomName = "A_Shop01" },
                 },
             },
@@ -364,7 +364,7 @@ RunControl.Runs.SleepSoul607Talos = {
             },
             exitDoors = {
                 Data = {
-                    { Reward = "Hermes", ValidRooms = RCLib.StandardCombats },
+                    { Reward = "Hermes", EligibleRooms = RCLib.StandardCombats },
                 },
             },
         },
@@ -438,7 +438,7 @@ RunControl.Runs.SleepSoul607Talos = {
             },
             exitDoors = {
                 Data = {
-                    { Reward = "CentaurHeart", ValidRooms = RCLib.StandardCombats },
+                    { Reward = "CentaurHeart", EligibleRooms = RCLib.StandardCombats },
                     { RoomName = "B_Shop01" },
                 },
             },
@@ -586,8 +586,8 @@ RunControl.Runs.SleepSoul607Talos = {
             },
             exitDoors = {
                 Data = {
-                    { Reward = "CharonsObol", ValidRooms = RCLib.StandardCombats },
-                    { Reward = "DaedalusHammer", ValidRooms = RCLib.StandardCombats },
+                    { Reward = "CharonsObol", EligibleRooms = RCLib.StandardCombats },
+                    { Reward = "DaedalusHammer", EligibleRooms = RCLib.StandardCombats },
                 },
             },
         },
@@ -669,7 +669,7 @@ RunControl.Runs.SleepSoul607Talos = {
             },
             exitDoors = {
                 Data = {
-                    { Reward = "Trial", FirstGodName = "Demeter", SecondGodName = "Athena", ValidRooms = RCLib.StandardCombats },
+                    { Reward = "Trial", FirstGodName = "Demeter", SecondGodName = "Athena", EligibleRooms = RCLib.StandardCombats },
                     { RoomName = "C_Shop01" },
                 },
             },
@@ -693,7 +693,7 @@ RunControl.Runs.SleepSoul607Talos = {
             },
             exitDoors = {
                 Data = {
-                    { Reward = "Boon", GodName = "Demeter", ValidRooms = RCLib.StandardCombats },
+                    { Reward = "Boon", GodName = "Demeter", EligibleRooms = RCLib.StandardCombats },
                     { RoomName = "C_MiniBoss02", Reward = "Boon", GodName = "Athena" }
                 },
             },
@@ -750,7 +750,7 @@ RunControl.Runs.SleepSoul607Talos = {
             exitDoors = {
                 Data = {
                     { RoomName = "C_Story01" },
-                    { Reward = "Boon", GodName = "Athena", ValidRooms = RCLib.StandardCombats },
+                    { Reward = "Boon", GodName = "Athena", EligibleRooms = RCLib.StandardCombats },
                 },
             },
         },
@@ -761,7 +761,7 @@ RunControl.Runs.SleepSoul607Talos = {
             },
             exitDoors = {
                 Data = {
-                    { Reward = "Hermes", ValidRooms = RCLib.StandardCombats },
+                    { Reward = "Hermes", EligibleRooms = RCLib.StandardCombats },
                     { RoomName = "C_Reprieve01", Reward = "DaedalusHammer" },
                 },
             },
