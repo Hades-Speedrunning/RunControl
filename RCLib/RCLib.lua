@@ -160,6 +160,17 @@ RCLib.StandardCombats = { -- Every room (in the first 3 biomes) that contains no
     "C_Combat14",
     
 }
+RCLib.Minibosses = { -- Every midboss room from the first 3 biomes (excluding unused, including barge)
+    "A_MiniBoss01",
+    "A_MiniBoss02",
+    "A_MiniBoss03",
+    "A_MiniBoss04",
+    "B_Wrapping01",
+    "B_MiniBoss01",
+    "B_MiniBoss02",
+    "C_MiniBoss01",
+    "C_MiniBoss02",
+}
 
 RCLib.AbsoluteChamber = 1 -- TODO
 RCLib.CurrentBiome = "Tartarus" -- TODO
