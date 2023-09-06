@@ -58,7 +58,7 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function()
         local forcedRoom = forcedDoors[doorIndex] or {}
         if forcedRoom.RoomName then
             local roomDataSet = RoomControl.GetNextRoomSet( currentRun, args )
-            if IsRoomEligible( currentRun, currentRoom, roomDataSet[linkedRoomName], args ) or forcedRoom.AlwaysEligible or not RoomControl.config.CheckEligibility then
+            if IsRoomEligible( currentRun, currentRoom, roomDataSet[forcedRoom.RoomName], args ) or forcedRoom.AlwaysEligible or not RoomControl.config.CheckEligibility then
                 args.ForceNextRoom = forcedRoom.RoomName
             end
         end
