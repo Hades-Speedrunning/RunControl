@@ -217,7 +217,8 @@ RCLib.NameToCode = {
         NourishedSoul = "HealingPotencyTrait",
         RareCrop = "HarvestBoonDrop",
         GlacialGlare = "DemeterRangedBonusTrait",
-        InstantChillKill = "InstantChillKill",
+
+        WinterHarvest = "InstantChillKill",
 
         -- Hermes
         GreatestReflex = "BonusDashTrait",
