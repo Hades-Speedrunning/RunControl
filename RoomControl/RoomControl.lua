@@ -9,11 +9,29 @@ ModUtil.Mod.Register( "RoomControl" )
 
 local config = {
     Enabled = true,
+    CheckEligibility = true,
     RequireForcedFeatures = true, -- Will not spawn special objects (Chaos gates, wells, etc) unless they are forced
 }
 RoomControl.config = config
 
 RoomControl.CurrentRunData = {}
+
+function RoomControl.GetNextRoomSet( currentRun, args )
+    local currentRoom = currentRun.CurrentRoom
+    local roomSetName = currentRun.CurrentRoom.RoomSetName or "Tartarus"
+    if args.ForceNextRoomSet ~= nil then
+        roomSetName = args.ForceNextRoomSet
+    elseif currentRoom.NextRoomSet ~= nil then
+        roomSetName = GetRandomValue( currentRoom.NextRoomSet )
+    elseif currentRoom.UsePreviousRoomSet then
+        local previousRoom = GetPreviousRoom(currentRun) or currentRoom
+        roomSetName = previousRoom.RoomSetName or "Tartarus"
+    elseif currentRoom.NextRoomSetNoGenerate ~= nil then
+        roomSetName = GetRandomValue( currentRoom.NextRoomSetNoGenerate )
+    end
+
+    return args.RoomDataSet or RoomSetData[roomSetName] or {}
+end
 
 ModUtil.Path.Wrap( "DoUnlockRoomExits", function( baseFunc, run, room )
     local forcedDoors = RCLib.GetFromList( RoomControl.CurrentRunData, { dataType = "exitDoors" } ) or {}
@@ -39,7 +57,10 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function()
         local doorIndex = ModUtil.Locals.Stacked().index
         local forcedRoom = forcedDoors[doorIndex] or {}
         if forcedRoom.RoomName then
-            args.ForceNextRoom = forcedDoors[doorIndex].RoomName
+            local roomDataSet = RoomControl.GetNextRoomSet( currentRun, args )
+            if IsRoomEligible( currentRun, currentRoom, roomDataSet[linkedRoomName], args ) or forcedRoom.AlwaysEligible or not RoomControl.config.CheckEligibility then
+                args.ForceNextRoom = forcedRoom.RoomName
+            end
         end
 
         return baseFunc( currentRun, args )
