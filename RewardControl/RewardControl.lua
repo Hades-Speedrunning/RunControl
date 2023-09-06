@@ -9,6 +9,7 @@ ModUtil.Mod.Register( "RewardControl" )
 
 local config = {
     Enabled = true,
+    CheckEligibility = true,
 }
 RewardControl.config = config
 
@@ -35,13 +36,24 @@ end, RewardControl)
 ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function() -- All other rewards
     local forcedDoors = RCLib.GetFromList( RewardControl.CurrentRunData, { dataType = "exitDoors" } )
 
-    ModUtil.Path.Wrap( "ChooseRoomReward", function( baseFunc, run, room, ... )
+    ModUtil.Path.Wrap( "ChooseRoomReward", function( baseFunc, run, room, rewardStoreName, previouslyChosenRewards, args )
         local doorIndex = ModUtil.Locals.Stacked().index
         local forcedReward = forcedDoors[doorIndex] or {}
-        local rewardName
+        local rewardName = RCLib.EncodeRoomReward( forcedReward.Reward )
+        local isValid = true
 
-        if RewardControl.config.Enabled and forcedReward.Reward then
-            rewardName = RCLib.EncodeRoomReward( forcedReward.Reward )
+        if not RewardControl.config.Enabled or not forcedReward.Reward then
+            return baseFunc( run, room, rewardStoreName, previouslyChosenRewards, args )
+        end
+
+        if not rewardName then
+            isValid = false
+        end
+        if not IsRoomRewardEligible( run, room, RCLib.InferItemData( rewardName ), previouslyChosenRewards, args ) and not ( forcedReward.AlwaysEligible or not RewardControl.config.CheckEligibility ) then
+            isValid = false
+        end
+
+        if isValid then
             local overrides = forcedReward.Overrides or {}
 
             if forcedReward.Reward == "Trial" then
@@ -54,9 +66,10 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function() -- All other rewards
             end
 
             room.RewardOverrides = overrides
+            return rewardName
         end
 
-        return rewardName or baseFunc( run, room, ... )
+        return baseFunc( run, room, rewardStoreName, previouslyChosenRewards, args )
     end, RewardControl )
 
     ModUtil.Path.Wrap( "SetupRoomReward", function( baseFunc, run, room, ... )
