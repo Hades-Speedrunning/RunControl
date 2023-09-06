@@ -8,6 +8,8 @@ ModUtil.Mod.Register( "ShopControl" )
 
 local config = {
     Enabled = true,
+	CheckEligibility = true,
+    FillWithEligible = true,
 }
 ShopControl.config = config
 
@@ -20,9 +22,9 @@ ModUtil.Path.Wrap( "StartRoom", function( baseFunc, ... )
 	baseFunc( ... )
 end, ShopControl )
 
-ModUtil.Path.Wrap( "FillInShopOptions", function( baseFunc, ... )
+ModUtil.Path.Wrap( "FillInShopOptions", function( baseFunc, args )
     if not ShopControl.config.Enabled then
-        return baseFunc( ... )
+        return baseFunc( args )
     end
 
     local store = {}
@@ -38,27 +40,45 @@ ModUtil.Path.Wrap( "FillInShopOptions", function( baseFunc, ... )
         local itemCode = lookupTable[data.Item] or nil
         local itemType = RCLib.InferItemType( itemCode )
         local godCode = RCLib.EncodeBoonSet( data.Name ) or GetEligibleInteractedGod()
-        local overrides = data.Overrides or {}
+        local isValid = false
 
-        forcedItem = { Name = itemCode, Type = itemType }
-        if data.Item == "Boon" then
-            forcedItem.Type = "Boon"
-            forcedItem.Args = {
-                ForceLootName = godCode,
-                BoughtFromShop = true,
-                DoesNotBlockExit = true,
-                Cost = GetProcessedValue( ConsumableData.RandomLoot.Cost )
-            }
+        if forcedItem.AlwaysEligible or not ShopControl.config.CheckEligibility then
+            isValid = true
+        elseif Contains( args.ExclusionNames, itemCode ) then
+            isValid = false
+        elseif itemType == "Trait" then
+            isValid = IsTraitEligible( CurrentRun, TraitData[itemCode] )
+        else
+            isValid = StoreItemEligible( RCLib.InferItemData( itemCode ), args )
         end
 
-        ModUtil.Table.Merge( forcedItem, overrides )
-        options[index] = forcedItem
-    end
-    store.StoreOptions = options
+        if isValid then
+            forcedItem = { Name = itemCode, Type = itemType }
+            if data.Item == "Boon" then
+                forcedItem.Type = "Boon"
+                forcedItem.Args = {
+                    ForceLootName = godCode,
+                    BoughtFromShop = true,
+                    DoesNotBlockExit = true,
+                    Cost = GetProcessedValue( ConsumableData.RandomLoot.Cost )
+                }
+            end
 
-    if IsEmpty( store.StoreOptions ) then
-        return baseFunc( ... )
+            options[index] = forcedItem
+        end
     end
+
+    if ShopControl.config.FillWithEligible then
+        local baseStore = baseFunc( args )
+        
+        for index, data in ipairs( baseStore.StoreOptions ) do
+            if options[index] == nil and not ModUtil.IndexArray.Get( forced, { index, "EmptySlot" } ) then
+                options[index] = data
+            end
+        end
+    end
+    
+    store.StoreOptions = options
 
     return store
 end, ShopControl )
