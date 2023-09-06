@@ -10,6 +10,7 @@ local config = {
     Enabled = true,
 	CheckEligibility = true,
     FillWithEligible = true,
+    SortWells = true,
 }
 ShopControl.config = config
 
@@ -76,6 +77,10 @@ ModUtil.Path.Wrap( "FillInShopOptions", function( baseFunc, args )
                 options[index] = data
             end
         end
+    end
+
+    if ShopControl.config.SortWells and CurrentRun.CurrentRoom.ChosenRewardType ~= "Shop" then
+        options = CollapseTableOrdered( options )
     end
     
     store.StoreOptions = options
