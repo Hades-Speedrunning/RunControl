@@ -8,7 +8,7 @@ ModUtil.Mod.Register( "SellControl" )
 
 local config = {
     Enabled = true,
-    FillIfEmpty = false, -- If true, will default to a vanilla sell well if you define an empty one
+    FillWithEligible = true,
 }
 SellControl.config = config
 
@@ -28,10 +28,10 @@ ModUtil.Path.Wrap( "GenerateSellTraitShop", function( baseFunc, currentRun, curr
         return baseFunc( currentRun, currentRoom, args )
     end
 
-	GenerateSellTraitValues( currentRun, currentRoom, args )
     local sellOptions = {}
+    local maxOptions = 3 -- TODO possible LootChoiceExt compat
     for index, data in ipairs( forced ) do
-        if TableLength( sellOptions ) >= 3 then break end
+        if TableLength( sellOptions ) >= maxOptions then break end
 
         local boonName = data.Name
         local boonCode = RCLib.EncodeBoon( boonName )
@@ -41,12 +41,35 @@ ModUtil.Path.Wrap( "GenerateSellTraitShop", function( baseFunc, currentRun, curr
             table.insert( sellOptions, { Name = boonCode, Value = boonValue } )
         end
     end
-    currentRoom.SellOptions = sellOptions
 
-    if IsEmpty( currentRoom.SellOptions ) and SellControl.config.FillIfEmpty then
-        currentRoom.SellOptions = nil
-        return baseFunc( currentRun, currentRoom, args )
+    if SellControl.config.FillWithEligible then
+        GenerateSellTraitValues( currentRun, currentRoom, args )
+        local neededEmptySlots = 0
+        for index, trait in ipairs( forced ) do
+            if trait.EmptySlot then
+                neededEmptySlots = neededEmptySlots + 1
+            end
+        end
+
+		for i = 1, maxOptions do
+			if IsEmpty( currentRoom.SellValues ) or TableLength( sellOptions ) + neededEmptySlots >= maxOptions then
+                break
+            end
+
+			local baseSellOption = RemoveRandomValue( currentRoom.SellValues )
+
+            local isValid = true
+            for index, trait in ipairs( sellOptions ) do
+                if trait.Name == baseSellOption.Name then
+                    isValid = false
+                end
+            end
+
+            if isValid then table.insert( sellOptions, baseSellOption ) end
+		end
     end
+
+    currentRoom.SellOptions = sellOptions
 end, SellControl )
 
 ModUtil.Path.Context.Wrap( "AttemptPanelReroll", function()
