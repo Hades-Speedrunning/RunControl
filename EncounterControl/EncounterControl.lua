@@ -21,7 +21,9 @@ function EncounterControl.CreateWaves( waveSet )
     for waveIndex, waveData in ipairs( waveSet ) do
         for enemyIndex, enemyData in ipairs( waveData ) do
             local enemyCode = RCLib.EncodeEnemy( enemyData.Enemy )
-            ModUtil.IndexArray.Set( output, { waveIndex, "Spawns", enemyIndex },  { Name = enemyCode, TotalCount = enemyData.Num or 1 } )
+            if enemyCode then
+                ModUtil.IndexArray.Set( output, { waveIndex, "Spawns", enemyIndex },  { Name = enemyCode, TotalCount = enemyData.Num or 1 } )
+            end
         end
 
         local baseStartDelay = ModUtil.IndexArray.Get( encounterData, { "SpawnWaves", waveIndex, "StartDelay" } )
