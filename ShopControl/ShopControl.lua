@@ -36,10 +36,6 @@ ModUtil.Path.Wrap( "FillInShopOptions", function( baseFunc, args )
         lookupTable = RCLib.NameToCode.ShopRewards
     end
 
-    if ShopControl.config.SortWells and CurrentRun.CurrentRoom.ChosenRewardType ~= "Shop" then
-        forced = CollapseTableOrdered( forced )
-    end
-
     for index, data in ipairs( forced ) do
         local forcedItem = {}
         local itemCode = lookupTable[data.Item] or nil
@@ -83,6 +79,9 @@ ModUtil.Path.Wrap( "FillInShopOptions", function( baseFunc, args )
         end
     end
 
+    if ShopControl.config.SortWells and CurrentRun.CurrentRoom.ChosenRewardType ~= "Shop" then
+        options = CollapseTableOrderedByKeys( options )
+    end
     
     store.StoreOptions = options
 
