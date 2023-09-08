@@ -26,9 +26,11 @@ function EncounterControl.CreateWaves( waveSet )
             end
         end
 
-        local baseStartDelay = ModUtil.IndexArray.Get( encounterData, { "SpawnWaves", waveIndex, "StartDelay" } )
-        local defaultStartDelay = EncounterControl.config.DefaultStartDelays[waveIndex]
-        ModUtil.IndexArray.Set( output, { waveIndex, "StartDelay" }, baseStartDelay or defaultStartDelay )
+        if ModUtil.IndexArray.Get( output, { waveIndex, "Spawns", 1 } ) then
+            local baseStartDelay = ModUtil.IndexArray.Get( encounterData, { "SpawnWaves", waveIndex, "StartDelay" } )
+            local defaultStartDelay = EncounterControl.config.DefaultStartDelays[waveIndex]
+            ModUtil.IndexArray.Set( output, { waveIndex, "StartDelay" }, baseStartDelay or defaultStartDelay )
+        end
     end
 
     return output
