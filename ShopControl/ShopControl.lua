@@ -51,7 +51,8 @@ ModUtil.Path.Wrap( "FillInShopOptions", function( baseFunc, args )
         elseif itemType == "Trait" then
             isValid = IsTraitEligible( CurrentRun, TraitData[itemCode] )
         else
-            isValid = StoreItemEligible( RCLib.InferItemData( itemCode ), args )
+            isValid = ( overrides.ReplaceRequirements == nil and ( StoreItemEligible( RCLib.InferItemData( itemCode ), args ) or overrides.SkipRequirements ))
+            or ( overrides.ReplaceRequirements and IsGameStateEligible( CurrentRun, overrides.ReplaceRequirements) )
         end
 
         if isValid then
