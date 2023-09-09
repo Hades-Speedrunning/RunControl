@@ -109,7 +109,7 @@ RCLib.NameToCode = {
         FloodShot = "PoseidonRangedTrait",
         FloodFlare = "ShieldLoadAmmo_PoseidonRangedTrait",
         TidalDash = "PoseidonRushTrait",
-        PoseidonAid = "PoseidonShoutTrait",
+        PoseidonsAid = "PoseidonShoutTrait",
 
         RazorShoals = "SlipperyTrait",
 
