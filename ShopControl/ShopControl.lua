@@ -42,6 +42,7 @@ ModUtil.Path.Wrap( "FillInShopOptions", function( baseFunc, args )
         local itemType = RCLib.InferItemType( itemCode )
         local godCode = RCLib.EncodeBoonSet( data.Name ) or GetEligibleInteractedGod()
         local isValid = false
+        local overrides = data.Overrides or {}
 
         if forcedItem.AlwaysEligible or not ShopControl.config.CheckEligibility then
             isValid = true
@@ -65,6 +66,7 @@ ModUtil.Path.Wrap( "FillInShopOptions", function( baseFunc, args )
                 }
             end
 
+            ModUtil.Table.Merge( forcedItem, overrides )
             options[index] = forcedItem
         end
     end
