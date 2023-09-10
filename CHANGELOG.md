@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.0] - 2023-09-09
+
+### Added
+
+- BoonControl now has fields for BlessingValue, CurseValue, and CurseLength of Chaos boons.
+- RoomControl now has fields for EligibleRooms and ForcedRooms, e.g. when a standard combat or miniboss was on a door. Note that this can only narrow the pool of rooms, not widen it.
+- RCLib can now index by "priority"; It will cancel the current search and instead iterate through all sublists until it finds one valid and non-empty, or runs out.
+- SellControl and ShopControl now have FillWithEligible config options.
+- RewardControl, RoomControl, and ShopControl now have CheckEligibility config options. These can be bypassed with the AlwaysEligible field.
+
+### Changed
+
+- Renamed the OverridePrereqs field in BoonControl to AlwaysEligible.
+
+### Fixed
+
+- Trials forced by RewardControl will now correctly display the elite skull and sparkles.
+- RoomControl will no longer apply when not enabled.
+- Fixed names for Winter Harvest and Poseidon's Aid.
+
 ## [0.9.0] - 2023-09-02
 
 ### Added
