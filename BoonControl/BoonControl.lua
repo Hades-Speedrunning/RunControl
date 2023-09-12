@@ -12,7 +12,7 @@ local config = {
 	CheckEligibility = true,
 	FillWithEligible = true, -- If true, any empty slots in a forced boon screen will be automatically filled with eligible boons
 	UseSpareWealth = false, -- Use spare wealth as a fallback instead of using the vanilla boon screen
-	DefaultRarity = "Common", -- Default rarity when not specified per-boon. If set to false, rarity will be rolled each time
+	DefaultRarity = "Common", -- Default rarity when not specified per-boon. If set to "Random", rarity will be rolled each time
 	InferReplaces = true, -- If true, any boon that would take up an occupied slot will be offered as a replace. If false, boons will not appear as replaces unless you specify Replace = true.
 }
 BoonControl.config = config
@@ -41,7 +41,7 @@ function BoonControl.BuildTraitList( forced, eligible, rarityTable, lookupTable 
 			local rarityToUse = BoonControl.config.DefaultRarity or "Common"
 			if currentBoon.ForcedRarity ~= nil then
 				rarityToUse = currentBoon.ForcedRarity
-			elseif not BoonControl.config.DefaultRarity then
+			elseif BoonControl.config.DefaultRarity == "Random" then
 				rarityToUse = BoonControl.RollRarityForBoon( currentBoonName, rarityTable, lookupTable )
 			end
 
