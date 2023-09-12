@@ -5,7 +5,7 @@ RunControl.Runs.DrkFrst504Beowulf = {
         .. " It ended an unusually long string of bad luck that kept Drk from the top spot,"
         .. " as well as Croven's monstrous 15-month reign as record holder."
         .. "\\n\\n We ride at dawn!",
-        OriginalTime = "5:04.33",
+        OriginalTime = "05:04.33",
         CreatedFor = "1.0.0",
         Tags = { Aspect = "Beowulf", Weapon = "Shield", Category = "Unmodded Any Heat" },
     },

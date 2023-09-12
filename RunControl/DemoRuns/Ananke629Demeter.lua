@@ -8,7 +8,7 @@ RunControl.Runs.Ananke629Demeter = {
         .. "\\n\\n It's been over two years since then, and to this day I feel I've never belonged anywhere quite like I belong in Hades speedrunning."
         .. "\\n I'm very lucky to have friends like these."
         .. "\\n\\n - Sleep",
-        OriginalTime = "6:29.38",
+        OriginalTime = "06:29.38",
         CreatedFor = "1.0.0",
         Tags = { Aspect = "Demeter", Weapon = "Fists", Category = "Unmodded Any Heat" },
     },

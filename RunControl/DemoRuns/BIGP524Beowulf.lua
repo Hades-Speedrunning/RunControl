@@ -6,7 +6,7 @@ RunControl.Runs.BIGP524Beowulf = {
         .. " as well as the first sub-5:30. It is notable for using Trippy Flare on Beowulf,"
         .. " which is more powerful than Flood Flare, but much less consistent, and thus generally sees less use."
         .. " It remained the world recorded until it was beaten by 185 the following month.",
-        OriginalTime = "5:24.69",
+        OriginalTime = "05:24.69",
         CreatedFor = "1.0.0",
         Tags = { Aspect = "Beowulf", Weapon = "Shield", Category = "Modded Any Heat" },
     },

@@ -5,7 +5,7 @@ RunControl.Runs.Lili557Eris = {
         .. " The first sub-6 on the current patch, falling barely behind the previous patch's record of 5:56 (also by Lili)."
         .. " A hallmark of the post-launch Hades speedrunning scene, it  remained the world record for 3 months,"
         .. " until being dethroned by Ananke that April.",
-        OriginalTime = "5:57.03",
+        OriginalTime = "05:57.03",
         CreatedFor = "1.0.0",
         Tags = { Aspect = "Eris", Weapon = "Rail", Category = "Unmodded Any Heat" },
     },

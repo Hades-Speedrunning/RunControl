@@ -5,7 +5,7 @@ RunControl.Runs.Ananke552Eris = {
         .. " Only the second sub-6 on the current patch, dethroning long-time record holder Lili-"
         .. " a feat some thought impossible. One of the most beloved runs in the game's history,"
         .. " it remained the world record for 3 months, and remained the Eris world record for a further month.",
-        OriginalTime = "5:52.33",
+        OriginalTime = "05:52.33",
         CreatedFor = "1.0.0",
         Tags = { Aspect = "Eris", Weapon = "Rail", Category = "Unmodded Any Heat" },
     },

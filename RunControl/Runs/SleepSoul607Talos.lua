@@ -4,7 +4,7 @@ RunControl.Runs.SleepSoul607Talos = {
         Description = "The former modded Talos Aspect world record, played on the 22nd of March, 2022."
         .. " Dethroning Sleep's own 6:28, it was part of a long 4000-attempt grind,"
         .. " and remained the record until it was beaten by Ananke that June.",
-        OriginalTime = "6:07.44",
+        OriginalTime = "06:07.44",
         CreatedFor = "1.0.0",
         Tags = { "Talos", "Fists", "Unmodded Any Heat" },
     },
@@ -934,7 +934,7 @@ RunControl.Runs.SleepSoul607Talos = {
             },
             exitDoors = {
                 Data = {
-                    { RoomName = "D_MiniBoss02" },
+                    { RoomName = "D_MiniBoss02", AlwaysEligible = true },
                 },
             },
         },
