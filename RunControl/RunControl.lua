@@ -95,3 +95,34 @@ ModUtil.LoadOnce( function() RunControl.UpdateRunData() end )
 OnAnyLoad{ function()
     RunControl.DisplayVersion()
 end }
+
+ModUtil.Path.Wrap( "RunClearMessagePresentation", function( baseFunc, screen, message, args )
+    message = message or {}
+    message.Name = ModUtil.IndexArray.Get( RunControl.Runs, { RunControl.config.SelectedRun, "Metadata", "Name" } ) or "RunControl"
+    baseFunc( screen, message, args )
+end, RunControl )
+
+ModUtil.Path.Context.Wrap( "ShowRunClearScreen", function()
+    local numTextWrap = 0
+    ModUtil.Path.Wrap( "CreateTextBox", function( baseFunc, args )
+        numTextWrap = numTextWrap + 1
+        local originalTime = ModUtil.IndexArray.Get( RunControl.Runs, { RunControl.config.SelectedRun, "Metadata", "OriginalTime" } )
+        if numTextWrap == 4 and originalTime then -- Originally "Best Time:"
+            args.Text = "Original Time:"
+        end
+        if numTextWrap == 41 then
+            args.Text = 0
+        end
+        return baseFunc( args )
+    end, RunControl )
+
+    local numTimerWrap = 0
+    ModUtil.Path.Wrap( "GetTimerString", function( baseFunc, ... )
+        numTimerWrap = numTimerWrap + 1
+        if numTimerWrap == 2 then
+            local originalTime = ModUtil.IndexArray.Get( RunControl.Runs, { RunControl.config.SelectedRun, "Metadata", "OriginalTime" } )
+            return originalTime or baseFunc( ... )
+        end
+        return baseFunc( ... )
+    end, RunControl )
+end, RunControl )
