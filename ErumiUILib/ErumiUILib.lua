@@ -1509,7 +1509,9 @@ function ErumiUILib.ScrollingList.Update(scrollingList)
         scrollingList.Children[scrollingListItemBackingKey] = components[scrollingListItemBackingKey]
         local createUpArrow = function()
             local scrollingListItemArrowKey = args.Name .. "ScrollingListArrowUp" .. k
-            components[scrollingListItemArrowKey] = CreateScreenComponent({ Name = "ButtonCodexUp", X = (args.X or 0) + (args.ArrowStyle.Offset.X or 0), Y = (args.Y or 0) + ySpaceAmount + (args.ArrowStyle.Offset.Y or 0), Scale = args.ArrowStyle.Scale, Sound = "/SFX/Menu Sounds/GeneralWhooshMENU", Group = args.Group .. "Arrows" })
+            local xOffset = ModUtil.Path.Get( "ArrowStyle.UpOffset.X", args ) or 0
+            local yOffset = ModUtil.Path.Get( "ArrowStyle.UpOffset.Y", args ) or 0
+            components[scrollingListItemArrowKey] = CreateScreenComponent({ Name = "ButtonCodexUp", X = (args.X or 0) + (args.ArrowStyle.Offset.X or 0) + xOffset, Y = (args.Y or 0) + ySpaceAmount + (args.ArrowStyle.Offset.Y or 0) + yOffset, Scale = args.ArrowStyle.Scale, Sound = "/SFX/Menu Sounds/GeneralWhooshMENU", Group = args.Group .. "Arrows" })
             components[scrollingListItemArrowKey].OnPressedFunctionName = "ErumiUILib.ScrollingList.PreviousPage"
             components[scrollingListItemArrowKey].args = args
             components[scrollingListItemArrowKey].Parent = scrollingList
@@ -1519,7 +1521,9 @@ function ErumiUILib.ScrollingList.Update(scrollingList)
         end
         local createDownArrow = function()
             local scrollingListItemArrowKey = args.Name .. "ScrollingListArrowDown" .. k
-            components[scrollingListItemArrowKey] = CreateScreenComponent({ Name = "ButtonCodexDown", X = (args.X or 0) + (args.ArrowStyle.Offset.X or 0), Y = (args.Y or 0) + ySpaceAmount + (args.ArrowStyle.Offset.Y or 0), Scale = args.ArrowStyle.Scale, Sound = "/SFX/Menu Sounds/GeneralWhooshMENU", Group = args.Group .. "Arrows" })
+            local xOffset = ModUtil.Path.Get( "ArrowStyle.DownOffset.X", args ) or 0
+            local yOffset = ModUtil.Path.Get( "ArrowStyle.DownOffset.Y", args ) or 0
+            components[scrollingListItemArrowKey] = CreateScreenComponent({ Name = "ButtonCodexDown", X = (args.X or 0) + (args.ArrowStyle.Offset.X or 0) + xOffset, Y = (args.Y or 0) + ySpaceAmount + (args.ArrowStyle.Offset.Y or 0) + yOffset, Scale = args.ArrowStyle.Scale, Sound = "/SFX/Menu Sounds/GeneralWhooshMENU", Group = args.Group .. "Arrows" })
             scrollingList.Children[components[scrollingListItemArrowKey].Id] = components[scrollingListItemArrowKey]
             components[scrollingListItemArrowKey].OnPressedFunctionName = "ErumiUILib.ScrollingList.NextPage"
             components[scrollingListItemArrowKey].args = args
