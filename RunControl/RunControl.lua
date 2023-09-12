@@ -9,12 +9,58 @@ ModUtil.Mod.Register( "RunControl" )
 
 local config = {
     ModpackVersion = "0.10.0",
-    SelectedRun = "DebugRun",
+    SelectedRun = "None",
 }
 RunControl.config = config
 
 RunControl.CurrentRunData = {}
 RunControl.Runs = {}
+RunControl.DemoRuns = {
+    "Lili557Eris",
+    "Ananke552Eris",
+    "185549Achilles",
+    "Croven532Beowulf",
+    "ocaml526Rama",
+    "Croven516Hera",
+    "DrkFrst504Beowulf",
+
+    "BIGP524Beowulf",
+    "185455Achilles",
+    "Croven449Hera",
+    "BIGP448Beowulf",
+    "Croven447Hera",
+    "Ocke445Beowulf",
+    "Croven439Hera",
+    "Vorime430Beowulf",
+
+    "paradigmsortBeoRoute",
+    "pseudoErisRoute",
+
+    "Ananke629Demeter",
+}
+RunControl.SortedRuns = {
+    "Lili557Eris",
+    "Ananke552Eris",
+    "185549Achilles",
+    "Croven532Beowulf",
+    "ocaml526Rama",
+    "Croven516Hera",
+    "DrkFrst504Beowulf",
+
+    "BIGP524Beowulf",
+    "185455Achilles",
+    "Croven449Hera",
+    "BIGP448Beowulf",
+    "Croven447Hera",
+    "Ocke445Beowulf",
+    "Croven439Hera",
+    "Vorime430Beowulf",
+
+    "paradigmsortBeoRoute",
+    "pseudoErisRoute",
+
+    "Ananke629Demeter",
+}
 
 function RunControl.DisplayVersion()
     local text_config_table = DeepCopyTable( UIData.CurrentRunDepth.TextFormat )
@@ -34,7 +80,7 @@ function RunControl.DisplayVersion()
     )
 end
 
-ModUtil.LoadOnce( function()
+function RunControl.UpdateRunData()
     RunControl.CurrentRunData = RunControl.Runs[RunControl.config.SelectedRun] or {}
     BoonControl.CurrentRunData = RunControl.CurrentRunData
     EncounterControl.CurrentRunData = RunControl.CurrentRunData
@@ -42,7 +88,9 @@ ModUtil.LoadOnce( function()
     RoomControl.CurrentRunData = RunControl.CurrentRunData
     SellControl.CurrentRunData = RunControl.CurrentRunData
     ShopControl.CurrentRunData = RunControl.CurrentRunData
-end )
+end
+
+ModUtil.LoadOnce( function() RunControl.UpdateRunData() end )
 
 OnAnyLoad{ function()
     RunControl.DisplayVersion()
