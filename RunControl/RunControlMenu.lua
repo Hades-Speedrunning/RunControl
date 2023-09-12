@@ -8,18 +8,48 @@ RunControl.MenuPages = {
             TextboxArgs = { Text = "Introduction" },
         },
         {
+            ElementName = "WelcomeBanner",
+            ElementType = "Textbox",
+            Style = "SubHeading",
+            Args = { X = 960, Y = 180 },
+            TextboxArgs = { Text = "Welcome to RunControl!" },
+        },
+        {
             ElementName = "Introduction",
             ElementType = "Textbox",
             Style = "Body",
-            Args = { X = 960, Y = 180 },
+            Args = { X = 960, Y = 240 },
             TextboxArgs = {
-                Text = "Welcome to RunControl!"
-                .. "\\n\\n This modpack allows complete control over the events of a Hades run. Recreate your own personal bests, test yourself"
-                .. "\\n against famous world records, or just try out that build you've always wanted- the possibilities are limitless!"
+                Text = "This modpack allows complete control over the events of a Hades run. Recreate your own personal bests, test yourself"
+                .. " against famous world records, or just try out that build you've always wanted- the possibilities are limitless!"
                 .. "\\n To the right you'll find an included library of historic runs to get you started."
-                .. "\\n After that, go further to the right to configure how these runs will be applied."
+                .. " After that, go further to the right to configure how these runs will be applied."
+                .. "\\n\\n If you want to load in more runs, add the .lua files to your Hades\\Content\\Mods\\RunControl\\Runs folder, and rerun modimporter."
+                .. " When you close and reopen the game, they should then appear in the menu to the right."
+                .. " If you're interested in making some yourself, you can find documentation on how to do this at github.com/Hades-Speedrunning/RunControl/wiki."
+                .. " If you need any more help, feel free to join the Hades Speedrunning Discord (which you can find through our speedrun.com page) and ask- We'll try to help you out."
                 .. "\\n\\n Good luck, and have fun! - SleepSoul",
                 Justification = "Center",
+                Width = 1320,
+            },
+        },
+        {
+            ElementName = "VersionBanner",
+            ElementType = "Textbox",
+            Style = "SubHeading",
+            Args = { X = 960, Y = 600 },
+            TextboxArgs = { Text = "You are playing version "..RunControl.config.ModpackVersion },
+        },
+        {
+            ElementName = "UpdateNotice",
+            ElementType = "Textbox",
+            Style = "Body",
+            Args = { X = 960, Y = 660 },
+            TextboxArgs = {
+                Text = "Please note that runs created on different versions may not play correctly on this one; this will be noted when you select them."
+                .. " The most recent release can be found at github.com/Hades-Speedrunning/RunControl/releases- be sure to check it now and again to make sure you're up to date.",
+                Justification = "Center",
+                Width = 1320,
             },
         },
     },
@@ -294,20 +324,20 @@ RunControl.MenuPages = {
 }
 
 RunControl.MenuTextStyles = {
-    Title = {
-        FontSize = 36,
-        Color = Color.White,
-        Font = "SpectralSCLightTitling",
-        ShadowBlur = 0,
-        ShadowColor = { 0, 0, 0, 1 },
-        ShadowOffset = { 0, 2 },
-        Justification = "Center",
-        VerticalJustification = "Top",
-    },
     Heading = {
         FontSize = 16,
         Color = Color.White,
         Font = "SpectralSCLight",
+        ShadowBlur = 0,
+        ShadowColor = { 0, 0, 0, 1 },
+        ShadowOffset = { 0, 2 },
+        Justification = "Center",
+        VerticalJustification = "Center",
+    },
+    SubHeading = {
+        FontSize = 16,
+        Color = Color.White,
+        Font = "AlegreyaSansSCRegular",
         ShadowBlur = 0,
         ShadowColor = { 0, 0, 0, 1 },
         ShadowOffset = { 0, 2 },
@@ -389,6 +419,7 @@ function RunControl.CloseSettingsMenu( screen )
     SetConfigOption({ Name = "FreeFormSelectSuccessDistanceStep", Value = 8})
     SetAnimation({ DestinationId = screen.Components.Background.Id, Name = screen.CloseAnimation })
     CloseScreen( GetAllIds( screen.Components ), 0.1)
+	PlaySound({ Name = "/SFX/Menu Sounds/GeneralWhooshMENU" })
     UnfreezePlayerUnit()
     OnScreenClosed({ Flag = screen.Name })
 end
@@ -651,11 +682,10 @@ function RunControl.UpdateRunDisplay( screen )
         RunControl.CreateMenuElement( screen, {
             ElementName = "SelectedRunTitle",
             ElementType = "Textbox",
-            Style = "Heading",
+            Style = "SubHeading",
             Args = { X = 780, Y = 180 },
             TextboxArgs = {
                 Text = nameText,
-                Font = "AlegreyaSansSCRegular",
                 Justification = "Left",
                 VerticalJustification = "Top",
                 Width = 840,
