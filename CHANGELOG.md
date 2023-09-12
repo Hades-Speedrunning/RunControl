@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.0] - 2023-09-12
+
+### Added
+
+- Dependency: ErumiUILib
+- There's now a full UI for RunControl! This allows configuring the settings across all mods, as well as selecting a run to play.
+- New EncounterControl config options: CheckEligibility and RequireForcedSpecialEncounters. Latter prevents Than and survival showing up when not forced.
+- There are now placeholder files for a variety of historic runs, to be included as demos in the full release.
+
+### Changed
+
+- Renamed the DefaultRarity = false setting in BoonControl to "Random".
+
+### Removed
+
+- Removed the DisallowedGods config field in BoonControl.
+
 ## [0.10.0] - 2023-09-09
 
 ### Added
