@@ -9,13 +9,16 @@ ModUtil.Mod.Register( "EncounterControl" )
 
 local config = {
     Enabled = true,
-    DefaultStartDelays = { 0, 1, 1 },
+    CheckEligibility = true,
+    RequireForcedSpecialEncounters = true, -- Than and Survival will only appear if forced
 }
 EncounterControl.config = config
 
+EncounterControl.DefaultStartDelays = { 0, 1, 1 }
+
 EncounterControl.CurrentRunData = {}
 
-function EncounterControl.CreateWaves( waveSet )
+function EncounterControl.CreateWaves( encounterData, waveSet )
     local output = {}
 
     for waveIndex, waveData in ipairs( waveSet ) do
@@ -28,13 +31,35 @@ function EncounterControl.CreateWaves( waveSet )
 
         if ModUtil.IndexArray.Get( output, { waveIndex, "Spawns", 1 } ) then
             local baseStartDelay = ModUtil.IndexArray.Get( encounterData, { "SpawnWaves", waveIndex, "StartDelay" } )
-            local defaultStartDelay = EncounterControl.config.DefaultStartDelays[waveIndex]
+            local defaultStartDelay = EncounterControl.DefaultStartDelays[waveIndex]
             ModUtil.IndexArray.Set( output, { waveIndex, "StartDelay" }, baseStartDelay or defaultStartDelay )
         end
     end
 
     return output
 end
+
+ModUtil.Path.Wrap( "IsEncounterEligible", function( baseFunc, currentRun, room, nextEncounterData )
+    local chamberNumOverride = GetRunDepth( CurrentRun )
+    local roomName = ModUtil.Path.Get( "Name", room )
+    if roomName ~= "RoomOpening" then -- All rooms other than chamber 1 generate their encounter while GetRunDepth is still returning the previous chamber number
+        chamberNumOverride = chamberNumOverride + 1
+    end
+    local forcedEncounter = RCLib.GetFromList( EncounterControl.CurrentRunData, { dataType = "encounter", chamberNum = chamberNumOverride } )
+
+    local isThanatos = Contains( EncounterSets.ThanatosEncounters, nextEncounterData.Name )
+    local isSurvival = nextEncounterData.EncounterType == "SurvivalChallenge"
+
+    if ( isThanatos or isSurvival )
+    and EncounterControl.config.Enabled
+    and EncounterControl.config.RequireForcedSpecialEncounters
+    and nextEncounterData.Name ~= forcedEncounter.Name then
+        DebugPrint({ Text = "EncounterControl: Blocking " .. nextEncounterData.Name })
+        return false
+    end
+
+    return baseFunc( currentRun, room, nextEncounterData )
+end, EncounterControl )
 
 ModUtil.Path.Wrap( "SetupEncounter", function( baseFunc, encounterData, room )
     local chamberNumOverride = GetRunDepth( CurrentRun )
@@ -48,13 +73,14 @@ ModUtil.Path.Wrap( "SetupEncounter", function( baseFunc, encounterData, room )
         return baseFunc( encounterData, room )
     end
 
-    if data.Name then
-        encounterData = EncounterData[data.Name]
+    local newEncounterData = EncounterData[data.Name]
+    if newEncounterData and ( IsEncounterEligible( CurrentRun, room, newEncounterData ) or data.AlwaysEligible or not EncounterControl.config.CheckEligibility ) then
+        encounterData = newEncounterData
     end
 
     local waves = data.Waves or {}
     local overrides = data.Overrides or {}
-    local forcedWaves = EncounterControl.CreateWaves( waves )
+    local forcedWaves = EncounterControl.CreateWaves( encounterData, waves )
 
     if not IsEmpty( forcedWaves ) then
         encounterData.SpawnWaves = forcedWaves
