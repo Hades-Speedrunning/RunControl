@@ -1,9 +1,13 @@
---[[
-Seed from the 6:07.44 Talos speedrun achieved on 2022-03-22 by SleepSoul in Any Heat (Unseeded, Modded)
-Written for RunControl version 1.0.0
-]]
-
 RunControl.Runs.SleepSoul607Talos = {
+    Metadata = {
+        Name = "6:07.44 Talos by SleepSoul",
+        Description = "The former modded Talos Aspect world record, played on the 22nd of March, 2022."
+        .. " Dethroning Sleep's own 6:28, it was part of a long 4000-attempt grind,"
+        .. " and remained the record until it was beaten by Ananke that June.",
+        OriginalTime = "6:07.44",
+        CreatedFor = "1.0.0",
+        Tags = { "Talos", "Fists", "Unmodded Any Heat" },
+    },
     IndexedBy = { "chamberNum", "dataType", "rerollNum" },
     List = {
         [1] = {
@@ -89,7 +93,6 @@ RunControl.Runs.SleepSoul607Talos = {
         [3] = {
             encounter = {
                 Data = {
-                    Name = "GeneratedTartarus",
                     Waves = {
                         {{ Enemy = "Lout", Num = 1 }, { Enemy = "Pest", Num = 4 }},
                     },
@@ -111,7 +114,6 @@ RunControl.Runs.SleepSoul607Talos = {
         [4] = {
             encounter = {
                 Data = {
-                    Name = "GeneratedTartarus",
                     Waves = {
                         {{ Enemy = "Thug", Num = 3 }},
                         {{ Enemy = "Thug", Num = 2 }, { Enemy = "Numbskull", Num = 2 }},
@@ -134,7 +136,6 @@ RunControl.Runs.SleepSoul607Talos = {
         [5] = {
             encounter = {
                 Data = {
-                    Name = "GeneratedTartarus",
                     Waves = {
                         {{ Enemy = "ArmoredPest", Num = 4 }},
                     },
@@ -195,7 +196,6 @@ RunControl.Runs.SleepSoul607Talos = {
         [7] = {
             encounter = {
                 Data = {
-                    Name = "GeneratedTartarus",
                     Waves = {
                         {{ Enemy = "ArmoredBrimstone", Num = 5 }},
                     }
@@ -238,7 +238,6 @@ RunControl.Runs.SleepSoul607Talos = {
         [10] = {
             encounter = {
                 Data = {
-                    Name = "GeneratedTartarus",
                     Waves = {
                         {{ Enemy = "Wringer", Num = 5 }, { Enemy = "Brimstone", Num = 6 }, { Enemy = "ArmoredWitch", Num = 1 }},
                     },
@@ -260,7 +259,6 @@ RunControl.Runs.SleepSoul607Talos = {
         [11] = {
             encounter = {
                 Data = {
-                    Name = "GeneratedTartarus",
                     Waves = {
                         {{ Enemy = "ArmoredWitch", Num = 5 }},
                         {{ Enemy = "ArmoredWitch", Num = 3 }, { Enemy = "Thug", Num = 2 }},
@@ -277,7 +275,6 @@ RunControl.Runs.SleepSoul607Talos = {
         [12] = {
             encounter = {
                 Data = {
-                    Name = "GeneratedTartarus",
                     Waves = {
                         {{ Enemy = "Thug", Num = 11 }, { Enemy = "ArmoredNumbskull", Num = 5 }},
                     },
@@ -326,7 +323,7 @@ RunControl.Runs.SleepSoul607Talos = {
             },
             exitDoors = {
                 Data = {
-                    { RoomName = "A_Boss03" },
+                    { RoomName = "A_Boss03", AlwaysEligible = true },
                 },
             },
         },
@@ -506,7 +503,6 @@ RunControl.Runs.SleepSoul607Talos = {
         [22] = {
             encounter = {
                 Data = {
-                    Name = "GeneratedAsphodel",
                     Waves = {
                         { { Enemy = "ArmoredBloodless", Num = 5 } },
                         { { Enemy = "ArmoredBloodless", Num = 4 }, { Enemy = "ArmoredSlamDancer", Num = 2 } },
@@ -634,7 +630,6 @@ RunControl.Runs.SleepSoul607Talos = {
         [28] = {
             encounter = {
                 Data = {
-                    Name = "GeneratedElysium",
                     Waves = {
                         { { Enemy = "Longspear", Num = 4 } },
                         { { Enemy = "Greatshield" }, { Enemy = "Longspear", Num = 3 } },
@@ -731,7 +726,6 @@ RunControl.Runs.SleepSoul607Talos = {
         [31] = {
             encounter = {
                 Data = {
-                    Name = "GeneratedElysium",
                     Waves = {
                         { { Enemy = "ArmoredGreatshield", Num = 3 } },
                         { { Enemy = "ArmoredGreatshield", Num = 2 }, { Enemy = "ArmoredSplitter", Num = 1 } },
@@ -784,7 +778,6 @@ RunControl.Runs.SleepSoul607Talos = {
         [34] = {
             encounter = {
                 Data = {
-                    Name = "GeneratedElysium",
                     Waves = {
                         { { Enemy = "Longspear", Num = 4 } },
                         { { Enemy = "Longspear", Num = 2 } },
@@ -866,7 +859,7 @@ RunControl.Runs.SleepSoul607Talos = {
                     { Item = "TitansBlood" },
                     { Item = "Boon", Name = "Athena" },
                     { Item = "UpgradedPomOfPower" },
-                    { Item = "Hermes", Overrides = { Cost = 500, UpgradeChance = 1.0, UpgradedCost = 500 }},
+                    { Item = "Hermes", Overrides = { Cost = 500, UpgradeChance = 1.0, UpgradedCost = 500, ReplaceRequirements = { RequiredTextLines = {  "HermesFirstPickUp" }, } } },
                 },
             },
             roomFeatures = {
@@ -887,7 +880,6 @@ RunControl.Runs.SleepSoul607Talos = {
         [40] = {
             encounter = {
                 Data = {
-                    Name = "GeneratedStyxMini",
                     Waves = {
                         { { Enemy = "ArmoredRat", Num = 1 } },
                     },
@@ -902,7 +894,6 @@ RunControl.Runs.SleepSoul607Talos = {
         [41] = {
             encounter = {
                 Data = {
-                    Name = "GeneratedStyxMini",
                     Waves = {
                         { { Enemy = "Rat", Num = 3 } },
                     },
@@ -922,7 +913,6 @@ RunControl.Runs.SleepSoul607Talos = {
         [42] = {
             encounter = {
                 Data = {
-                    Name = "GeneratedStyxMini",
                     Waves = {
                         { { Enemy = "TinyRat", Num = 18 } },
                     },
@@ -937,7 +927,6 @@ RunControl.Runs.SleepSoul607Talos = {
         [43] = {
             encounter = {
                 Data = {
-                    Name = "GeneratedStyxMini",
                     Waves = {
                         { { Enemy = "Snakestone", Num = 2 }, { Enemy = "Bother", Num = 1 } },
                     },
@@ -974,7 +963,6 @@ RunControl.Runs.SleepSoul607Talos = {
         [46] = {
             encounter = {
                 Data = {
-                    Name = "GeneratedStyxMini",
                     Waves = {
                         { { Enemy = "Rat", Num = 3 }},
                     },
@@ -989,7 +977,6 @@ RunControl.Runs.SleepSoul607Talos = {
         [47] = {
             encounter = {
                 Data = {
-                    Name = "GeneratedStyxMini",
                     Waves = {
                         { { Enemy = "Satyr", Num = 2 }},
                     },
@@ -1009,7 +996,6 @@ RunControl.Runs.SleepSoul607Talos = {
         [48] = {
             encounter = {
                 Data = {
-                    Name = "GeneratedStyxMini",
                     Waves = {
                         { { Enemy = "Satyr", Num = 2 }},
                     },
