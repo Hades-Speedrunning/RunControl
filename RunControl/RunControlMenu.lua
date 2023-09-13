@@ -422,6 +422,7 @@ function RunControl.CloseSettingsMenu( screen )
 	PlaySound({ Name = "/SFX/Menu Sounds/GeneralWhooshMENU" })
     UnfreezePlayerUnit()
     OnScreenClosed({ Flag = screen.Name })
+    RunControl.SaveConfig()
 end
 
 function RunControl.NextPage( screen )

@@ -90,7 +90,85 @@ function RunControl.UpdateRunData()
     ShopControl.CurrentRunData = RunControl.CurrentRunData
 end
 
-ModUtil.LoadOnce( function() RunControl.UpdateRunData() end )
+function RunControl.SaveConfig()
+    RunControl.Data.config = {}
+    RunControl.Data.config.SelectedRun = RunControl.config.SelectedRun
+
+    BoonControl.Data.config = {}
+    for k, v in pairs( BoonControl.config ) do
+        BoonControl.Data.config[k] = v
+    end
+
+    EncounterControl.Data.config = {}
+    for k, v in pairs( EncounterControl.config ) do
+        EncounterControl.Data.config[k] = v
+    end
+
+    RewardControl.Data.config = {}
+    for k, v in pairs( RewardControl.config ) do
+        RewardControl.Data.config[k] = v
+    end
+
+    RoomControl.Data.config = {}
+    for k, v in pairs( RoomControl.config ) do
+        RoomControl.Data.config[k] = v
+    end
+
+    SellControl.Data.config = {}
+    for k, v in pairs( SellControl.config ) do
+        SellControl.Data.config[k] = v
+    end
+
+    ShopControl.Data.config = {}
+    for k, v in pairs( ShopControl.config ) do
+        ShopControl.Data.config[k] = v
+    end
+end
+
+function RunControl.LoadConfig()
+    RunControl.config.SelectedRun = ModUtil.Path.Get( "RunControl.Data.config.SelectedRun" ) or RunControl.config.SelectedRun
+
+    if not IsEmpty( ModUtil.Path.Get( "BoonControl.Data.config") ) then
+        for k, v in pairs( BoonControl.Data.config ) do
+            BoonControl.config[k] = v
+        end
+    end
+
+    if not IsEmpty( ModUtil.Path.Get( "EncounterControl.Data.config") ) then
+        for k, v in pairs( EncounterControl.Data.config ) do
+            EncounterControl.config[k] = v
+        end
+    end
+
+    if not IsEmpty( ModUtil.Path.Get( "RewardControl.Data.config") ) then
+        for k, v in pairs( RewardControl.Data.config ) do
+            RewardControl.config[k] = v
+        end
+    end
+
+    if not IsEmpty( ModUtil.Path.Get( "RoomControl.Data.config") ) then
+        for k, v in pairs( RoomControl.Data.config ) do
+            RoomControl.config[k] = v
+        end
+    end
+
+    if not IsEmpty( ModUtil.Path.Get( "SellControl.Data.config") ) then
+        for k, v in pairs( SellControl.Data.config ) do
+            SellControl.config[k] = v
+        end
+    end
+
+    if not IsEmpty( ModUtil.Path.Get( "ShopControl.Data.config") ) then
+        for k, v in pairs( ShopControl.Data.config ) do
+            ShopControl.config[k] = v
+        end
+    end
+end
+
+ModUtil.LoadOnce( function()
+    RunControl.LoadConfig()
+    RunControl.UpdateRunData()
+end )
 
 OnAnyLoad{ function()
     RunControl.DisplayVersion()
