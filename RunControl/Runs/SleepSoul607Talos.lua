@@ -537,7 +537,7 @@ RunControl.Runs.SleepSoul607Talos = {
             lernieEncounter = {
                 Data = {
                     MainHead = "PinkLernie",
-                    --SideHeads = { "LavaLernieHead", "BlueLernieHead" },
+                    SideHeads = { "LavaLernieHead", "BlueLernieHead" },
                 },
             },
         },
