@@ -118,7 +118,7 @@ ModUtil.Path.Wrap( "PickHydraVariant", function( baseFunc, eventSource, args )
     for _, headName in ipairs( forcedSideHeads ) do
         table.insert( eventSource.Encounter.EnemySet, RCLib.EncodeBoss( headName ) )
     end
-    
+
     if IsEmpty( eventSource.Encounter.EnemySet ) then
         eventSource.Encounter.EnemySet = ShallowCopyTable(EnemySets.HydraHeads)
         for k, removeValue in pairs(eventSource.Encounter.BlockHeadsByHydraVariant[eventSource.HydraVariant]) do
