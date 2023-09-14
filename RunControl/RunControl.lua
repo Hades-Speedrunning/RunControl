@@ -8,7 +8,7 @@
 ModUtil.Mod.Register( "RunControl" )
 
 local config = {
-    ModpackVersion = "0.11.0",
+    ModpackVersion = "1.0.0-beta.1",
     SelectedRun = "None",
 }
 RunControl.config = config

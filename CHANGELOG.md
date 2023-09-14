@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0-beta.1] - 2023-09-14
+
+### Added
+
+- Mod settings will now be saved across play sessions.
+- The victory screen will now show the selected run's name and original time, if applicable.
+
+### Changed
+
+- Introduction screen in the RunControl settings is now more detailed.
+
+### Fixed
+
+- Fixed the game crashing when 'lava' Lernie heads are forced.
+
 ## [0.11.0] - 2023-09-12
 
 ### Added
