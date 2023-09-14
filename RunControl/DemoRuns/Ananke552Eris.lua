@@ -493,7 +493,7 @@ RunControl.Runs.Ananke552Eris = {
             lernieEncounter = {
                 Data = {
                     MainHead = "GreenLernie",
-                    -- SideHeads = { "LavaLernieHead", "BlueLernieHead" },
+                    SideHeads = { "LavaLernieHead", "BlueLernieHead" },
                 },
             },
         },
