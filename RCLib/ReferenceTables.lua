@@ -96,6 +96,12 @@ RCLib.SpareWealth = { -- The spare wealth consumable used ingame as a fallback
     Type = "Consumable",
     Rarity = "Common"
 }
+RCLib.StyxHermes = {
+    Cost = 500,
+    UpgradeChance = 1.0,
+    UpgradedCost = 500,
+    ReplaceRequirements = { RequiredTextLines = {  "HermesFirstPickUp" } }
+}
 RCLib.StandardCombats = { -- Every room (in the first 3 biomes) that contains normal encounters and has no special visuals attached
     -- Tartarus
     "RoomSimple01",
