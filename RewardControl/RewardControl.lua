@@ -15,6 +15,30 @@ RewardControl.config = config
 
 RewardControl.CurrentRunData = {}
 
+function RewardControl.CheckRewardEligibility( run, room, reward, previouslyChosenRewards, args )
+    reward = reward or {}
+    local rewardName = reward.Reward
+    local rewardCode = RCLib.EncodeRoomReward( rewardName )
+    local rewardData = RCLib.InferItemData( rewardCode )
+    
+    if not rewardCode then return false end
+
+    local hammerCount = ModUtil.Path.Get( run, "LootTypeHistory.WeaponUpgrade" ) or 0
+    hammerCount = math.min( hammerCount, 2 )
+    if rewardName == "DaedalusHammer" then
+        rewardData.GameStateRequirements = RCLib.HammerRequirements[hammerCount]
+    else
+        rewardData.GameStateRequirements = RCLib.RewardRequirements[rewardName]
+    end
+
+    if not IsRoomRewardEligible( run, room, rewardData, previouslyChosenRewards, args )
+    and not ( reward.AlwaysEligible or not RewardControl.config.CheckEligibility ) then
+        return false
+    end
+
+    return true
+end
+
 ModUtil.Path.Wrap( "ChooseRoomReward", function( baseFunc, run, room, ... ) -- c1 reward
     local rewardToUse = baseFunc( run, room, ... )
     local forcedReward = RCLib.GetFromList( RewardControl.CurrentRunData, { dataType = "startingReward" } )
@@ -46,14 +70,7 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function() -- All other rewards
             return baseFunc( run, room, rewardStoreName, previouslyChosenRewards, args )
         end
 
-        if not rewardName then
-            isValid = false
-        end
-        local itemData = RCLib.InferItemData( rewardName )
-        if forcedReward.Reward == "Gemstones" or forcedReward.Reward == "BrilliantGemstones" then
-            itemData.RequiredFalseBiome = nil -- Weird edge case to investigate. Gemstones have a RequiredFalseBiome = "Tartarus" field, which the game seems to not notice, but when this function checks it it makes them ineligible?
-        end
-        if not IsRoomRewardEligible( run, room, itemData, previouslyChosenRewards, args ) and not ( forcedReward.AlwaysEligible or not RewardControl.config.CheckEligibility ) then
+        if not RewardControl.CheckRewardEligibility( run, room, forcedReward, previouslyChosenRewards, args ) then
             isValid = false
         end
 

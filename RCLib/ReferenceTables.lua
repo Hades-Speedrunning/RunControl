@@ -8,7 +8,9 @@ RCLib.GodKeepsakes = { -- Find the keepsake used to force a given god
     AresUpgrade = "ForceAresBoonTrait",
     DemeterUpgrade = "ForceDemeterBoonTrait",
 }
+
 RCLib.KeepsakeGods = ModUtil.Table.Transpose( RCLib.GodKeepsakes )
+
 RCLib.RewardLaurels = { -- Check what laurel a given reward has assigned to it
     Darkness = "MetaProgress",
     Gemstones = "MetaProgress",
@@ -29,6 +31,7 @@ RCLib.RewardLaurels = { -- Check what laurel a given reward has assigned to it
     PomOfPower = "RunProgress",
     Trial = "RunProgress",
 }
+
 RCLib.EliteRewardOverrides = { -- The overrides used when a given reward is an elite room
     Darkness = {
         MakeHardEncounter = true,
@@ -91,17 +94,20 @@ RCLib.EliteRewardOverrides = { -- The overrides used when a given reward is an e
         },
     },
 }
+
 RCLib.SpareWealth = { -- The spare wealth consumable used ingame as a fallback
     ItemName = "FallbackMoneyDrop",
     Type = "Consumable",
     Rarity = "Common"
 }
+
 RCLib.StyxHermes = {
     Cost = 500,
     UpgradeChance = 1.0,
     UpgradedCost = 500,
     ReplaceRequirements = { RequiredTextLines = {  "HermesFirstPickUp" } }
 }
+
 RCLib.StandardCombats = { -- Every room (in the first 3 biomes) that contains normal encounters and has no special visuals attached
     -- Tartarus
     "RoomSimple01",
@@ -159,6 +165,7 @@ RCLib.StandardCombats = { -- Every room (in the first 3 biomes) that contains no
     "C_Combat14",
     
 }
+
 RCLib.Minibosses = { -- Every midboss room from the first 3 biomes (excluding unused, including barge)
     "A_MiniBoss01",
     "A_MiniBoss02",
@@ -169,4 +176,151 @@ RCLib.Minibosses = { -- Every midboss room from the first 3 biomes (excluding un
     "B_MiniBoss02",
     "C_MiniBoss01",
     "C_MiniBoss02",
+}
+
+RCLib.RewardRequirements = {
+    -- Blue Laurels
+    Darkness = {
+        RequiredFalseCosmetics = { "RoomRewardMetaPointDropRunProgress", },
+    },
+    Gemstones = {
+        RequiredFalseCosmetics = { "GemDropRunProgress", },
+        RequiredMinCompletedRuns = 4,
+    },
+    ChthonicKey = {
+        RequiredFalseCosmetics = { "LockKeyDropRunProgress", },
+    },
+    Nectar = {
+        RequiredFalseCosmetics = { "GiftDropRunProgress", },
+        RequiredMinDepth = 3,
+        RequiredMinCompletedRuns = 2,
+    },
+
+    -- Upgraded Blue Laurels
+    PitchBlackDarkness = {
+        RequiredCosmetics = { "RoomRewardMetaPointDropRunProgress", },
+    },
+    BrilliantGemstones = {
+        RequiredCosmetics = { "GemDropRunProgress", },
+    },
+    FatedKey = {
+        RequiredCosmetics = { "LockKeyDropRunProgress", },
+    },
+    VintageNectar = {
+        RequiredCosmetics = { "GiftDropRunProgress", },
+        RequiredUpgradeableGodTraits = 1,
+    },
+
+    -- Gold Laurels
+    Boon = {
+        -- None
+    },
+    CentaurHeart = {
+        -- None
+    },
+    CharonsObol = {
+        -- None
+    },
+    DaedalusHammer = {
+        RequiredMaxWeaponUpgrades = 0,
+        RequiredNotInStore = "WeaponUpgradeDrop",
+        RequiredMinCompletedRuns = 3,
+    },
+    PomOfPower = {
+        RequiredUpgradeableGodTraits = 1,
+    },
+    Hermes = {
+        RequiredMaxHermesUpgrades = 1,
+        RequiredNotInStore = "HermesUpgradeDrop",
+        RequiredMinCompletedRuns = 3,
+        RequiredMinDepth = 13,
+    },
+    Trial = {
+        RequiredMinDepth = 5,
+        RequiredMinCompletedRuns = 3,
+        RequiredInteractedGodsThisRun = 2,
+        RequiredMinRoomsSinceDevotion = 15,
+        RequiredMinExits = 2,
+        RequiredMaxDepth = 34,
+        RequiredFalseBiome = "Styx",
+        RequiredMinBiomeDepth = 3,
+    }
+}
+
+RCLib.EliteRewardRequirements = {
+    Darkness = {
+        RequiredFalseCosmetics = { "RoomRewardMetaPointDropRunProgress", },
+        RequiredMinCompletedRuns = 1,
+        RequiredMinExits = 2,
+        RequiredMinBiomeDepth = 3,
+    },
+    Gemstones = {
+        RequiredFalseCosmetics = { "GemDropRunProgress", },
+        RequiredMinCompletedRuns = 1,
+        RequiredMinExits = 2,
+        RequiredMinBiomeDepth = 3,
+    },
+    ChthonicKey = {
+        RequiredFalseCosmetics = { "LockKeyDropRunProgress", },
+        RequiredMinCompletedRuns = 1,
+        RequiredMinExits = 2,
+        RequiredMinBiomeDepth = 3,
+    },
+    Nectar = {
+        Skip = true, -- Nectar cannot be elite legitimately
+    },
+    PitchBlackDarkness = {
+        RequiredCosmetics = { "RoomRewardMetaPointDropRunProgress", },
+        RequiredMinExits = 2,
+        RequiredMinBiomeDepth = 3,
+    },
+    BrilliantGemstones = {
+        RequiredCosmetics = { "GemDropRunProgress", },
+        RequiredMinExits = 2,
+        RequiredMinBiomeDepth = 3,
+    },
+    FatedKey = {
+        RequiredCosmetics = { "LockKeyDropRunProgress", },
+        RequiredMinExits = 2,
+        RequiredMinBiomeDepth = 3,
+    },
+    VintageNectar = {
+        Skip = true, -- Nectar cannot be elite legitimately
+    },
+    Boon = {
+        Skip = true, -- Gold laurels cannot be elite legitimately
+    },
+    CentaurHeart = {
+        Skip = true, -- Gold laurels cannot be elite legitimately
+    },
+    CharonsObol = {
+        Skip = true, -- Gold laurels cannot be elite legitimately
+    },
+    PomOfPower = {
+        Skip = true, -- Gold laurels cannot be elite legitimately
+    },
+    DaedalusHammer = {
+        Skip = true, -- Gold laurels cannot be elite legitimately
+    },
+    Hermes = {
+        Skip = true, -- Gold laurels cannot be elite legitimately
+    },
+    Trial = {
+        Skip = true, -- Gold laurels cannot be elite legitimately. Trials are a separate mechanic with their own overrides
+    }
+}
+
+RCLib.HammerRequirements = {
+    {
+        RequiredMaxWeaponUpgrades = 0,
+        RequiredNotInStore = "WeaponUpgradeDrop",
+        RequiredMinCompletedRuns = 3,
+    },
+    {
+        RequiredFalseConsumablesThisRun = { "ChaosWeaponUpgrade" },
+        RequiredMaxWeaponUpgrades = 1,
+        RequiredNotInStoreNames = { "ChaosWeaponUpgrade", "WeaponUpgradeDrop" },
+        RequiredMinCompletedRuns = 3,
+        RequiredMinDepth = 26,
+    },
 }
