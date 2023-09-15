@@ -666,7 +666,7 @@ function RunControl.SelectRun( screen, runKey )
 end
 
 function RunControl.UpdateRunDisplay( screen )
-    local runMetadata = ModUtil.IndexArray.Get( RunControl.Runs, { RunControl.config.SelectedRun, "Metadata" } )
+    local runMetadata = ModUtil.IndexArray.Get( RunControl.Runs, { RunControl.config.SelectedRun, "Metadata" } ) or {}
     local nameText
     local descText
     local runVersion
@@ -676,7 +676,7 @@ function RunControl.UpdateRunDisplay( screen )
         runVersion = RunControl.config.ModpackVersion
     else
         nameText = runMetadata.Name or RunControl.config.SelectedRun..".lua"
-        descText = runMetadata.Description
+        descText = runMetadata.Description or "This run has no description."
         runVersion = runMetadata.CreatedFor or "Unspecified"
     end
     if nameText then
