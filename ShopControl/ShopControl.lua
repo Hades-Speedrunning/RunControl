@@ -40,7 +40,7 @@ ModUtil.Path.Wrap( "FillInShopOptions", function( baseFunc, args )
         local forcedItem = {}
         local itemCode = lookupTable[data.Item] or nil
         local itemType = RCLib.InferItemType( itemCode )
-        local godCode = RCLib.EncodeBoonSet( data.Name ) or GetEligibleInteractedGod()
+        local godCode = RCLib.EncodeBoonSet( data.GodName ) or GetEligibleInteractedGod()
         local isValid = false
         local overrides = data.Overrides or {}
 
