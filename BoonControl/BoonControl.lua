@@ -30,7 +30,7 @@ function BoonControl.BuildTraitList( forced, eligible, rarityTable, lookupTable 
 		local currentBoon = forced[trait]
 		local currentBoonName = currentBoon.Name
 
-		local isValid = (( Contains( eligible, currentBoonName ) or currentBoon.AlwaysEligible ) and not currentBoon.Replace )
+		local isValid = (( Contains( eligible, currentBoonName ) or ( currentBoonName and currentBoon.AlwaysEligible ) ) and not currentBoon.Replace )
 		or not BoonControl.config.CheckEligibility
 		or currentBoon.AlwaysEligible
 		or false
@@ -77,7 +77,7 @@ function BoonControl.BuildTransformingTraitList( forced, eligible, rarityTable, 
 
 		isValid = ( Contains( eligible.Temporary, currentTemporaryTrait ) and Contains( eligible.Permanent, currentPermanentTrait ) )
 		or not BoonControl.config.CheckEligibility
-		or currentBoon.AlwaysEligible
+		or ( currentTemporaryTrait and currentPermanentTrait and currentBoon.AlwaysEligible )
 		or false
 
 		if isValid and TableLength( traitOptions ) < maxOptions then
