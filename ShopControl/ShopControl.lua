@@ -113,7 +113,9 @@ ModUtil.Path.Wrap( "CreateStoreButtons", function( baseFunc ) -- Twists
                 table.insert( forcedArgs.Consumables, forcedContents )
             end
 
-            CurrentRun.CurrentRoom.Store.StoreOptions[index].UseFunctionArgs = forcedArgs
+            if ModUtil.IndexArray.Get( CurrentRun, { "CurrentRoom", "Store", "StoreOptions", index } ) then
+                CurrentRun.CurrentRoom.Store.StoreOptions[index].UseFunctionArgs = forcedArgs
+            end
         end
     end
 end, ShopControl )
