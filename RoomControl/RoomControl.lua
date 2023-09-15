@@ -97,6 +97,9 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function()
             if not IsEmpty( forcedRoomSet ) and Contains( forcedRoomSet, nextRoomData.Name ) then
                 return true
             end
+            if not IsEmpty( forcedRoomSet ) and not Contains( forcedRoomSet, nextRoomData.Name ) then
+                return false
+            end
 
             return baseFunc( currentRun, currentRoom, nextRoomData, args )
         end, RoomControl )
