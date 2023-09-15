@@ -118,12 +118,7 @@ ModUtil.Path.Wrap( "CreateStoreButtons", function( baseFunc ) -- Twists
     end
 end, ShopControl )
 
-ModUtil.Path.Wrap( "UnwrapRandomLoot", function( baseFunc, spawnId )
-    ShopControl.RandomBagSpawnID = spawnId
-    return baseFunc( spawnId )
-end, ShopControl )
-
-ModUtil.Path.Context.Wrap( "UnwrapRandomLoot", function() -- Random bags
+ModUtil.Path.Context.Wrap( "UnwrapRandomLoot", function( spawnId ) -- Random bags
     ModUtil.Path.Wrap( "GiveLoot", function( baseFunc, args )
         args = args or {}
         local shopItems = ModUtil.Path.Get( "CurrentRoom.Store.SpawnedStoreItems", CurrentRun ) or {}
@@ -131,7 +126,7 @@ ModUtil.Path.Context.Wrap( "UnwrapRandomLoot", function() -- Random bags
 
         if ShopControl.config.Enabled then
             for i, itemData in ipairs( shopItems ) do
-                if itemData.ObjectId == ShopControl.RandomBagSpawnID then
+                if itemData.ObjectId == spawnId then
                     local randomBagData = forcedShopData[i]
                     args.ForceLootName = RCLib.EncodeBoonSet( randomBagData.Contents ) or args.ForceLootName
                 end
