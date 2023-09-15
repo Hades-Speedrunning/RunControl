@@ -49,7 +49,11 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function() -- All other rewards
         if not rewardName then
             isValid = false
         end
-        if not IsRoomRewardEligible( run, room, RCLib.InferItemData( rewardName ), previouslyChosenRewards, args ) and not ( forcedReward.AlwaysEligible or not RewardControl.config.CheckEligibility ) then
+        local itemData = RCLib.InferItemData( rewardName )
+        if forcedReward.Reward == "Gemstones" or forcedReward.Reward == "BrilliantGemstones" then
+            itemData.RequiredFalseBiome = nil -- Weird edge case to investigate. Gemstones have a RequiredFalseBiome = "Tartarus" field, which the game seems to not notice, but when this function checks it it makes them ineligible?
+        end
+        if not IsRoomRewardEligible( run, room, itemData, previouslyChosenRewards, args ) and not ( forcedReward.AlwaysEligible or not RewardControl.config.CheckEligibility ) then
             isValid = false
         end
 
