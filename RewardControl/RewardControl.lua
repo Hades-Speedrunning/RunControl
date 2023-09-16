@@ -23,7 +23,7 @@ function RewardControl.CheckRewardEligibility( run, room, reward, previouslyChos
     
     if not rewardCode then return false end
 
-    local hammerCount = ModUtil.Path.Get( run, "LootTypeHistory.WeaponUpgrade" ) or 0
+    local hammerCount = ModUtil.Path.Get( "LootTypeHistory.WeaponUpgrade", run ) or 0
     hammerCount = math.min( hammerCount, 2 )
     if rewardName == "DaedalusHammer" then
         rewardData.GameStateRequirements = RCLib.HammerRequirements[hammerCount]
