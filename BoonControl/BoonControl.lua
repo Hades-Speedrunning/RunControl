@@ -29,14 +29,13 @@ function BoonControl.BuildTraitList( forced, eligible, rarityTable, lookupTable 
 	for trait, _ in pairs( forced ) do
 		local currentBoon = forced[trait]
 		local currentBoonName = currentBoon.Name
+		local boonCode = lookupTable[currentBoonName]
 
-		local isValid = (( Contains( eligible, currentBoonName ) or ( currentBoonName and currentBoon.AlwaysEligible ) ) and not currentBoon.Replace )
+		local isValid = (( Contains( eligible, currentBoonName ) or ( boonCode and currentBoon.AlwaysEligible ) ) and not currentBoon.Replace )
 		or not BoonControl.config.CheckEligibility
-		or currentBoon.AlwaysEligible
 		or false
 
 		if isValid and TableLength( traitOptions ) < maxOptions then
-			local boonCode = lookupTable[currentBoonName]
 			local boonType = RCLib.InferItemType( boonCode )
 			local rarityToUse = BoonControl.config.DefaultRarity or "Common"
 			if currentBoon.ForcedRarity ~= nil then
@@ -74,10 +73,12 @@ function BoonControl.BuildTransformingTraitList( forced, eligible, rarityTable, 
 		local currentBoon = forced[trait]
 		local currentTemporaryTrait = currentBoon.CurseName
 		local currentPermanentTrait = currentBoon.BlessingName
+		local temporaryCode = lookupTable.Temporary[currentTemporaryTrait]
+		local permanentCode = lookupTable.Permanent[currentPermanentTrait]
 
 		isValid = ( Contains( eligible.Temporary, currentTemporaryTrait ) and Contains( eligible.Permanent, currentPermanentTrait ) )
-		or not BoonControl.config.CheckEligibility
 		or ( currentTemporaryTrait and currentPermanentTrait and currentBoon.AlwaysEligible )
+		or not BoonControl.config.CheckEligibility
 		or false
 
 		if isValid and TableLength( traitOptions ) < maxOptions then
@@ -90,8 +91,8 @@ function BoonControl.BuildTransformingTraitList( forced, eligible, rarityTable, 
 
 			table.insert( traitOptions, 
 				{
-					ItemName = lookupTable.Permanent[currentPermanentTrait],
-					SecondaryItemName = lookupTable.Temporary[currentTemporaryTrait],
+					ItemName = permanentCode,
+					SecondaryItemName = temporaryCode,
 					Type = "TransformingTrait",
 					Rarity = rarityToUse,
 					BoonControlData = currentBoon,
