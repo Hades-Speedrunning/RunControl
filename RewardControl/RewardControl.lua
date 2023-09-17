@@ -16,6 +16,7 @@ RewardControl.config = config
 RewardControl.CurrentRunData = {}
 
 function RewardControl.CheckRewardEligibility( run, room, reward, previouslyChosenRewards, args )
+    args = args or {}
     reward = reward or {}
     local rewardName = reward.Reward
     local rewardCode = RCLib.EncodeRoomReward( rewardName )
@@ -39,8 +40,8 @@ function RewardControl.CheckRewardEligibility( run, room, reward, previouslyChos
     return true
 end
 
-ModUtil.Path.Wrap( "ChooseRoomReward", function( baseFunc, run, room, ... ) -- c1 reward
-    local rewardToUse = baseFunc( run, room, ... )
+ModUtil.Path.Wrap( "ChooseRoomReward", function( baseFunc, run, room, rewardStoreName, previouslyChosenRewards, args ) -- c1 reward
+    local rewardToUse = baseFunc( run, room, rewardStoreName, previouslyChosenRewards, args )
     local forcedReward = RCLib.GetFromList( RewardControl.CurrentRunData, { dataType = "startingReward" } )
 
     if not ( RewardControl.config.Enabled ) then
@@ -50,7 +51,7 @@ ModUtil.Path.Wrap( "ChooseRoomReward", function( baseFunc, run, room, ... ) -- c
 		return rewardToUse
 	end
 
-    if forcedReward.Reward then
+    if forcedReward.Reward and RewardControl.CheckRewardEligibility( run, room, forcedReward, previouslyChosenRewards, args ) then
         rewardToUse = RCLib.EncodeRoomReward( forcedReward.Reward ) or rewardToUse
     end
 
