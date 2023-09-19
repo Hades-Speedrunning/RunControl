@@ -127,7 +127,7 @@ function RCLib.InferItemType( item )
     if ConsumableData[item] then
         itemType = "Consumable"
     end
-    if item == "RandomLoot" then
+    if item == "RandomLoot" or item == "BoostedRandomLoot" then
         itemType = "Boon"
     end
     return itemType

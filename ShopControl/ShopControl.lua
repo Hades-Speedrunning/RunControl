@@ -57,13 +57,12 @@ ModUtil.Path.Wrap( "FillInShopOptions", function( baseFunc, args )
 
         if isValid then
             forcedItem = { Name = itemCode, Type = itemType }
-            if data.Item == "Boon" then
-                forcedItem.Type = "Boon"
+            if data.Item == "Boon" or data.Item == "UpgradedBoon" then
                 forcedItem.Args = {
                     ForceLootName = godCode,
                     BoughtFromShop = true,
                     DoesNotBlockExit = true,
-                    Cost = GetProcessedValue( ConsumableData.RandomLoot.Cost )
+                    Cost = GetProcessedValue( ConsumableData[itemCode].Cost )
                 }
             end
 
