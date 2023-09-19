@@ -214,7 +214,7 @@ RCLib.NameToCode = {
         KillingFreeze = "MaximumChillBonusSlow",
         FrozenTouch = "DemeterRetaliateTrait",
         SnowBurst = "CastNovaTrait",
-        NourishedSoul = "HealingPotencyTrait",
+        NourishedSoul = "HealingPotencyDrop", -- See Last Stand/Deathless Stand
         RareCrop = "HarvestBoonDrop",
         GlacialGlare = "DemeterRangedBonusTrait",
 
