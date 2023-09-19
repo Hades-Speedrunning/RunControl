@@ -182,7 +182,7 @@ RunControl.Runs.SleepSoul607Talos = {
             },
             shop = {
                 Data = {
-                    { Item = "Boon", Name = "Athena" },
+                    { Item = "Boon", GodName = "Athena" },
                     { Item = "Food" },
                     { Item = "CentaurHeart" },
                 },
@@ -293,7 +293,7 @@ RunControl.Runs.SleepSoul607Talos = {
         [13] = { -- Tart Endshop
             shop = {
                 Data = {
-                    { Item = "Boon", Name = "Demeter" },
+                    { Item = "Boon", GodName = "Demeter" },
                     { Item = "Food" },
                     { Item = "PomOfPower" },
                 },
@@ -353,7 +353,7 @@ RunControl.Runs.SleepSoul607Talos = {
                 },
             },
         },
-        [16] = {
+        [16] = { -- Aspho Intro
             roomFeatures = {
                 Data = {
                     ChaosGate = { RoomName = "RoomSecret02" },
@@ -443,7 +443,7 @@ RunControl.Runs.SleepSoul607Talos = {
         [19] = { -- Aspho Midshop
             shop = {
                 Data = {
-                    { Item = "Boon", Name = "Ares" },
+                    { Item = "Boon", GodName = "Ares" },
                     { Item = "Food" },
                     { Item = "PomOfPower" },
                 },
@@ -574,7 +574,7 @@ RunControl.Runs.SleepSoul607Talos = {
                 },
             },
         },
-        [26] = {
+        [26] = { -- Ely Intro
             roomFeatures = {
                 Data = {
                     ChaosGate = { RoomName = "RoomSecret03" },
@@ -677,7 +677,7 @@ RunControl.Runs.SleepSoul607Talos = {
             },
             shop = {
                 Data = {
-                    { Item = "Boon", Name = "Zeus" },
+                    { Item = "Boon", GodName = "Zeus" },
                     { Item = "Food" },
                     { Item = "PomOfPower" },
                 },
@@ -749,10 +749,6 @@ RunControl.Runs.SleepSoul607Talos = {
             },
         },
         [32] = {
-            boonMenu = {
-                Data = {
-                },
-            },
             exitDoors = {
                 Data = {
                     { Reward = "Hermes", EligibleRooms = RCLib.StandardCombats },
@@ -854,12 +850,12 @@ RunControl.Runs.SleepSoul607Talos = {
         [39] = { -- Styx Hub (First entry)
             shop = {
                 Data = {
-                    { Item = "Boon", Name = "Ares" },
+                    { Item = "Boon", GodName = "Ares" },
                     { Item = "CentaurHeart" },
                     { Item = "TitansBlood" },
-                    { Item = "Boon", Name = "Athena" },
+                    { Item = "Boon", GodName = "Athena" },
                     { Item = "UpgradedPomOfPower" },
-                    { Item = "Hermes", Overrides = { Cost = 500, UpgradeChance = 1.0, UpgradedCost = 500, ReplaceRequirements = { RequiredTextLines = {  "HermesFirstPickUp" }, } } },
+                    { Item = "Hermes", Overrides = RCLib.StyxHermes },
                 },
             },
             roomFeatures = {

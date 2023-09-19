@@ -277,7 +277,7 @@ RunControl.Runs.Ananke552Eris = {
         [13] = { -- Tart Endshop
             shop = {
                 Data = {
-                    { Item = "Boon", Name = "Demeter" },
+                    { Item = "Boon", GodName = "Demeter" },
                     { Item = "Food" },
                     { Item = "Hermes" },
                 },
@@ -340,7 +340,7 @@ RunControl.Runs.Ananke552Eris = {
                 },
             },
         },
-        [16] = {
+        [16] = { -- Aspho Intro
             exitDoors = {
                 Data = {
                     { RoomName = "B_Combat10", Reward = "Hermes" },
@@ -406,7 +406,7 @@ RunControl.Runs.Ananke552Eris = {
         [19] = { -- Aspho Midshop
             shop = {
                 Data = {
-                    { Item = "Boon", Name = "Poseidon" },
+                    { Item = "Boon", GodName = "Poseidon" },
                     { Item = "Darkness" },
                     { Item = "PomSlice" },
                 },
@@ -467,7 +467,7 @@ RunControl.Runs.Ananke552Eris = {
         [23] = { -- Aspho Endshop
             shop = {
                 Data = {
-                    { Item = "Boon", Name = "Poseidon" },
+                    { Item = "Boon", GodName = "Poseidon" },
                     { Item = "Gemstones" },
                     { Item = "CentaurHeart" },
                 },
@@ -514,7 +514,7 @@ RunControl.Runs.Ananke552Eris = {
                 },
             },
         },
-        [26] = {
+        [26] = { -- Ely Intro
             exitDoors = {
                 Data = {
                     { RoomName = "C_Combat08", Reward = "DaedalusHammer" },
@@ -682,7 +682,7 @@ RunControl.Runs.Ananke552Eris = {
         [32] = { -- Ely Midshop
             shop = {
                 Data = {
-                    { Item = "Boon", Name = "Poseidon" },
+                    { Item = "Boon", GodName = "Poseidon" },
                     { Item = "Darkness" },
                     { Item = "CentaurHeart" },
                 },
@@ -771,12 +771,12 @@ RunControl.Runs.Ananke552Eris = {
         [39] = { -- Styx Hub (First entry)
             shop = {
                 Data = {
-                    { Item = "Boon", Name = "Demeter" },
+                    { Item = "Boon", GodName = "Demeter" },
                     { Item = "CentaurHeart" },
                     { Item = "Diamond" },
                     { Item = "UpgradedPomOfPower" },
                     { Item = "UpgradedPomOfPower" },
-                    { Item = "Hermes", Overrides = { Cost = 500, UpgradeChance = 1.0, UpgradedCost = 500, ReplaceRequirements = { RequiredTextLines = {  "HermesFirstPickUp" }, } } },
+                    { Item = "Hermes", Overrides = RCLib.StyxHermes },
                 },
             },
             exitDoors = {
