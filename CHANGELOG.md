@@ -7,6 +7,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0-beta.3] - 2023-09-19
+
+### Added
+
+- Victory screen UI now contains original heat used and number of clears for a given run.
+
+### Fixed
+
+- Trial doors will no longer cause a crash when the following room has a forced encounter.
+- Hammers will now have their eligibility checked correctly.
+- Nourished Soul will now be forced correctly.
+- Upgraded boons (in Styx) will now be added to shops correctly.
+
+## [1.0.0-beta.2] - 2023-09-16
+
+### Added
+
+- There's now a table of Styx Hermes' overrides, so you don't have to specify them manually.
+- God names in shops are now written in as GodName, to match rooms.
+- You can now specify which god will appear in random bags.
+
+### Changed
+
+- Updated to most recent version of ModUtil (2.9.0).
+
+### Fixed
+
+- Runs without metadata will no longer cause a crash when selected.
+- Reward eligibility will now be checked properly.
+- Fateful Twists will no longer cause a crash when wells are reopened after buying them.
+- Rooms not in ForcedRooms fields will no longer be forced.
+- Boons labelled as AlwaysEligible will no longer be forced when they don't exist.
+
 ## [1.0.0-beta.1] - 2023-09-14
 
 ### Added
