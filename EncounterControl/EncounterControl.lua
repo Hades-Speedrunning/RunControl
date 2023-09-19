@@ -74,7 +74,7 @@ ModUtil.Path.Wrap( "SetupEncounter", function( baseFunc, encounterData, room )
     end
 
     local newEncounterData = EncounterData[data.Name]
-    if newEncounterData and ( IsEncounterEligible( CurrentRun, room, newEncounterData ) or data.AlwaysEligible or not EncounterControl.config.CheckEligibility ) then
+    if room and newEncounterData and ( IsEncounterEligible( CurrentRun, room, newEncounterData ) or data.AlwaysEligible or not EncounterControl.config.CheckEligibility ) then
         encounterData = newEncounterData
     end
 
