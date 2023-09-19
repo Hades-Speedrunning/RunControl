@@ -6,6 +6,7 @@ RunControl.Runs.ocaml526Rama = {
         .. " surprising many, as Rama has not held the world record before or since."
         .. " Croven would reclaim his record 5 days later.",
         OriginalTime = "05:26.16",
+        OriginalHeat = 9,
         CreatedFor = "1.0.0",
         Tags = { Aspect = "Rama", Weapon = "Bow", Category = "Unmodded Any Heat" },
     },
@@ -13,9 +14,7 @@ RunControl.Runs.ocaml526Rama = {
     List = {
         [1] = {
             startingReward = {
-                Data = {
-                    { Reward = "DaedalusHammer" },
-                },
+                Data = { Reward = "DaedalusHammer" },
             },
             encounter = {
                 Data = {

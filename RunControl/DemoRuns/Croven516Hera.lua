@@ -5,6 +5,7 @@ RunControl.Runs.Croven516Hera = {
         .. " It returned Croven to the top spot after a mere 5 days,"
         .. " and would go on to stand for an absolutely staggering 15 months, until finally being dethroned that April by DrkFrst.",
         OriginalTime = "05:16.87",
+        OriginalHeat = 9,
         CreatedFor = "1.0.0",
         Tags = { Aspect = "Hera", Weapon = "Bow", Category = "Unmodded Any Heat" },
     },

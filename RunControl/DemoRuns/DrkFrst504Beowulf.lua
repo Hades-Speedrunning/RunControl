@@ -6,6 +6,7 @@ RunControl.Runs.DrkFrst504Beowulf = {
         .. " as well as Croven's monstrous 15-month reign as record holder."
         .. "\\n\\n We ride at dawn!",
         OriginalTime = "05:04.33",
+        OriginalHeat = 9,
         CreatedFor = "1.0.0",
         Tags = { Aspect = "Beowulf", Weapon = "Shield", Category = "Unmodded Any Heat" },
     },

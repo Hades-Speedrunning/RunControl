@@ -9,6 +9,7 @@ RunControl.Runs.Ananke629Demeter = {
         .. "\\n I'm very lucky to have friends like these."
         .. "\\n\\n - Sleep",
         OriginalTime = "06:29.38",
+        OriginalHeat = 9,
         CreatedFor = "1.0.0",
         Tags = { Aspect = "Demeter", Weapon = "Fists", Category = "Unmodded Any Heat" },
     },

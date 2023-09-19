@@ -7,6 +7,7 @@ RunControl.Runs.BIGP524Beowulf = {
         .. " which is more powerful than Flood Flare, but much less consistent, and thus generally sees less use."
         .. " It remained the world record until it was beaten by 185 the following month.",
         OriginalTime = "05:24.69",
+        OriginalHeat = 9,
         CreatedFor = "1.0.0",
         Tags = { Aspect = "Beowulf", Weapon = "Shield", Category = "Modded Any Heat" },
     },
