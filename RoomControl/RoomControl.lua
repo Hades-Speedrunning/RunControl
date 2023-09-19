@@ -45,7 +45,6 @@ end, RoomControl )
 
 ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function()
     local forcedDoors = RCLib.GetFromList( RoomControl.CurrentRunData, { dataType = "exitDoors" } )
-    RoomControl.DumpDoors = forcedDoors
 
     ModUtil.Path.Wrap( "ChooseNextRoomData", function( baseFunc, currentRun, args )
         if not RoomControl.config.Enabled then
