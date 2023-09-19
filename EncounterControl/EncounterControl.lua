@@ -54,7 +54,6 @@ ModUtil.Path.Wrap( "IsEncounterEligible", function( baseFunc, currentRun, room, 
     and EncounterControl.config.Enabled
     and EncounterControl.config.RequireForcedSpecialEncounters
     and nextEncounterData.Name ~= forcedEncounter.Name then
-        DebugPrint({ Text = "EncounterControl: Blocking " .. nextEncounterData.Name })
         return false
     end
 
