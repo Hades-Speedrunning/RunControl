@@ -165,7 +165,7 @@ RunControl.Runs.ocaml526Rama = {
             exitDoors = {
                 Data = {
                     { Reward = "Boon", GodName = "Artemis" },
-                    { Reward = "Boon", GodName = "Demeter", ForcedRooms = { "A_Miniboss" } },
+                    { Reward = "Boon", GodName = "Demeter", ForcedRooms = { "A_MiniBoss01", "A_MiniBoss03" } },
                     { RoomName = "A_Shop01" },
                 },
             },

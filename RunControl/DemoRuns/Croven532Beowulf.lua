@@ -744,7 +744,7 @@ RunControl.Runs.Croven532Beowulf = {
                 },
             },
         },
-        [37] = { -- Pre-Ely Midbiome
+        [37] = { -- Pre-Styx Midbiome
             roomFeatures = {
                 Data = {
                     Well = { Force = true },

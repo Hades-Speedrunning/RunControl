@@ -1,4 +1,4 @@
-RunControl.Runs.BIGP524Beowulf = {
+--[[RunControl.Runs.BIGP524Beowulf = {
     Metadata = {
         Name = "5:24.69 Beowulf by BIGP",
         Description = "The former modded Any Heat world record, played on the 20th of September, 2021."
@@ -11,4 +11,4 @@ RunControl.Runs.BIGP524Beowulf = {
         CreatedFor = "1.0.0",
         Tags = { Aspect = "Beowulf", Weapon = "Shield", Category = "Modded Any Heat" },
     },
-}
+}]]
