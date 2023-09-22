@@ -128,7 +128,7 @@ ModUtil.Path.Context.Wrap( "UnwrapRandomLoot", function( spawnId ) -- Random bag
         if ShopControl.config.Enabled then
             for i, itemData in ipairs( shopItems ) do
                 if itemData.ObjectId == spawnId then
-                    local randomBagData = forcedShopData[i]
+                    local randomBagData = forcedShopData[i] or {}
                     args.ForceLootName = RCLib.EncodeBoonSet( randomBagData.Contents ) or args.ForceLootName
                 end
             end
