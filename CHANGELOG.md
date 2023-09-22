@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0-beta.4] - 2023-09-22
+
+### Added
+
+- Implemented the 5:16 Hera WR by Croven.
+
+### Changed
+
+- Runs to be implemented in the further future have been removed from the menu for the time being.
+
+### Fixed
+
+- The game will no longer crash when you buy a random bag without specified contents.
+
 ## [1.0.0-beta.3] - 2023-09-19
 
 ### Added
