@@ -51,7 +51,7 @@ ModUtil.Path.Wrap( "ChooseRoomReward", function( baseFunc, run, room, rewardStor
 		return rewardToUse
 	end
 
-    if forcedReward.Reward and RewardControl.CheckRewardEligibility( run, room, forcedReward, previouslyChosenRewards, args ) then
+    if RewardControl.CheckRewardEligibility( run, room, forcedReward, previouslyChosenRewards, args ) then
         rewardToUse = RCLib.EncodeRoomReward( forcedReward.Reward ) or rewardToUse
     end
 
