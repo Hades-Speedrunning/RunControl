@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0-beta.5] - 2023-09-24
+
+### Added
+
+- Implemented the 6:29 former Demeter WR by Ananke.
+
+### Changed
+
+- Lists that don't, at any point, specify a dataType will now throw out an error without successfully returning anything. This prevents unintended behaviour or crashes that not specifying could potentially cause.
+
+### Fixed
+
+- Elite rooms with Fated Key rewards will now work correctly.
+
 ## [1.0.0-beta.4] - 2023-09-22
 
 ### Added
