@@ -83,7 +83,7 @@ RCLib.EliteRewardOverrides = { -- The overrides used when a given reward is an e
             Gems = 15,
         },
     },
-    FatedKeys = {
+    FatedKey = {
         MakeHardEncounter = true,
         RewardPreviewIcon = "RoomElitePreview",
         RewardPreviewFx = "RoomRewardAvailableRareSparkles",
