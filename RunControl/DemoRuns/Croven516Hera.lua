@@ -3,7 +3,7 @@ RunControl.Runs.Croven516Hera = {
         Name = "5:16.87 Hera by Croven",
         Description = "The former Any Heat world record, played on the 3rd of January, 2022."
         .. " It returned Croven to the top spot after a mere 5 days,"
-        .. " and would go on to stand for an absolutely staggering 15 months, until finally being dethroned that April by DrkFrst.",
+        .. " and would go on to stand for an absolutely staggering 15 months, until finally being dethroned the following April by DrkFrst.",
         OriginalTime = "05:16.87",
         OriginalHeat = 9,
         CreatedFor = "1.0.0",

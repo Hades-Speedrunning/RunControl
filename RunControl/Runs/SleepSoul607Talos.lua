@@ -1,12 +1,15 @@
 RunControl.Runs.SleepSoul607Talos = {
     Metadata = {
         Name = "6:07.44 Talos by SleepSoul",
-        Description = "The former modded Talos Aspect world record, played on the 22nd of March, 2022."
-        .. " Dethroning Sleep's own 6:28, it was part of a long 4000-attempt grind,"
-        .. " and remained the record until it was beaten by Ananke that June.",
+        Description = "The former modded Talos aspect world record, played on the 22nd of March, 2022."
+        .. " Dethroning my own 6:28, it was part of a long 4000-attempt grind,"
+        .. " and remained the record until it was beaten by Ananke that June."
+        .. "\\n\\n It was the first run I used to test this modpack, and thus is now notable for being the first ever rerun."
+        .. "\\n On my first attempt, I improved it by 27 seconds, to a 5:40- not half bad."
+        .. "\\n\\n - Sleep",
         OriginalTime = "06:07.44",
         CreatedFor = "1.0.0",
-        Tags = { "Talos", "Fists", "Unmodded Any Heat" },
+        Tags = { Aspect = "Talos", Weapon = "Fists", Category = "Modded Any Heat" },
     },
     IndexedBy = { "chamberNum", "dataType", "rerollNum" },
     List = {
