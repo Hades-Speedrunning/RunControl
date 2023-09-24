@@ -169,7 +169,7 @@ ModUtil.Path.Wrap( "StartRoom", function( baseFunc, currentRun, currentRoom )
 	BoonControl.GodAppearances = ModUtil.Table.Copy( currentRun.LootTypeHistory )
 	-- LootTypeHistory is always accurate at the start and end of a room, but increments at an unpredictable time.
 	-- We need to replicate its functionality in a more consistent way
-	-- TODO edge case: in Styx shop, when multiple of one god can appear in the same room, they will be counted as the same appearance so you can't set them individually
+	-- TODO 1.0.1 edge case: in Styx shop, when multiple of one god can appear in the same room, they will be counted as the same appearance so you can't set them individually
 	BoonControl.GodRerollNums = {} -- Always empty at the start of a room. Added to when a god is rerolled
 	baseFunc( currentRun, currentRoom )
 end, BoonControl )
