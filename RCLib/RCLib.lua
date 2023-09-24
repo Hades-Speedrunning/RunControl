@@ -147,6 +147,7 @@ function RCLib.GetFromList( list, conditions )
     conditions.roomName = conditions.roomName or ModUtil.Path.Get( "CurrentRun.CurrentRoom.Name" )
 
     conditions.listsToIgnore = conditions.listsToIgnore or 0
+    conditions.dataTypeChecked = false
 
     if list.IndexedBy then
         return RCLib.GetFromIndexedList( list.List, list.IndexedBy, conditions ) or {}
@@ -161,13 +162,18 @@ function RCLib.GetFromIndexedList( list, indexedBy, conditions )
     local output = {}
 
     for _, condition in ipairs( indexedBy ) do
+        if condition == "dataType" then conditions.dataTypeChecked = true end
         if condition == "priority" then return RCLib.GetFromPrioritisedList( force, conditions ) end
         if force.Data then break end
         if force.IndexedBy then return RCLib.GetFromList( force, conditions ) end
         force = force[conditions[condition]] or {}
     end
-    if RCLib.CheckConditions( force.NeededConditions, conditions ) then
+    if RCLib.CheckConditions( force.NeededConditions, conditions ) and conditions.dataTypeChecked then
         output = force.Data or {}
+    end
+    if not conditions.dataTypeChecked then
+        DebugPrint({ Text = "Tried to get from a list without specifying data type!"})
+        RCLib.DumpOutput = output
     end
 
     return output
@@ -193,7 +199,7 @@ function RCLib.GetFromPrioritisedList( list, conditions )
     return output
 end
 
-function RCLib.CheckConditions( table, conditions ) -- TODO
+function RCLib.CheckConditions( table, conditions ) -- TODO 1.1.0
     table = table or {}
     conditions = conditions or {}
     return true
