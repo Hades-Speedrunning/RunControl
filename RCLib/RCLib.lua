@@ -171,10 +171,6 @@ function RCLib.GetFromIndexedList( list, indexedBy, conditions )
     if RCLib.CheckConditions( force.NeededConditions, conditions ) and conditions.dataTypeChecked then
         output = force.Data or {}
     end
-    if not conditions.dataTypeChecked then
-        DebugPrint({ Text = "Tried to get from a list without specifying data type!"})
-        RCLib.DumpOutput = output
-    end
 
     return output
 end
