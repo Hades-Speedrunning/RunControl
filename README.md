@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is a Hades modpack designed to replicate, in detail, the events of an already-played run. It is also versatile enough to be used for testing, proof-of-concepting, and racing. The player can replicate the decisions originally made, or make different decisions, 
+This is a Hades modpack designed to replicate, in detail, the events of an already-played run. It is also versatile enough to be used for testing, proof-of-concepting, and racing. The player can replicate the decisions originally made, or make different ones, and the modpack will respond correctly to the changing conditions this causes.
 
 ## Installation and Usage
 

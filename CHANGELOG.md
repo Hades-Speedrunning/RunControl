@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0-beta.6] - 2023-09-26
+
+### Added
+
+- Implemented the 5:49 Achilles WR by 185.
+
+### Fixed
+
+- BoonControl's FillWithEligible config option will now work on Chaos.
+
 ## [1.0.0-beta.5] - 2023-09-24
 
 ### Added
