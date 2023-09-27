@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0-RC1] - 2023-09-27
+
+### Added
+
+- Implemented the 5:04 current WR by DrkFrst and the 5:57 former WR by Lili.
+- Expanded the README and added a HOWTO file, explaining the run format.
+
+### Changed
+
+- BoonControl's InferReplaces config option is now off by default.
+
+### Fixed
+
+- Using multiple gods in the same room will now work again.
+
 ## [1.0.0-beta.7] - 2023-09-27
 
 ### Fixed
