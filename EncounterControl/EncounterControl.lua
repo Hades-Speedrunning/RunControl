@@ -1,7 +1,6 @@
 --[[
     EncounterControl
-    Authors:
-        SleepSoul (Discord: SleepSoul#6006)
+    Author: SleepSoul (Discord: sleepsoul)
     Dependencies: ModUtil, RCLib
     Define the events of an in-game encounter.
 ]]

@@ -1,8 +1,8 @@
 --[[
     SellControl
-    Author: SleepSoul (Discord: SleepSoul#6006)
+    Author: SleepSoul (Discord: sleepsoul)
     Dependencies: ModUtil, RCLib
-    Force the contents of sell wells.
+    Force the contents of Pools of Purging.
 ]]
 ModUtil.Mod.Register( "SellControl" )
 

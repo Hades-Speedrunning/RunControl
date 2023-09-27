@@ -1,9 +1,8 @@
 --[[
     RewardControl
-    Authors:
-        SleepSoul (Discord: SleepSoul#6006)
+    Author: SleepSoul (Discord: sleepsoul)
     Dependencies: ModUtil, RCLib
-    Force certain rewards to appear, per-chamber.
+    Force certain door rewards to appear.
 ]]
 ModUtil.Mod.Register( "RewardControl" )
 

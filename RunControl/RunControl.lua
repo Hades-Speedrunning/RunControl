@@ -1,7 +1,6 @@
 --[[
     RunControl
-    Authors:
-        SleepSoul (Discord: SleepSoul#6006)
+    Author: SleepSoul (Discord: sleepsoul)
     Dependencies: ModUtil, RCLib
     Central mod used to set the run data for all mods in the RunControl modpack.
 ]]

@@ -1,8 +1,8 @@
 --[[
     ShopControl
-    Author: SleepSoul (Discord: SleepSoul#6006)
+    Author: SleepSoul (Discord: sleepsoul)
     Dependencies: ModUtil, RCLib
-    Force the contents of shops.
+    Force the contents of shops and Wells.
 ]]
 ModUtil.Mod.Register( "ShopControl" )
 

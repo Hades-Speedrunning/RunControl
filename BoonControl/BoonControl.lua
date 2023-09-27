@@ -1,9 +1,8 @@
 --[[
     BoonControl
-    Authors:
-        SleepSoul (Discord: SleepSoul#6006)
+    Author: SleepSoul (Discord: sleepsoul)
     Dependencies: ModUtil, RCLib
-    Force Olympians and Hammers to provide certain options, either based on how many times they've appeared thus far, or overall.
+    Force Olympians and Hammers to provide certain options.
 ]]
 ModUtil.Mod.Register( "BoonControl" )
 

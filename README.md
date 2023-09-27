@@ -9,3 +9,7 @@ This is a Hades modpack designed to replicate, in detail, the events of an alrea
 To install the modpack, download your desired version from the releases page, extract it into your Hades\Content folder, and run modimporter.exe. If you have any problems, you can ask in the #modification-station channel in the Hades Speedrunning Discord, or #install-help in the Hades Modding Discord.
 
 Once the modpack is installed, enter the courtyard in-game and press the boon menu button. If you've installed correctly, you'll see a RunControl button, where you can select a run and configure the mods.
+
+## Creating a run
+
+Each run is one .lua file, stored in RunControl\\Runs\\. An explanation of the folder and file structure can be found in the [HOWTO](https://github.com/Hades-Speedrunning/RunControl/blob/main/HOWTO.md) file.

@@ -1,7 +1,6 @@
 --[[
     RoomControl
-    Authors:
-        SleepSoul (Discord: SleepSoul#6006)
+    Author: SleepSoul (Discord: sleepsoul)
     Dependencies: ModUtil, RCLib
     Force certain rooms to be offered on each chamber door.
 ]]
