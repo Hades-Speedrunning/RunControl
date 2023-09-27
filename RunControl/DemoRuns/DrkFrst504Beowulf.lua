@@ -567,8 +567,8 @@ RunControl.Runs.DrkFrst504Beowulf = {
             },
             exitDoors = {
                 Data = {
-                    { RoomName = "C_Combat01", Reward = "BrilliantGemstones" },
                     { RoomName = "C_Combat01", Reward = "PitchBlackDarkness" },
+                    { RoomName = "C_Combat01", Reward = "BrilliantGemstones" },
                 },
             },
         },
