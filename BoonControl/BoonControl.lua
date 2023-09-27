@@ -22,41 +22,101 @@ BoonControl.CurrentRunData = {}
 BoonControl.GodAppearances = {}
 BoonControl.GodRerollNums = {}
 
-function BoonControl.BuildTraitList( forced, eligible, rarityTable, lookupTable )
+function BoonControl.GetEligibleReplaceList( traitNames )
+	if traitNames == nil then
+		return {}
+	end
+
+	local priorityOptions = {}
+	local occupiedSlots = {}
+
+	for i, traitData in pairs( CurrentRun.Hero.Traits ) do
+		if traitData.Slot then
+			if not occupiedSlots[traitData.Slot] then
+				occupiedSlots[traitData.Slot] = { TraitName = traitData.Name, Rarity = "Common" }
+			end
+			if  traitData.Rarity ~= nil and GetRarityValue( traitData.Rarity ) > GetRarityValue( occupiedSlots[traitData.Slot].Rarity ) then
+				occupiedSlots[traitData.Slot].Rarity = traitData.Rarity
+			end
+		end
+	end
+
+	for index, traitName in ipairs( traitNames ) do
+		local slot = TraitData[traitName].Slot
+		if IsGameStateEligible( CurrentRun, TraitData[traitName] ) and not HeroHasTrait( traitName ) and occupiedSlots[slot] and GetUpgradedRarity( occupiedSlots[slot].Rarity ) ~= nil then
+			table.insert( priorityOptions, traitName )
+		end
+	end
+	return priorityOptions
+end
+
+function BoonControl.GetReplaceData( boon ) -- If a boon can be used as a replace, get the data for that replace. Otherwise, return nil.
+	local boonCode = RCLib.EncodeBoon( boon )
+	local boonData = RCLib.InferItemData( boonCode )
+
+	if not IsGameStateEligible( CurrentRun, boonData )
+	or HeroHasTrait( boonCode )
+	or not boonData.Slot then
+		return nil
+	end
+
+	for i, existingBoon in pairs( CurrentRun.Hero.Traits ) do
+		if existingBoon.Slot == boonData.Slot then
+			local oldRarity = existingBoon.Rarity
+			local newRarity = GetUpgradedRarity( oldRarity )
+			return {
+				ItemName = boonCode,
+				Type = "Trait",
+				TraitToReplace = existingBoon.Name,
+				OldRarity = oldRarity,
+				Rarity = newRarity,
+			}
+		end
+	end
+
+	return nil
+end
+
+function BoonControl.BuildTraitList( forced, eligible, eligibleReplaces, rarityTable, lookupTable )
 	local traitOptions = {}
 	local maxOptions = GetTotalLootChoices() -- TODO possible LootChoiceExt compat
 
-	for trait, _ in pairs( forced ) do
-		local currentBoon = forced[trait]
-		local currentBoonName = currentBoon.Name
-		local boonCode = lookupTable[currentBoonName]
+	for i, trait in ipairs( forced ) do
+		local traitName = trait.Name
+		local boonCode = lookupTable[traitName]
 
-		local isValid = (( Contains( eligible, currentBoonName ) or ( boonCode and currentBoon.AlwaysEligible ) ) and not currentBoon.Replace )
-		or not BoonControl.config.CheckEligibility
-		or false
-
-		if isValid and TableLength( traitOptions ) < maxOptions then
-			local boonType = RCLib.InferItemType( boonCode )
-			local rarityToUse = BoonControl.config.DefaultRarity or "Common"
-			if currentBoon.ForcedRarity ~= nil then
-				rarityToUse = currentBoon.ForcedRarity
-			elseif BoonControl.config.DefaultRarity == "Random" then
-				rarityToUse = BoonControl.RollRarityForBoon( currentBoonName, rarityTable, lookupTable )
-			end
-
-			table.insert( traitOptions, 
-				{
-					ItemName = boonCode,
-					Type = boonType,
-					Rarity = rarityToUse,
-				}
-			)
+		local validAsNew = Contains( eligible, traitName )
+		if boonCode and not trait.Replace and ( trait.AlwaysEligible or not BoonControl.config.CheckEligibility ) then
+			validAsNew = true
 		end
 
-		if not isValid and ( currentBoon.Replace or BoonControl.config.InferReplaces ) and TableLength( traitOptions ) < maxOptions then
-			local replaceData = BoonControl.GetReplaceData( currentBoonName )
-			if replaceData then
-				table.insert( traitOptions, replaceData )
+		local validAsReplace = Contains( eligibleReplaces, boonCode )
+		if boonCode and ( trait.AlwaysEligible or not BoonControl.config.CheckEligibility ) then
+			validAsReplace = true
+		end
+
+		if TableLength( traitOptions ) < maxOptions then
+			if validAsNew then
+				local boonType = RCLib.InferItemType( boonCode )
+				local rarityToUse = BoonControl.config.DefaultRarity or "Common"
+				if trait.ForcedRarity ~= nil then
+					rarityToUse = trait.ForcedRarity
+				elseif BoonControl.config.DefaultRarity == "Random" then
+					rarityToUse = BoonControl.RollRarityForBoon( traitName, rarityTable, lookupTable )
+				end
+
+				table.insert( traitOptions,
+					{
+						ItemName = boonCode,
+						Type = boonType,
+						Rarity = rarityToUse,
+					}
+				)
+			elseif validAsReplace and ( trait.Replace or BoonControl.config.InferReplaces ) then
+				local replaceData = BoonControl.GetReplaceData( traitName )
+				if replaceData then
+					table.insert( traitOptions, replaceData )
+				end
 			end
 		end
 	end
@@ -69,22 +129,21 @@ function BoonControl.BuildTransformingTraitList( forced, eligible, rarityTable, 
 	local isValid = false
 	local maxOptions = GetTotalLootChoices() -- TODO possible LootChoiceExt compat
 
-	for trait, _ in pairs( forced ) do
-		local currentBoon = forced[trait]
-		local currentTemporaryTrait = currentBoon.CurseName
-		local currentPermanentTrait = currentBoon.BlessingName
+	for i, trait in ipairs( forced ) do
+		local currentTemporaryTrait = trait.CurseName
+		local currentPermanentTrait = trait.BlessingName
 		local temporaryCode = lookupTable.Temporary[currentTemporaryTrait]
 		local permanentCode = lookupTable.Permanent[currentPermanentTrait]
 
 		isValid = ( Contains( eligible.Temporary, currentTemporaryTrait ) and Contains( eligible.Permanent, currentPermanentTrait ) )
-		or ( currentTemporaryTrait and currentPermanentTrait and currentBoon.AlwaysEligible )
+		or ( currentTemporaryTrait and currentPermanentTrait and trait.AlwaysEligible )
 		or not BoonControl.config.CheckEligibility
 		or false
 
 		if isValid and TableLength( traitOptions ) < maxOptions then
 			local rarityToUse = BoonControl.config.DefaultRarity or "Common"
-			if currentBoon.ForcedRarity ~= nil then
-				rarityToUse = currentBoon.ForcedRarity
+			if trait.ForcedRarity ~= nil then
+				rarityToUse = trait.ForcedRarity
 			elseif not BoonControl.config.DefaultRarity then
 				rarityToUse = BoonControl.RollRarityForBoon( currentPermanentTrait, rarityTable, lookupTable.Permanent )
 			end
@@ -95,7 +154,7 @@ function BoonControl.BuildTransformingTraitList( forced, eligible, rarityTable, 
 					SecondaryItemName = temporaryCode,
 					Type = "TransformingTrait",
 					Rarity = rarityToUse,
-					BoonControlData = currentBoon,
+					BoonControlData = trait,
 				}
 			)
 		end
@@ -138,33 +197,6 @@ function BoonControl.RollRarityForBoon( boon, rarityChances, lookupTable )
 	return chosenRarity
 end
 
-function BoonControl.GetReplaceData( boon ) -- If a boon can be used as a replace, get the data for that replace. Otherwise, return nil.
-	local boonCode = RCLib.EncodeBoon( boon )
-	local boonData = RCLib.InferItemData( boonCode )
-
-	if not IsGameStateEligible( CurrentRun, boonData )
-	or HeroHasTrait( boonCode )
-	or not boonData.Slot then
-		return nil
-	end
-
-	for i, existingBoon in pairs( CurrentRun.Hero.Traits ) do
-		if existingBoon.Slot == boonData.Slot then
-			local oldRarity = existingBoon.Rarity
-			local newRarity = GetUpgradedRarity( oldRarity )
-			return {
-				ItemName = boonCode,
-				Type = "Trait",
-				TraitToReplace = existingBoon.Name,
-				OldRarity = oldRarity,
-				Rarity = newRarity,
-			}
-		end
-	end
-
-	return nil
-end
-
 ModUtil.Path.Wrap( "StartRoom", function( baseFunc, currentRun, currentRoom )
 	BoonControl.GodAppearances = ModUtil.Table.Copy( currentRun.LootTypeHistory )
 	-- LootTypeHistory is always accurate at the start and end of a room, but increments at an unpredictable time.
@@ -205,8 +237,9 @@ ModUtil.Path.Wrap( "SetTraitsOnLoot", function( baseFunc, lootData, args )
 	for key, trait in pairs( eligibleUpgradeSet ) do
 		table.insert( eligibleList, RCLib.CodeToName[tableName][trait.ItemName] )
 	end
+	local eligibleReplaces = BoonControl.GetEligibleReplaceList( lootData.PriorityUpgrades )
 
-	boonOptions = BoonControl.BuildTraitList( forcedBoons, eligibleList, lootData.RarityChances, RCLib.NameToCode[tableName] )
+	boonOptions = BoonControl.BuildTraitList( forcedBoons, eligibleList, eligibleReplaces, lootData.RarityChances, RCLib.NameToCode[tableName] )
 
 	if BoonControl.config.FillWithEligible then
 		local baseData = ModUtil.Table.Copy( lootData )
@@ -257,7 +290,7 @@ ModUtil.Path.Wrap( "SetTransformingTraitsOnLoot", function( baseFunc, lootData, 
 	local boonOptions = {}
 
 	if not BoonControl.config.Enabled
-	or IsEmpty( BoonControl.CurrentRunData )then
+	or IsEmpty( BoonControl.CurrentRunData ) then
 		return baseFunc( lootData, args )
 	end
 
