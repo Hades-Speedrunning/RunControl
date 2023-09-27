@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0-beta.7] - 2023-09-27
+
+### Fixed
+
+- Gods will now only be offered if they are in your pool.
+- Replaces will no longer always be eligible.
+
 ## [1.0.0-beta.6] - 2023-09-26
 
 ### Added
