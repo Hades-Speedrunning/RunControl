@@ -5,7 +5,7 @@ RunControl.Runs.SleepSoul607Talos = {
         .. " Dethroning my own 6:28, it was part of a long 4000-attempt grind,"
         .. " and remained the record until it was beaten by Ananke that June."
         .. "\\n\\n It was the first run I used to test this modpack, and thus is now notable for being the first ever rerun."
-        .. "\\n On my first attempt, I improved it by 27 seconds, to a 5:40- not half bad."
+        .. " On my first attempt, I improved it by 27 seconds, to a 5:40- not half bad."
         .. "\\n\\n - Sleep",
         OriginalTime = "06:07.44",
         CreatedFor = "1.0.0",

@@ -10,4 +10,38 @@ RunControl.Runs.Lili557Eris = {
         CreatedFor = "1.0.0",
         Tags = { Aspect = "Eris", Weapon = "Rail", Category = "Unmodded Any Heat" },
     },
+    IndexedBy = { "chamberNum", "dataType", "rerollNum" },
+    List = {
+    },
 }
+
+--[[
+[1] = {
+    encounter = {
+        Data = {
+            Waves = {
+                {{ Enemy = "" }},
+            },
+        },
+    },
+    roomFeatures = {
+        Data = {
+
+        },
+    },
+    boonMenu = {
+        [1] = {
+            Data = {
+                { Name = "", ForcedRarity = "" },
+                { Name = "", ForcedRarity = "" },
+                { Name = "", ForcedRarity = "" },
+            },
+        },
+    },
+    exitDoors = {
+        Data = {
+            { RoomName = "", Reward = "" },
+        },
+    },
+},
+]]
