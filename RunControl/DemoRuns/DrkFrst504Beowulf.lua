@@ -831,7 +831,7 @@ RunControl.Runs.DrkFrst504Beowulf = {
                 },
             },
         },
-        [43] = { -- Megasatyr
+        [43] = { -- Mega-Satyr
             roomFeatures = {
                 Data = {
                     Flipped = true,
