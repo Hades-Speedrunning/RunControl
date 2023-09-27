@@ -88,27 +88,32 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function() -- All other rewards
         end
     end, RewardControl )
 
-    ModUtil.Path.Wrap( "SetupRoomReward", function( baseFunc, run, room, ... )
-        baseFunc( run, room, ... )
+    ModUtil.Path.Wrap( "SetupRoomReward", function( baseFunc, run, room, previouslyChosenRewards, args )
+        baseFunc( run, room, previouslyChosenRewards, args )
 
         if not RewardControl.config.Enabled then return end
 
         local doorIndex = ModUtil.Locals.Stacked().index
         local forcedDoor = forcedDoors[doorIndex] or {}
-        local forcedGodName = forcedDoor.GodName
-        local forcedFirstGodName = forcedDoor.FirstGodName
-        local forcedSecondGodName = forcedDoor.SecondGodName
 
-        if room.ChosenRewardType == "Boon" and forcedGodName then
-            room.ForceLootName = RCLib.EncodeBoonSet( forcedGodName )
-        end
+        if room.ChosenRewardType == "Boon" then
+            local godCode = RCLib.EncodeBoonSet( forcedDoor.GodName )
 
-        if room.ChosenRewardType == "Devotion" then
-            if forcedFirstGodName then
-                room.Encounter.LootAName = RCLib.EncodeBoonSet( forcedFirstGodName )
+            if LootData[godCode]
+            and ( RCLib.CheckGodEligibility( godCode, previouslyChosenRewards ) or forcedDoor.AlwaysEligible or not RewardControl.config.CheckEligibility ) then
+                room.ForceLootName = godCode
             end
-            if forcedSecondGodName then
-                room.Encounter.LootBName = RCLib.EncodeBoonSet( forcedSecondGodName )
+        elseif room.ChosenRewardType == "Devotion" then
+            local firstGodCode = RCLib.EncodeBoonSet( forcedDoor.FirstGodName )
+            local secondGodCode = RCLib.EncodeBoonSet( forcedDoor.SecondGodName )
+
+            if LootData[firstGodCode]
+            and ( Contains( GetInteractedGodsThisRun(), firstGodCode ) or forcedDoor.AlwaysEligible or not RewardControl.config.CheckEligibility ) then
+                room.Encounter.LootAName = firstGodCode
+            end
+            if LootData[secondGodCode]
+            and ( Contains( GetInteractedGodsThisRun( firstGodCode ), secondGodCode ) or forcedDoor.AlwaysEligible or not RewardControl.config.CheckEligibility ) then
+                room.Encounter.LootBName = secondGodCode
             end
         end
     end, RewardControl )
