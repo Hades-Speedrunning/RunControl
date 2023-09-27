@@ -170,7 +170,7 @@ function RCLib.GetFromList( list, conditions )
     conditions.roomName = conditions.roomName or ModUtil.Path.Get( "CurrentRun.CurrentRoom.Name" )
 
     conditions.listsToIgnore = conditions.listsToIgnore or 0
-    conditions.dataTypeChecked = false
+    conditions.dataTypeChecked = conditions.dataTypeChecked or false
 
     if list.IndexedBy then
         return RCLib.GetFromIndexedList( list.List, list.IndexedBy, conditions ) or {}
