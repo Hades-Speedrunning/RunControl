@@ -18,58 +18,83 @@ ShopControl.CurrentRunData = {}
 
 ShopControl.WellRerollNum = 1
 
+function ShopControl.CheckItemEligibility( item, lookupTable, args )
+    args = args or {}
+    item = item or {}
+    local itemName = item.Item
+    local itemCode = lookupTable[itemName]
+    local itemType = RCLib.InferItemType( itemCode )
+    local overrides = item.Overrides or {}
+
+    if itemCode and ( item.AlwaysEligible or not ShopControl.config.CheckEligibility ) then
+        return true
+    end
+
+    if Contains( args.ExclusionNames, itemCode ) then
+        return false
+    elseif itemType == "Trait" then
+        return IsTraitEligible( CurrentRun, TraitData[itemCode] )
+    end
+
+    if overrides.ReplaceRequirements == nil and not ( StoreItemEligible( RCLib.InferItemData( itemCode ), args ) or overrides.SkipRequirements ) then
+        return false
+    elseif overrides.ReplaceRequirements and not IsGameStateEligible( CurrentRun, overrides.ReplaceRequirements ) then
+        return false
+    end
+
+    return true
+end
+
+function ShopControl.BuildShopList( forced, lookupTable, args )
+    local output = {}
+
+    for index, data in ipairs( forced ) do
+        local forcedItem = {}
+        local itemCode = lookupTable[data.Item] or nil
+        local itemType = RCLib.InferItemType( itemCode )
+        local overrides = data.Overrides or {}
+
+        if ShopControl.CheckItemEligibility( data, lookupTable, args ) then
+            forcedItem = { Name = itemCode, Type = itemType }
+            if data.Item == "Boon" or data.Item == "UpgradedBoon" then
+                forcedItem.Args = {
+                    BoughtFromShop = true,
+                    DoesNotBlockExit = true,
+                    Cost = GetProcessedValue( ConsumableData[itemCode].Cost )
+                }
+
+                local godCode = RCLib.EncodeBoonSet( data.GodName )
+                if LootData[godCode] and ( RCLib.CheckGodEligibility( godCode ) or data.AlwaysEligible or not ShopControl.config.CheckEligibility ) then
+                    forcedItem.Args.ForceLootName = godCode
+                else
+                    forcedItem.Args.ForceLootName = GetEligibleInteractedGod()
+                end
+            end
+
+            ModUtil.Table.Merge( forcedItem, overrides )
+            output[index] = forcedItem
+        end
+    end
+
+    return output
+end
+
 ModUtil.Path.Wrap( "StartRoom", function( baseFunc, ... )
 	ShopControl.WellRerollNum = 1 -- Always 1 at the start of a room. Added to when a menu is rerolled
 	baseFunc( ... )
 end, ShopControl )
 
 ModUtil.Path.Wrap( "FillInShopOptions", function( baseFunc, args )
-    if not ShopControl.config.Enabled then
-        return baseFunc( args )
-    end
+    if not ShopControl.config.Enabled then return baseFunc( args ) end
 
     local store = {}
-    local options = {}
     local forced = RCLib.GetFromList( ShopControl.CurrentRunData, { dataType = "shop", rerollNum = ShopControl.WellRerollNum } )
     local lookupTable = RCLib.NameToCode.WellItems
     if CurrentRun.CurrentRoom.ChosenRewardType == "Shop" then
         lookupTable = RCLib.NameToCode.ShopRewards
     end
 
-    for index, data in ipairs( forced ) do
-        local forcedItem = {}
-        local itemCode = lookupTable[data.Item] or nil
-        local itemType = RCLib.InferItemType( itemCode )
-        local godCode = RCLib.EncodeBoonSet( data.GodName ) or GetEligibleInteractedGod()
-        local isValid = false
-        local overrides = data.Overrides or {}
-
-        if forcedItem.AlwaysEligible or not ShopControl.config.CheckEligibility then
-            isValid = true
-        elseif Contains( args.ExclusionNames, itemCode ) then
-            isValid = false
-        elseif itemType == "Trait" then
-            isValid = IsTraitEligible( CurrentRun, TraitData[itemCode] )
-        else
-            isValid = ( overrides.ReplaceRequirements == nil and ( StoreItemEligible( RCLib.InferItemData( itemCode ), args ) or overrides.SkipRequirements ))
-            or ( overrides.ReplaceRequirements and IsGameStateEligible( CurrentRun, overrides.ReplaceRequirements) )
-        end
-
-        if isValid then
-            forcedItem = { Name = itemCode, Type = itemType }
-            if data.Item == "Boon" or data.Item == "UpgradedBoon" then
-                forcedItem.Args = {
-                    ForceLootName = godCode,
-                    BoughtFromShop = true,
-                    DoesNotBlockExit = true,
-                    Cost = GetProcessedValue( ConsumableData[itemCode].Cost )
-                }
-            end
-
-            ModUtil.Table.Merge( forcedItem, overrides )
-            options[index] = forcedItem
-        end
-    end
+    local options = ShopControl.BuildShopList( forced, lookupTable, args )
 
     if ShopControl.config.FillWithEligible then
         local baseStore = baseFunc( args )
