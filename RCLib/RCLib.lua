@@ -119,6 +119,29 @@ function RCLib.GetKeepsakeCharges()
     return keepsakeCharges
 end
 
+function RCLib.CheckGodEligibility( god, previouslyChosenRewards )
+    local excludedGods = RCLib.BuildExcludedGodList( previouslyChosenRewards )
+    local eligibleGods = GetEligibleLootNames( excludedGods )
+
+    if LootData[god] and Contains( eligibleGods, god ) then
+        return true
+    end
+
+    return false
+end
+
+function RCLib.BuildExcludedGodList( previouslyChosenRewards )
+    local output = {}
+    if previouslyChosenRewards ~= nil then
+        for i, data in pairs( previouslyChosenRewards ) do
+            if data.RewardType == "Boon" then
+                table.insert( output, data.ForceLootName )
+            end
+        end
+    end
+    return output
+end
+
 function RCLib.InferItemType( item )
     local itemType = nil
     if TraitData[item] then
