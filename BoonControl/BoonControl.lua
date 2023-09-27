@@ -13,7 +13,7 @@ local config = {
 	FillWithEligible = true, -- If true, any empty slots in a forced boon screen will be automatically filled with eligible boons
 	UseSpareWealth = false, -- Use spare wealth as a fallback instead of using the vanilla boon screen
 	DefaultRarity = "Common", -- Default rarity when not specified per-boon. If set to "Random", rarity will be rolled each time
-	InferReplaces = true, -- If true, any boon that would take up an occupied slot will be offered as a replace. If false, boons will not appear as replaces unless you specify Replace = true.
+	InferReplaces = false, -- If true, any boon that would take up an occupied slot will be offered as a replace. If false, boons will not appear as replaces unless you specify Replace = true.
 }
 BoonControl.config = config
 
