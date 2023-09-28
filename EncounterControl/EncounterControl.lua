@@ -14,6 +14,15 @@ local config = {
 EncounterControl.config = config
 
 EncounterControl.DefaultStartDelays = { 0, 1, 1 }
+EncounterControl.RoomEncounters = {
+    RoomOpening = "OpeningGenerated",
+}
+EncounterControl.RoomSetEncounters = {
+    Tartarus = "GeneratedTartarus",
+    Asphodel = "GeneratedAsphodel",
+    Elysium = "GeneratedElysium",
+    Styx = "GeneratedStyxMini",
+}
 
 EncounterControl.CurrentRunData = {}
 
@@ -30,7 +39,7 @@ function EncounterControl.CreateWaves( encounterData, waveSet )
 
         if ModUtil.IndexArray.Get( output, { waveIndex, "Spawns", 1 } ) then
             local baseStartDelay = ModUtil.IndexArray.Get( encounterData, { "SpawnWaves", waveIndex, "StartDelay" } )
-            local defaultStartDelay = EncounterControl.DefaultStartDelays[waveIndex]
+            local defaultStartDelay = EncounterControl.DefaultStartDelays[waveIndex] or 1
             ModUtil.IndexArray.Set( output, { waveIndex, "StartDelay" }, baseStartDelay or defaultStartDelay )
         end
     end
@@ -44,7 +53,7 @@ ModUtil.Path.Wrap( "IsEncounterEligible", function( baseFunc, currentRun, room, 
     if roomName ~= "RoomOpening" then -- All rooms other than chamber 1 generate their encounter while GetRunDepth is still returning the previous chamber number
         chamberNumOverride = chamberNumOverride + 1
     end
-    local forcedEncounter = RCLib.GetFromList( EncounterControl.CurrentRunData, { dataType = "encounter", chamberNum = chamberNumOverride } )
+    local data = RCLib.GetFromList( EncounterControl.CurrentRunData, { dataType = "encounter", chamberNum = chamberNumOverride } )
 
     local isThanatos = Contains( EncounterSets.ThanatosEncounters, nextEncounterData.Name )
     local isSurvival = nextEncounterData.EncounterType == "SurvivalChallenge"
@@ -52,7 +61,7 @@ ModUtil.Path.Wrap( "IsEncounterEligible", function( baseFunc, currentRun, room, 
     if ( isThanatos or isSurvival )
     and EncounterControl.config.Enabled
     and EncounterControl.config.RequireForcedSpecialEncounters
-    and nextEncounterData.Name ~= forcedEncounter.Name then
+    and nextEncounterData.Name ~= data.Name then
         return false
     end
 
@@ -71,24 +80,28 @@ ModUtil.Path.Wrap( "SetupEncounter", function( baseFunc, encounterData, room )
         return baseFunc( encounterData, room )
     end
 
+    local currentBiome = ModUtil.Path.Get( "RoomSetName", room )
+    if not data.Name then data.Name = EncounterControl.RoomEncounters[currentBiome] end
+    if not data.Name then data.Name = EncounterControl.RoomSetEncounters[currentBiome] end
+
     local newEncounterData = EncounterData[data.Name]
     if room and newEncounterData and ( IsEncounterEligible( CurrentRun, room, newEncounterData ) or data.AlwaysEligible or not EncounterControl.config.CheckEligibility ) then
         encounterData = newEncounterData
+
+        local waves = data.Waves or {}
+        local overrides = data.Overrides or {}
+        local forcedWaves = EncounterControl.CreateWaves( encounterData, waves )
+
+        if not IsEmpty( forcedWaves ) then
+            encounterData.SpawnWaves = forcedWaves
+            local forcedWaveCount = TableLength( forcedWaves )
+            encounterData.WaveCount = forcedWaveCount or encounterData.WaveCount
+            encounterData.MinWaves = forcedWaveCount or encounterData.MinWaves
+            encounterData.MaxWaves = forcedWaveCount or encounterData.MaxWaves
+        end
+
+        ModUtil.Table.Merge( encounterData, overrides )
     end
-
-    local waves = data.Waves or {}
-    local overrides = data.Overrides or {}
-    local forcedWaves = EncounterControl.CreateWaves( encounterData, waves )
-
-    if not IsEmpty( forcedWaves ) then
-        encounterData.SpawnWaves = forcedWaves
-        local forcedWaveCount = TableLength( forcedWaves )
-        encounterData.WaveCount = forcedWaveCount or encounterData.WaveCount
-        encounterData.MinWaves = forcedWaveCount or encounterData.MinWaves
-        encounterData.MaxWaves = forcedWaveCount or encounterData.MaxWaves
-    end
-
-    ModUtil.Table.Merge( encounterData, overrides )
     return baseFunc( encounterData, room )
 end, EncounterControl )
 
