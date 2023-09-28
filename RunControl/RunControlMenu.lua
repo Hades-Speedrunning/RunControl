@@ -213,7 +213,7 @@ RunControl.MenuPages = {
             Config = "RewardControl.config.CheckEligibility",
         },
         {
-            ElementName = "RewardControlCheckEligibility",
+            ElementName = "PrioritiseKeepsakes",
             ElementType = "LabelledCheckbox",
             Style = "Body",
             Args = { X = 654, Y = 540 },
