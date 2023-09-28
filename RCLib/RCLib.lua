@@ -119,6 +119,15 @@ function RCLib.GetKeepsakeCharges()
     return keepsakeCharges
 end
 
+function RCLib.GetKeepsakeGod( excludedGods )
+    for k, trait in pairs( CurrentRun.Hero.Traits ) do
+        if trait ~= nil and trait.ForceBoonName ~= nil and trait.Uses > 0 and not Contains( excludedGods, trait.ForceBoonName ) then
+            return trait.ForceBoonName
+        end
+    end
+    return nil
+end
+
 function RCLib.CheckGodEligibility( god, previouslyChosenRewards )
     local excludedGods = RCLib.BuildExcludedGodList( previouslyChosenRewards )
     local eligibleGods = GetEligibleLootNames( excludedGods )

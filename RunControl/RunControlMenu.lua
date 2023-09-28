@@ -213,10 +213,21 @@ RunControl.MenuPages = {
             Config = "RewardControl.config.CheckEligibility",
         },
         {
+            ElementName = "RewardControlCheckEligibility",
+            ElementType = "LabelledCheckbox",
+            Style = "Body",
+            Args = { X = 654, Y = 540 },
+            TextboxArgs = { Text = "Allow keepsakes to take priority over forced gods:" },
+
+            CheckboxOffsetX = 600,
+            CheckboxOffsetY = 10,
+            Config = "RewardControl.config.PrioritiseKeepsakes",
+        },
+        {
             ElementName = "EncounterControlEnabled",
             ElementType = "LabelledCheckbox",
             Style = "Body",
-            Args = { X = 654, Y = 600 },
+            Args = { X = 654, Y = 660 },
             TextboxArgs = { Text = "Enable encounter control:" },
 
             CheckboxOffsetX = 600,
@@ -227,7 +238,7 @@ RunControl.MenuPages = {
             ElementName = "EncounterControlCheckEligibility",
             ElementType = "LabelledCheckbox",
             Style = "Body",
-            Args = { X = 654, Y = 660 },
+            Args = { X = 654, Y = 720 },
             TextboxArgs = { Text = "Only force encounters when eligible:" },
 
             CheckboxOffsetX = 600,
@@ -238,7 +249,7 @@ RunControl.MenuPages = {
             ElementName = "RequireForcedSpecialEncounters",
             ElementType = "LabelledCheckbox",
             Style = "Body",
-            Args = { X = 654, Y = 720 },
+            Args = { X = 654, Y = 780 },
             TextboxArgs = { Text = "Than/survival only appear when forced:" },
 
             CheckboxOffsetX = 600,

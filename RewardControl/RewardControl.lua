@@ -9,6 +9,7 @@ ModUtil.Mod.Register( "RewardControl" )
 local config = {
     Enabled = true,
     CheckEligibility = true,
+    PrioritiseKeepsakes = true, -- If true, keepsakes that force a god will take priority over what we force
 }
 RewardControl.config = config
 
@@ -95,10 +96,15 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function() -- All other rewards
         local doorIndex = ModUtil.Locals.Stacked().index
         local forcedDoor = forcedDoors[doorIndex] or {}
 
+        if RewardControl.config.PrioritiseKeepsakes and not args.IgnoreForceLootName then -- Overwriting forced gods with keepsake, if applicable
+            local excludedGods = RCLib.BuildExcludedGodList( previouslyChosenRewards )
+            keepsakeGod = RCLib.GetKeepsakeGod( excludedGods )
+        end
+
         if room.ChosenRewardType == "Boon" then
             local godCode = RCLib.EncodeBoonSet( forcedDoor.GodName )
 
-            if LootData[godCode]
+            if not keepsakeGod and LootData[godCode]
             and ( RCLib.CheckGodEligibility( godCode, previouslyChosenRewards ) or forcedDoor.AlwaysEligible or not RewardControl.config.CheckEligibility ) then
                 room.ForceLootName = godCode
             end
@@ -106,12 +112,12 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function() -- All other rewards
             local firstGodCode = RCLib.EncodeBoonSet( forcedDoor.FirstGodName )
             local secondGodCode = RCLib.EncodeBoonSet( forcedDoor.SecondGodName )
 
-            if LootData[firstGodCode]
+            if not keepsakeGod and LootData[firstGodCode]
             and ( Contains( GetInteractedGodsThisRun(), firstGodCode ) or forcedDoor.AlwaysEligible or not RewardControl.config.CheckEligibility ) then
                 room.Encounter.LootAName = firstGodCode
             end
             if LootData[secondGodCode]
-            and ( Contains( GetInteractedGodsThisRun( firstGodCode ), secondGodCode ) or forcedDoor.AlwaysEligible or not RewardControl.config.CheckEligibility ) then
+            and ( Contains( GetInteractedGodsThisRun( room.Encounter.LootAName ), secondGodCode ) or forcedDoor.AlwaysEligible or not RewardControl.config.CheckEligibility ) then
                 room.Encounter.LootBName = secondGodCode
             end
         end
