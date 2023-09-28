@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0-RC2] - 2023-09-28
+
+### Fixed
+
+- RewardControl gods will no longer take precedence over those forced with a keepsake.
+- EncounterControl will no longer try to force waves where it shouldn't, such as in midboss and non-combat rooms.
+
 ## [1.0.0-RC1] - 2023-09-27
 
 ### Added
