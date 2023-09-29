@@ -291,6 +291,33 @@ If this is true and the boon is ineligible, its slot will be left empty. If unde
 **Type**: boolean  
 If true, the boon will always be offered, regardless of whether it is eligible or not. If undefined or false, the boon will only be offered if it is eligible (*configurable*).
 
+There are also certain fields specific to Chaos boons:
+
+### CurseName
+
+**Type**: string  
+The name of the desired Chaos curse. If undefined, the boon will be ignored.
+
+### BlessingName
+
+**Type**: string
+The name of the desired Chaos blessing. If undefined, the boon will be ignored.
+
+### CurseLength
+
+**Type**: number
+The number of chambers the curse will take to expire.
+
+### CurseValue
+
+**Type**: number
+The exact value of the Chaos curse. If undefined, will be random.
+
+### BlessingValue
+
+**Type**: number
+The exact value of the Chaos blessing. If undefined, will be random.
+
 ### Example 1
 
 ```lua
@@ -320,6 +347,37 @@ Data = {
 ```
 
 Since `Name` is undefined, it will never be eligible, and the bottom 2 slots will always be empty.
+
+### Example 3
+
+```lua
+Data = {
+	{
+		CurseName = "Abyssal",
+		BlessingName = "Shot",
+		BlessingValue = 1.7,
+		ForcedRarity = "Epic",
+	},
+	{
+		CurseName = "Maimed",
+		BlessingName = "Defiance",
+		CurseValue = 4,
+		ForcedRarity = "Legendary",
+		AlwaysEligible = true,
+	},
+	{
+		CurseName = "Atrophic",
+		BlessingName = "Soul",
+		CurseLength = 3,
+	}
+}
+```
+
+This would produce:
+
+1. Epic Abyssal Shot, with a random amount of trap damage and a 70% cast bonus
+2. Maimed Defiance, with 4 self-damage, regardless of whether it is eligible or not
+3. Common Atrophic Soul, with random amounts, lasting for 3 chambers
 
 ## exitDoors
 
@@ -521,6 +579,25 @@ You can find full list of the usable names for boons/enemies/etc. in \\Mods\\RCL
 
 Note that Flood Flare and Trippy Flare are actually dummy traits that are never eligible. Write in `FloodShot` and `TrippyShot` instead.
 
+## Incorrect door indices
+
+In Tartarus, the order of the exitDoors data type will be:
+1. Chaos gates
+2. Erebus gates
+3. The room's exit doors
+
+In the main rooms of other biomes, it will be:
+1. Chaos gates
+2. The room's exit doors
+3. Erebus gates
+
+In the biome introduction rooms, it will be:
+1. The room's exit doors
+2. Chaos gates
+3. Erebus gates
+
+If this is wrong, forced doors can fail to appear.
+
 ## Eligibility
 
 Certain things will not be eligible when you would expect them to be. You can use `AlwaysEligible = true` as a workaround.
@@ -529,3 +606,7 @@ Certain things will not be eligible when you would expect them to be. You can us
 - Chaos' Defiance Boon has a random chance to either be ineligible or eligible due to a coding quirk
 
 Story rooms, fountains, and shops can also only appear once each. If some doors are left unspecified, these rooms can appear earlier than desired and be ineligible later. This is best avoided by setting any unknown doors to have `EligibleRooms = RCLib.StandardCombats`.
+
+## Bugs
+
+*RunControl is not a perfect modpack!* If you've checked all of these and your run *still* seems not to be working, it could be a bug with the pack. My name is SleepSoul, as is my Discord handle, and I'm most easily contacted through the [Hades Speedrunning Discord](https://discord.gg/zN7cc8Z)- let me know if something isn't working, and I'll help you.
