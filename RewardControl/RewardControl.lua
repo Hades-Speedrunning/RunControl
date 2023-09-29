@@ -23,6 +23,9 @@ function RewardControl.CheckRewardEligibility( run, room, reward, previouslyChos
     local rewardData = RCLib.InferItemData( rewardCode )
     
     if not rewardCode then return false end
+    if reward.AlwaysEligible or not RewardControl.config.CheckEligibility then
+        return true
+    end
 
     local hammerNum = ( ModUtil.Path.Get( "LootTypeHistory.WeaponUpgrade", run ) or 0 ) + 1
     hammerNum = math.min( hammerNum, 2 )
@@ -32,8 +35,11 @@ function RewardControl.CheckRewardEligibility( run, room, reward, previouslyChos
         rewardData.GameStateRequirements = RCLib.RewardRequirements[rewardName]
     end
 
-    if not IsRoomRewardEligible( run, room, rewardData, previouslyChosenRewards, args )
-    and not ( reward.AlwaysEligible or not RewardControl.config.CheckEligibility ) then
+    if room.NoReward or ( room.ForcedReward and room.ForcedReward ~= rewardCode ) then
+        return false
+    end
+
+    if not IsRoomRewardEligible( run, room, rewardData, previouslyChosenRewards, args ) then
         return false
     end
 
