@@ -20,14 +20,13 @@ RunControl.MenuPages = {
             Style = "Body",
             Args = { X = 960, Y = 240 },
             TextboxArgs = {
-                Text = "This modpack allows complete control over the events of a Hades run. Recreate your own personal bests, test yourself"
-                .. " against famous world records, or just try out that build you've always wanted- the possibilities are limitless!"
-                .. "\\n To the right you'll find an included library of historic runs to get you started."
-                .. " After that, go further to the right to configure how these runs will be applied."
-                .. "\\n\\n If you want to load in more runs, add the .lua files to your Hades\\Content\\Mods\\RunControl\\Runs folder, and rerun modimporter."
-                .. " When you close and reopen the game, they should then appear in the menu to the right."
-                .. " If you're interested in making some yourself, you can find documentation on how to do this at github.com/Hades-Speedrunning/RunControl/wiki."
-                .. " If you need any more help, feel free to join the Hades Speedrunning Discord (which you can find through our speedrun.com page) and ask- We'll try to help you out."
+                Text = "This modpack allows complete control over the events of a Hades run. Recreate your personal bests, test yourself"
+                .. " against world records, or just try out a build you've always wanted- the possibilities are limitless!"
+                .. "\\n To the right you'll find a library of historic runs to choose from."
+                .. " Further to the right, you can configure how these runs will be applied."
+                .. "\\n\\n If you want to load more runs, or even try making some yourself, check out the HOWTO.md file included with the modpack."
+                .. " It has the information you'll need to get started."
+                .. " If you need any more help, feel free to ask in the Hades Speedrunning Discord (which you can find through our speedrun.com page)- We'll try to help you out."
                 .. "\\n\\n Good luck, and have fun! - SleepSoul",
                 Justification = "Center",
                 Width = 1320,
@@ -37,17 +36,31 @@ RunControl.MenuPages = {
             ElementName = "VersionBanner",
             ElementType = "Textbox",
             Style = "SubHeading",
-            Args = { X = 960, Y = 600 },
-            TextboxArgs = { Text = "You are playing version "..RunControl.config.ModpackVersion },
+            Args = { X = 960, Y = 570 },
+            TextboxArgs = { Text = "You are playing version " .. RunControl.config.ModpackVersion },
         },
         {
             ElementName = "UpdateNotice",
             ElementType = "Textbox",
             Style = "Body",
-            Args = { X = 960, Y = 660 },
+            Args = { X = 960, Y = 630 },
             TextboxArgs = {
                 Text = "Please note that runs created on different versions may not play correctly on this one; this will be noted when you select them."
-                .. " The most recent release can be found at github.com/Hades-Speedrunning/RunControl/releases- be sure to check it now and again to make sure you're up to date.",
+                .. " The most recent release can be found at github.com/Hades-Speedrunning/RunControl/releases- remember to check now and again to make sure you're up to date.",
+                Justification = "Center",
+                Width = 1320,
+            },
+        },
+        {
+            ElementName = "SpecialThanks",
+            ElementType = "Textbox",
+            Style = "Body",
+            Args = { X = 960, Y = 800 },
+            TextboxArgs = {
+                Text = "Special thanks to: "
+                .. "\\n\\n Lili, Ananke, 185, Croven, ocaml, DrkFrst, BIGP, OckE, Vorime; nnevic, grizz, CardDweeb, c_gull, Tounis; Museus, Magic_Gonads, Zyruvias; Angel1C."
+                .. "\\n\\n See you in Hades 2.",
+                Color = Color.DimGray,
                 Justification = "Center",
                 Width = 1320,
             },
