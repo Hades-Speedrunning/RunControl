@@ -81,7 +81,7 @@ ModUtil.Path.Wrap( "SetupEncounter", function( baseFunc, encounterData, room )
     end
 
     local currentBiome = ModUtil.Path.Get( "RoomSetName", room )
-    if not data.Name then data.Name = EncounterControl.RoomEncounters[currentBiome] end
+    if not data.Name then data.Name = EncounterControl.RoomEncounters[roomName] end
     if not data.Name then data.Name = EncounterControl.RoomSetEncounters[currentBiome] end
 
     local newEncounterData = EncounterData[data.Name]
