@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2023-09-29
+
+First full release!
+
+### Added
+
+- Added Chaos boon documentation to HOWTO.md.
+- Added a special thanks section to the Introduction screen.
+
+### Changed
+
+- Updated the Introduction text slightly.
+
 ## [1.0.0-RC3] - 2023-09-28
 
 ### Fixed
