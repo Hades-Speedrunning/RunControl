@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0-RC3] - 2023-09-28
+
+### Fixed
+
+- Chamber 1 encounter will no longer be random.
+- Rewards can no longer be offered on story rooms and shops.
+
 ## [1.0.0-RC2] - 2023-09-28
 
 ### Fixed
