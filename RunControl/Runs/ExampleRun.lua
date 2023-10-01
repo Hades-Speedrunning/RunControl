@@ -1,7 +1,7 @@
 --[[ This is a commented example run, which you can use to understand the format. It won't appear in-game.]]
 
 
-local ExampleRun = {
+local ExampleRun = { -- To get this to show in-game, it would need to be RunControl.Runs.ExampleRun
     Metadata = {
         Name = "Example Run", -- The name that appears in the Select A Run menu
         Description = "This is a description!", -- The description that appears when the run is selected
@@ -9,7 +9,7 @@ local ExampleRun = {
         OriginalHeat = 9, -- Displayed on the victory screen
         CreatedFor = "1.0.0", -- If this is different than the version you're playing on, a warning will pop up
     },
-    IndexedBy = { "chamberNum", "dataType" },
+    IndexedBy = { "chamberNum", "dataType", "rerollNum" },
     List = {
         [1] = { -- Chamber 1
             startingReward = {
