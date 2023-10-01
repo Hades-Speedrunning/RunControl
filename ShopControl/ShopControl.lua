@@ -26,7 +26,9 @@ function ShopControl.CheckItemEligibility( item, lookupTable, args )
     local itemType = RCLib.InferItemType( itemCode )
     local overrides = item.Overrides or {}
 
-    if itemCode and ( item.AlwaysEligible or not ShopControl.config.CheckEligibility ) then
+    if not itemCode then return false end
+
+    if item.AlwaysEligible or not ShopControl.config.CheckEligibility then
         return true
     end
 
@@ -50,7 +52,7 @@ function ShopControl.BuildShopList( forced, lookupTable, args )
 
     for index, data in ipairs( forced ) do
         local forcedItem = {}
-        local itemCode = lookupTable[data.Item] or nil
+        local itemCode = lookupTable[data.Item]
         local itemType = RCLib.InferItemType( itemCode )
         local overrides = data.Overrides or {}
 
