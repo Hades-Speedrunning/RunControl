@@ -23,6 +23,7 @@ function RewardControl.CheckRewardEligibility( run, room, reward, previouslyChos
     local rewardData = RCLib.InferItemData( rewardCode )
     
     if not rewardCode then return false end
+
     if reward.AlwaysEligible or not RewardControl.config.CheckEligibility then
         return true
     end
