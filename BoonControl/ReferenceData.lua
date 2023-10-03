@@ -25,3 +25,21 @@ BoonControl.PathsToSet = {
         Addled = { "DamageOnFireWeapons", "Damage" },
     },
 }
+
+BoonControl.OverrideRequirements = {
+    Defiance = {
+        RequiredOneOfTraits = {
+            "ChaosBlessingMeleeTrait",
+            "ChaosBlessingRangedTrait",
+            "ChaosBlessingAmmoTrait",
+            "ChaosBlessingMaxHealthTrait",
+            "ChaosBlessingBoonRarityTrait",
+            "ChaosBlessingMoneyTrait",
+            "ChaosBlessingMetapointTrait",
+            "ChaosBlessingSecondaryTrait",
+            "ChaosBlessingDashAttackTrait",
+            "ChaosBlessingBackstabTrait",
+            "ChaosBlessingAlphaStrikeTrait",
+        },
+    },
+}

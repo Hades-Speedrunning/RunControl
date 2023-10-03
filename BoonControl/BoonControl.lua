@@ -21,7 +21,102 @@ BoonControl.CurrentRunData = {}
 BoonControl.GodAppearances = {}
 BoonControl.GodRerollNums = {}
 
-function BoonControl.GetEligibleReplaceList( traitNames )
+function BoonControl.BuildTraitList( forced, eligible, eligibleReplaces, rarityTable, lookupTable )
+	local traitOptions = {}
+	local maxOptions = GetTotalLootChoices() -- TODO possible LootChoiceExt compat
+
+	for i, trait in ipairs( forced ) do
+		local traitName = trait.Name
+		local boonCode = lookupTable[traitName]
+
+		local validAsNew = Contains( eligible, traitName )
+		if boonCode and not trait.Replace and ( trait.AlwaysEligible or not BoonControl.config.CheckEligibility ) then
+			validAsNew = true
+		end
+
+		local validAsReplace = Contains( eligibleReplaces, boonCode )
+		if boonCode and ( trait.AlwaysEligible or not BoonControl.config.CheckEligibility ) then
+			validAsReplace = true
+		end
+
+		if TableLength( traitOptions ) < maxOptions then
+			if validAsNew then
+				local boonType = RCLib.InferItemType( boonCode )
+				local rarityToUse = trait.ForcedRarity or BoonControl.config.DefaultRarity or "Common"
+				if rarityToUse == "Random" then
+					rarityToUse = BoonControl.RollRarityForBoon( traitName, rarityTable, lookupTable )
+				end
+
+				table.insert( traitOptions,
+					{
+						ItemName = boonCode,
+						Type = boonType,
+						Rarity = rarityToUse,
+					}
+				)
+			elseif validAsReplace and ( trait.Replace or BoonControl.config.InferReplaces ) then
+				local replaceData = BoonControl.GetReplaceData( traitName )
+				if replaceData then
+					table.insert( traitOptions, replaceData )
+				end
+			end
+		end
+	end
+
+	return traitOptions
+end
+
+function BoonControl.BuildEligibleTransformingSet( traitCodes, lookupTable ) -- Return a list of eligible Chaos boons, including any we've overridden the requirements for
+	local output = {}
+	lookupTable = lookupTable or {}
+	for i, traitCode in pairs( traitCodes ) do
+		local traitName = lookupTable[traitCode] or traitCode
+		local requirements = BoonControl.OverrideRequirements[traitName] or TraitData[traitCode]
+		if IsGameStateEligible( CurrentRun, requirements ) then
+			table.insert( output, traitName )
+		end
+	end
+	return output
+end
+
+function BoonControl.BuildTransformingTraitList( forced, eligible, rarityTable, lookupTable ) -- Chaos
+	local traitOptions = {}
+	local isValid = false
+	local maxOptions = GetTotalLootChoices() -- TODO possible LootChoiceExt compat
+
+	for i, trait in ipairs( forced ) do
+		local currentTemporaryTrait = trait.CurseName
+		local currentPermanentTrait = trait.BlessingName
+		local temporaryCode = lookupTable.Temporary[currentTemporaryTrait]
+		local permanentCode = lookupTable.Permanent[currentPermanentTrait]
+
+		isValid = ( Contains( eligible.Temporary, currentTemporaryTrait ) and Contains( eligible.Permanent, currentPermanentTrait ) )
+		or ( currentTemporaryTrait and currentPermanentTrait and trait.AlwaysEligible )
+		or not BoonControl.config.CheckEligibility
+		or false
+
+		if isValid and TableLength( traitOptions ) < maxOptions then
+			local rarityToUse = trait.ForcedRarity or BoonControl.config.DefaultRarity or "Common"
+			if rarityToUse == "Random" then
+				rarityToUse = BoonControl.RollRarityForBoon( traitName, rarityTable, lookupTable.Permanent )
+			end
+
+			table.insert( traitOptions, 
+				{
+					ItemName = permanentCode,
+					SecondaryItemName = temporaryCode,
+					Type = "TransformingTrait",
+					Rarity = rarityToUse,
+					BoonControlData = trait,
+				}
+			)
+		end
+	end
+
+	return traitOptions
+end
+
+function BoonControl.GetEligibleReplaceSet( traitNames ) -- Return a list of the eligible replaces for a god
 	if traitNames == nil then
 		return {}
 	end
@@ -74,92 +169,6 @@ function BoonControl.GetReplaceData( boon ) -- If a boon can be used as a replac
 	end
 
 	return nil
-end
-
-function BoonControl.BuildTraitList( forced, eligible, eligibleReplaces, rarityTable, lookupTable )
-	local traitOptions = {}
-	local maxOptions = GetTotalLootChoices() -- TODO possible LootChoiceExt compat
-
-	for i, trait in ipairs( forced ) do
-		local traitName = trait.Name
-		local boonCode = lookupTable[traitName]
-
-		local validAsNew = Contains( eligible, traitName )
-		if boonCode and not trait.Replace and ( trait.AlwaysEligible or not BoonControl.config.CheckEligibility ) then
-			validAsNew = true
-		end
-
-		local validAsReplace = Contains( eligibleReplaces, boonCode )
-		if boonCode and ( trait.AlwaysEligible or not BoonControl.config.CheckEligibility ) then
-			validAsReplace = true
-		end
-
-		if TableLength( traitOptions ) < maxOptions then
-			if validAsNew then
-				local boonType = RCLib.InferItemType( boonCode )
-				local rarityToUse = BoonControl.config.DefaultRarity or "Common"
-				if trait.ForcedRarity ~= nil then
-					rarityToUse = trait.ForcedRarity
-				elseif BoonControl.config.DefaultRarity == "Random" then
-					rarityToUse = BoonControl.RollRarityForBoon( traitName, rarityTable, lookupTable )
-				end
-
-				table.insert( traitOptions,
-					{
-						ItemName = boonCode,
-						Type = boonType,
-						Rarity = rarityToUse,
-					}
-				)
-			elseif validAsReplace and ( trait.Replace or BoonControl.config.InferReplaces ) then
-				local replaceData = BoonControl.GetReplaceData( traitName )
-				if replaceData then
-					table.insert( traitOptions, replaceData )
-				end
-			end
-		end
-	end
-
-	return traitOptions
-end
-
-function BoonControl.BuildTransformingTraitList( forced, eligible, rarityTable, lookupTable ) -- Chaos
-	local traitOptions = {}
-	local isValid = false
-	local maxOptions = GetTotalLootChoices() -- TODO possible LootChoiceExt compat
-
-	for i, trait in ipairs( forced ) do
-		local currentTemporaryTrait = trait.CurseName
-		local currentPermanentTrait = trait.BlessingName
-		local temporaryCode = lookupTable.Temporary[currentTemporaryTrait]
-		local permanentCode = lookupTable.Permanent[currentPermanentTrait]
-
-		isValid = ( Contains( eligible.Temporary, currentTemporaryTrait ) and Contains( eligible.Permanent, currentPermanentTrait ) )
-		or ( currentTemporaryTrait and currentPermanentTrait and trait.AlwaysEligible )
-		or not BoonControl.config.CheckEligibility
-		or false
-
-		if isValid and TableLength( traitOptions ) < maxOptions then
-			local rarityToUse = BoonControl.config.DefaultRarity or "Common"
-			if trait.ForcedRarity ~= nil then
-				rarityToUse = trait.ForcedRarity
-			elseif not BoonControl.config.DefaultRarity then
-				rarityToUse = BoonControl.RollRarityForBoon( currentPermanentTrait, rarityTable, lookupTable.Permanent )
-			end
-
-			table.insert( traitOptions, 
-				{
-					ItemName = permanentCode,
-					SecondaryItemName = temporaryCode,
-					Type = "TransformingTrait",
-					Rarity = rarityToUse,
-					BoonControlData = trait,
-				}
-			)
-		end
-	end
-
-	return traitOptions
 end
 
 function BoonControl.RollRarityForBoon( boon, rarityChances, lookupTable )
@@ -236,7 +245,7 @@ ModUtil.Path.Wrap( "SetTraitsOnLoot", function( baseFunc, lootData, args )
 	for key, trait in pairs( eligibleUpgradeSet ) do
 		table.insert( eligibleList, RCLib.CodeToName[tableName][trait.ItemName] )
 	end
-	local eligibleReplaces = BoonControl.GetEligibleReplaceList( lootData.PriorityUpgrades )
+	local eligibleReplaces = BoonControl.GetEligibleReplaceSet( lootData.PriorityUpgrades )
 
 	boonOptions = BoonControl.BuildTraitList( forcedBoons, eligibleList, eligibleReplaces, lootData.RarityChances, RCLib.NameToCode[tableName] )
 
@@ -300,19 +309,9 @@ ModUtil.Path.Wrap( "SetTransformingTraitsOnLoot", function( baseFunc, lootData, 
 	
 	forcedBoons = RCLib.GetFromList( BoonControl.CurrentRunData, conditions ) or {}
 
-	local eligibleUpgradeSet = {}
-	eligibleUpgradeSet.Temporary = GetEligibleTransformingTrait( upgradeChoiceData.TemporaryTraits )
-	eligibleUpgradeSet.Permanent = GetEligibleTransformingTrait( upgradeChoiceData.PermanentTraits )
-
 	local eligibleList = {}
-	eligibleList.Temporary = {}
-	eligibleList.Permanent = {}
-	for index, trait in ipairs( eligibleUpgradeSet.Temporary ) do
-		table.insert( eligibleList.Temporary, RCLib.CodeToName.ChaosCurses[trait] )
-	end
-	for index, trait in ipairs( eligibleUpgradeSet.Permanent ) do
-		table.insert( eligibleList.Permanent, RCLib.CodeToName.ChaosBlessings[trait] )
-	end
+	eligibleList.Temporary = BoonControl.BuildEligibleTransformingSet( upgradeChoiceData.TemporaryTraits, RCLib.CodeToName.ChaosCurses )
+	eligibleList.Permanent = BoonControl.BuildEligibleTransformingSet( upgradeChoiceData.PermanentTraits, RCLib.CodeToName.ChaosBlessings )
 
 	local lookupTables = {}
 	lookupTables.Temporary = RCLib.NameToCode.ChaosCurses
