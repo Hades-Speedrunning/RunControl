@@ -600,10 +600,7 @@ If this is wrong, forced doors can fail to appear.
 
 ## Eligibility
 
-Certain things will not be eligible when you would expect them to be. You can use `AlwaysEligible = true` as a workaround.
-
-- Boss rooms and minibosses in Styx will currently always be ineligible
-- Chaos' Defiance Boon has a random chance to either be ineligible or eligible due to a coding quirk
+Boss rooms and minibosses in Styx will currently always be ineligible due to a coding quirk. You can use `AlwaysEligible = true` as a workaround.
 
 Story rooms, fountains, and shops can also only appear once each. If some doors are left unspecified, these rooms can appear earlier than desired and be ineligible later. This is best avoided by setting any unknown doors to have `EligibleRooms = RCLib.StandardCombats`.
 
