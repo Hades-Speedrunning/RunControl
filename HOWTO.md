@@ -581,22 +581,7 @@ Note that Flood Flare and Trippy Flare are actually dummy traits that are never 
 
 ## Incorrect door indices
 
-In Tartarus, the order of the exitDoors data type will be:
-1. Chaos gates
-2. Erebus gates
-3. The room's exit doors
-
-In the main rooms of other biomes, it will be:
-1. Chaos gates
-2. The room's exit doors
-3. Erebus gates
-
-In the biome introduction rooms, it will be:
-1. The room's exit doors
-2. Chaos gates
-3. Erebus gates
-
-If this is wrong, forced doors can fail to appear.
+In Tartarus, Erebus gates are always the first door. In other biomes, they are always the last.
 
 ## Eligibility
 
