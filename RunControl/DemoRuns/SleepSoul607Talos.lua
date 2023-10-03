@@ -48,7 +48,7 @@ RunControl.Runs.SleepSoul607Talos = {
             },
             exitDoors = {
                 Data = {
-                    [2] = { Reward = "PitchBlackDarkness", EligibleRooms = RCLib.StandardCombats },
+                    { Reward = "PitchBlackDarkness", EligibleRooms = RCLib.StandardCombats },
                 },
             },
         },

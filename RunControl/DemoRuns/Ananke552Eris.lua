@@ -143,8 +143,8 @@ RunControl.Runs.Ananke552Eris = {
             },
             exitDoors = {
                 Data = {
-                    [2] = { ForcedRooms = RCLib.Minibosses },
-                    [3] = { EligibleRooms = RCLib.StandardCombats },
+                    { ForcedRooms = RCLib.Minibosses },
+                    { EligibleRooms = RCLib.StandardCombats },
                 },
             },
         },
@@ -573,9 +573,9 @@ RunControl.Runs.Ananke552Eris = {
             },
             exitDoors = {
                 Data = {
-                    [2] = { EligibleRooms = RCLib.StandardCombats },
-                    [3] = { EligibleRooms = RCLib.StandardCombats },
-                }
+                    { EligibleRooms = RCLib.StandardCombats },
+                    { EligibleRooms = RCLib.StandardCombats },
+                },
             },
         },
         [29] = {

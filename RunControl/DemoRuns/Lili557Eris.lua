@@ -159,7 +159,7 @@ RunControl.Runs.Lili557Eris = {
             },
             exitDoors = {
                 Data = {
-                    [2] = { EligibleRooms = RCLib.StandardCombats },
+                    { EligibleRooms = RCLib.StandardCombats },
                 },
             },
         },
@@ -664,8 +664,8 @@ RunControl.Runs.Lili557Eris = {
             },
             exitDoors = {
                 Data = {
-                    [2] = { Reward = "PomOfPower", EligibleRooms = RCLib.StandardCombats },
-                    [3] = { EligibleRooms = RCLib.StandardCombats },
+                    { Reward = "PomOfPower", EligibleRooms = RCLib.StandardCombats },
+                    { EligibleRooms = RCLib.StandardCombats },
                 },
             },
         },

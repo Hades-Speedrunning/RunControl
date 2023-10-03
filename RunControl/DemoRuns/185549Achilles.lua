@@ -111,8 +111,8 @@ RunControl.Runs["185549Achilles"] = {
             },
             exitDoors = {
                 Data = {
-                    [2] = { Reward = "CharonsObol", EligibleRooms = RCLib.StandardCombats },
-                    [3] = { Reward = "Boon", GodName = "Aphrodite", EligibleRooms = RCLib.StandardCombats },
+                    { Reward = "CharonsObol", EligibleRooms = RCLib.StandardCombats },
+                    { Reward = "Boon", GodName = "Aphrodite", EligibleRooms = RCLib.StandardCombats },
                 },
             },
         },

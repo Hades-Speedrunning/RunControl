@@ -192,7 +192,7 @@ RunControl.Runs.Croven516Hera = {
             },
             exitDoors = {
                 Data = {
-                    [2] = { Reward = "PitchBlackDarkness" },
+                    { Reward = "PitchBlackDarkness" },
                 },
             },
         },
@@ -708,9 +708,9 @@ RunControl.Runs.Croven516Hera = {
             },
             exitDoors = {
                 Data = {
-                    [2] = { EligibleRooms = RCLib.StandardCombats },
-                    [3] = { Reward = "PomOfPower", EligibleRooms = RCLib.StandardCombats },
-                    [4] = { Reward = "CharonsObol" },
+                    { EligibleRooms = RCLib.StandardCombats },
+                    { Reward = "PomOfPower", EligibleRooms = RCLib.StandardCombats },
+                    { Reward = "CharonsObol" },
                 },
             },
         },

@@ -121,7 +121,7 @@ RunControl.Runs.Croven532Beowulf = {
             },
             exitDoors = {
                 Data = {
-                    [2] = { Reward = "CentaurHeart", EligibleRooms = RCLib.StandardCombats },
+                    { Reward = "CentaurHeart", EligibleRooms = RCLib.StandardCombats },
                 },
             },
         },
@@ -473,7 +473,7 @@ RunControl.Runs.Croven532Beowulf = {
             },
             exitDoors = {
                 Data = {
-                    [2] = { EligibleRooms = RCLib.StandardCombats },
+                    { EligibleRooms = RCLib.StandardCombats },
                 },
             },
         },
@@ -684,8 +684,8 @@ RunControl.Runs.Croven532Beowulf = {
             },
             exitDoors = {
                 Data = {
-                    [2] = { EligibleRooms = RCLib.StandardCombats },
-                    [3] = { EligibleRooms = RCLib.StandardCombats },
+                    { EligibleRooms = RCLib.StandardCombats },
+                    { EligibleRooms = RCLib.StandardCombats },
                 },
             },
         },

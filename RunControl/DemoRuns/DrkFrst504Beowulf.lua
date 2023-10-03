@@ -184,8 +184,8 @@ RunControl.Runs.DrkFrst504Beowulf = {
             },
             exitDoors = {
                 Data = {
-                    [2] = { Reward = "Trial", FirstGodName = "Artemis", SecondGodName = "Poseidon", EligibleRooms = RCLib.StandardCombats },
-                    [3] = { Reward = "CharonsObol", EligibleRooms = RCLib.StandardCombats },
+                    { Reward = "Trial", FirstGodName = "Artemis", SecondGodName = "Poseidon", EligibleRooms = RCLib.StandardCombats },
+                    { Reward = "CharonsObol", EligibleRooms = RCLib.StandardCombats },
                 },
             },
         },

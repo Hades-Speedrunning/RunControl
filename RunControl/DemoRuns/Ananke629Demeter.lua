@@ -653,8 +653,8 @@ RunControl.Runs.Ananke629Demeter = {
             },
             exitDoors = {
                 Data = {
-                    [2] = { EligibleRooms = RCLib.StandardCombats },
-                    [3] = { Reward = "CharonsObol", EligibleRooms = RCLib.StandardCombats },
+                    { EligibleRooms = RCLib.StandardCombats },
+                    { Reward = "CharonsObol", EligibleRooms = RCLib.StandardCombats },
                 },
             },
         },
