@@ -608,7 +608,6 @@ RunControl.Runs.Ananke552Eris = {
                             CurseValue = 3.20,
                             CurseLength = 3,
                             ForcedRarity = "Legendary",
-                            AlwaysEligible = true,
                         },
                     },
                 },
