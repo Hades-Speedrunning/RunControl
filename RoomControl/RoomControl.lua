@@ -44,6 +44,15 @@ end, RoomControl )
 
 ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function()
     local forcedDoors = RCLib.GetFromList( RoomControl.CurrentRunData, { dataType = "exitDoors" } )
+    local doorNumOffset = 0
+
+    ModUtil.Path.Wrap( "wait", function( baseFunc, time )
+        local door = ModUtil.Locals.Stacked().door
+        if ModUtil.Path.Get( "Room.RoomSetName", door ) == "Secrets" then
+            doorNumOffset = doorNumOffset + 1
+        end
+        return baseFunc( time )
+    end, RoomControl )
 
     ModUtil.Path.Wrap( "ChooseNextRoomData", function( baseFunc, currentRun, args )
         if not RoomControl.config.Enabled then
@@ -52,7 +61,7 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function()
 
         args = args or {}
 
-        local doorIndex = ModUtil.Locals.Stacked().index
+        local doorIndex = ModUtil.Locals.Stacked().index - doorNumOffset
         local forcedRoom = forcedDoors[doorIndex] or {}
         if forcedRoom.RoomName then
             local roomDataSet = RoomControl.GetNextRoomSet( currentRun, args )
@@ -74,7 +83,7 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function()
                 return false
             end
 
-            local doorIndex = ModUtil.Locals.Stacked().index
+            local doorIndex = ModUtil.Locals.Stacked().index - doorNumOffset
             local eligibleRoomSet = ModUtil.IndexArray.Get( forcedDoors, { doorIndex, "EligibleRooms" } )
 
             if not IsEmpty( eligibleRoomSet ) and not Contains( eligibleRoomSet, nextRoomData.Name ) then
@@ -89,7 +98,7 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function()
                 return baseFunc( currentRun, currentRoom, nextRoomData, args )
             end
 
-            local doorIndex = ModUtil.Locals.Stacked().index
+            local doorIndex = ModUtil.Locals.Stacked().index - doorNumOffset
             local forcedRoomSet = ModUtil.IndexArray.Get( forcedDoors, { doorIndex, "ForcedRooms" } )
 
             if not IsEmpty( forcedRoomSet ) and Contains( forcedRoomSet, nextRoomData.Name ) then
@@ -109,7 +118,7 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function()
         end
 
         local room = baseFunc( roomData, args )
-        local doorIndex = ModUtil.Locals.Stacked().index
+        local doorIndex = ModUtil.Locals.Stacked().index - doorNumOffset
         local forcedRoom = forcedDoors[doorIndex] or {}
 
         if forcedRoom.IsMinibossWing then

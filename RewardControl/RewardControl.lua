@@ -67,9 +67,18 @@ end, RewardControl )
 
 ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function() -- All other rewards
     local forcedDoors = RCLib.GetFromList( RewardControl.CurrentRunData, { dataType = "exitDoors" } )
+    local doorNumOffset = 0
+
+    ModUtil.Path.Wrap( "wait", function( baseFunc, time )
+        local door = ModUtil.Locals.Stacked().door
+        if ModUtil.Path.Get( "Room.RoomSetName", door ) == "Secrets" then
+            doorNumOffset = doorNumOffset + 1
+        end
+        return baseFunc( time )
+    end, RewardControl )
 
     ModUtil.Path.Wrap( "ChooseRoomReward", function( baseFunc, run, room, rewardStoreName, previouslyChosenRewards, args )
-        local doorIndex = ModUtil.Locals.Stacked().index
+        local doorIndex = ModUtil.Locals.Stacked().index - doorNumOffset
         local forcedReward = forcedDoors[doorIndex] or {}
         local rewardName = RCLib.EncodeRoomReward( forcedReward.Reward )
         local isValid = RewardControl.CheckRewardEligibility( run, room, forcedReward, previouslyChosenRewards, args )
@@ -100,7 +109,7 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function() -- All other rewards
 
         if not RewardControl.config.Enabled then return end
 
-        local doorIndex = ModUtil.Locals.Stacked().index
+        local doorIndex = ModUtil.Locals.Stacked().index - doorNumOffset
         local forcedDoor = forcedDoors[doorIndex] or {}
 
         if RewardControl.config.PrioritiseKeepsakes and not args.IgnoreForceLootName then -- Overwriting forced gods with keepsake, if applicable
