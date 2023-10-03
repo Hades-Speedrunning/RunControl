@@ -326,7 +326,7 @@ RunControl.Runs.SleepSoul607Talos = {
             },
             exitDoors = {
                 Data = {
-                    { RoomName = "A_Boss03", AlwaysEligible = true },
+                    { RoomName = "A_Boss03" },
                 },
             },
         },
@@ -933,7 +933,7 @@ RunControl.Runs.SleepSoul607Talos = {
             },
             exitDoors = {
                 Data = {
-                    { RoomName = "D_MiniBoss02", AlwaysEligible = true },
+                    { RoomName = "D_MiniBoss02" },
                 },
             },
         },

@@ -334,7 +334,7 @@ RunControl.Runs.Croven532Beowulf = {
             },
             exitDoors = {
                 Data = {
-                    { RoomName = "A_Boss02", AlwaysEligible = true },
+                    { RoomName = "A_Boss02" },
                 },
             },
         },
@@ -841,7 +841,7 @@ RunControl.Runs.Croven532Beowulf = {
             },
             exitDoors = {
                 Data = {
-                    { RoomName = "D_MiniBoss04", AlwaysEligible = true },
+                    { RoomName = "D_MiniBoss04" },
                 },
             },
         },

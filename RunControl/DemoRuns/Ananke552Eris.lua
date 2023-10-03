@@ -313,7 +313,7 @@ RunControl.Runs.Ananke552Eris = {
             },
             exitDoors = {
                 Data = {
-                    { RoomName = "A_Boss03", AlwaysEligible = true },
+                    { RoomName = "A_Boss03" },
                 },
             },
         },
@@ -846,7 +846,7 @@ RunControl.Runs.Ananke552Eris = {
             },
             exitDoors = {
                 Data = {
-                    { RoomName = "D_MiniBoss03", AlwaysEligible = true },
+                    { RoomName = "D_MiniBoss03" },
                 },
             },
         },

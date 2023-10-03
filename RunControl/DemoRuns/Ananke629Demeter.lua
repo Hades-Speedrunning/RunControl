@@ -332,7 +332,7 @@ RunControl.Runs.Ananke629Demeter = {
             },
             exitDoors = {
                 Data = {
-                    { RoomName = "A_Boss01", AlwaysEligible = true },
+                    { RoomName = "A_Boss01" },
                 },
             },
         },
@@ -904,7 +904,7 @@ RunControl.Runs.Ananke629Demeter = {
             },
             exitDoors = {
                 Data = {
-                    { RoomName = "D_MiniBoss04", AlwaysEligible = true },
+                    { RoomName = "D_MiniBoss04" },
                 },
             },
         },

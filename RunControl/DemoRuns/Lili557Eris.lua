@@ -329,7 +329,7 @@ RunControl.Runs.Lili557Eris = {
             },
             exitDoors = {
                 Data = {
-                    { RoomName = "A_Boss01", AlwaysEligible = true },
+                    { RoomName = "A_Boss01" },
                 },
             },
         },
@@ -875,7 +875,7 @@ RunControl.Runs.Lili557Eris = {
             },
             exitDoors = {
                 Data = {
-                    { RoomName = "D_MiniBoss01", AlwaysEligible = true },
+                    { RoomName = "D_MiniBoss01" },
                 },
             },
         },

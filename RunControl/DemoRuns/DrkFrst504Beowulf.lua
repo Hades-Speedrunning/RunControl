@@ -300,7 +300,7 @@ RunControl.Runs.DrkFrst504Beowulf = {
             },
             exitDoors = {
                 Data = {
-                    { RoomName = "A_Boss02", AlwaysEligible = true },
+                    { RoomName = "A_Boss02" },
                 },
             },
         },
@@ -827,7 +827,7 @@ RunControl.Runs.DrkFrst504Beowulf = {
             },
             exitDoors = {
                 Data = {
-                    { RoomName = "D_MiniBoss01", AlwaysEligible = true },
+                    { RoomName = "D_MiniBoss01" },
                 },
             },
         },

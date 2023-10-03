@@ -314,7 +314,7 @@ RunControl.Runs.Croven516Hera = {
             },
             exitDoors = {
                 Data = {
-                    { RoomName = "A_Boss03", AlwaysEligible = true },
+                    { RoomName = "A_Boss03" },
                 },
             },
         },
@@ -934,7 +934,7 @@ RunControl.Runs.Croven516Hera = {
             },
             exitDoors = {
                 Data = {
-                    { RoomName = "D_MiniBoss04", AlwaysEligible = true },
+                    { RoomName = "D_MiniBoss04" },
                 },
             },
         },

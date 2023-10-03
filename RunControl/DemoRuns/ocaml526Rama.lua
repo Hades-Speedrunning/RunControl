@@ -349,7 +349,7 @@ RunControl.Runs.ocaml526Rama = {
             },
             exitDoors = {
                 Data = {
-                    { RoomName = "A_Boss01", AlwaysEligible = true },
+                    { RoomName = "A_Boss01" },
                 },
             },
         },
@@ -896,7 +896,7 @@ RunControl.Runs.ocaml526Rama = {
             },
             exitDoors = {
                 Data = {
-                    { RoomName = "D_MiniBoss04", AlwaysEligible = true },
+                    { RoomName = "D_MiniBoss04" },
                 },
             },
         },
