@@ -253,13 +253,13 @@ ModUtil.Path.Wrap( "SetTraitsOnLoot", function( baseFunc, lootData, args )
 		baseFunc( baseData, args )
 		
 		local neededEmptySlots = 0
-		for key, trait in ipairs( forcedBoons ) do
+		for index, trait in ipairs( forcedBoons ) do
 			if trait.EmptySlot then
 				neededEmptySlots = neededEmptySlots + 1
 			end
 		end
 
-		for key, trait in ipairs( baseData.UpgradeOptions ) do
+		for index, trait in ipairs( baseData.UpgradeOptions ) do
 			if TableLength( boonOptions ) + neededEmptySlots >= GetTotalLootChoices() then break end
 
 			local isValid = true
@@ -269,12 +269,13 @@ ModUtil.Path.Wrap( "SetTraitsOnLoot", function( baseFunc, lootData, args )
 				end
 			end
 
-			if ModUtil.IndexArray.Get( forcedBoons, { key, "EmptySlot" } ) then
+			if ModUtil.IndexArray.Get( forcedBoons, { index, "EmptySlot" } ) then
 				isValid = false
 			end
 
 			if isValid then
-				table.insert( boonOptions, key, trait )
+				local insertIndex = math.min( index, #boonOptions + 1 )
+				table.insert( boonOptions, insertIndex, trait )
 			end
 		end
 	end
@@ -323,13 +324,13 @@ ModUtil.Path.Wrap( "SetTransformingTraitsOnLoot", function( baseFunc, lootData, 
 		baseFunc( baseData, args )
 		
 		local neededEmptySlots = 0
-		for key, trait in ipairs( forcedBoons ) do
+		for index, trait in ipairs( forcedBoons ) do
 			if trait.EmptySlot then
 				neededEmptySlots = neededEmptySlots + 1
 			end
 		end
 
-		for key, trait in ipairs( baseData.UpgradeOptions ) do
+		for index, trait in ipairs( baseData.UpgradeOptions ) do
 			if TableLength( boonOptions ) + neededEmptySlots >= GetTotalLootChoices() then break end
 
 			local isValid = true
@@ -339,12 +340,12 @@ ModUtil.Path.Wrap( "SetTransformingTraitsOnLoot", function( baseFunc, lootData, 
 				end
 			end
 
-			if ModUtil.IndexArray.Get( forcedBoons, { key, "EmptySlot" } ) then
+			if ModUtil.IndexArray.Get( forcedBoons, { index, "EmptySlot" } ) then
 				isValid = false
 			end
 
 			if isValid then
-				table.insert( boonOptions, key, trait )
+				table.insert( boonOptions, index, trait )
 			end
 		end
 	end
