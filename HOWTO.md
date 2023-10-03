@@ -600,7 +600,7 @@ If this is wrong, forced doors can fail to appear.
 
 ## Eligibility
 
-Boss rooms and minibosses in Styx will currently always be ineligible due to a coding quirk. You can use `AlwaysEligible = true` as a workaround.
+Certain things can be ineligible, even when you might not expect them to be. Try setting them to have `AlwaysEligible = true` and see if they start appearing.
 
 Story rooms, fountains, and shops can also only appear once each. If some doors are left unspecified, these rooms can appear earlier than desired and be ineligible later. This is best avoided by setting any unknown doors to have `EligibleRooms = RCLib.StandardCombats`.
 
