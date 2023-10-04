@@ -16,6 +16,7 @@ EncounterControl.config = config
 EncounterControl.DefaultStartDelays = { 0, 1, 1 }
 EncounterControl.RoomEncounters = {
     RoomOpening = "OpeningGenerated",
+    D_Mini09 = "GeneratedStyxMiniSingle",
 }
 EncounterControl.RoomSetEncounters = {
     Tartarus = "GeneratedTartarus",
