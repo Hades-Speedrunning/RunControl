@@ -21,6 +21,9 @@ This is a smaller update, which doesn't add many new features to the runs themse
 
 ### Fixed
 
+- The D_Mini09 chamber in Styx will no longer have random encounters.
+- Wells will no longer occasionally have an incorrect item after rerolling.
+- Corrected a room orientation error in the 6:07 Talos run.
 - Bosses and Styx midbosses will no longer need to be AlwaysEligible in order to appear, and will not appear on non-midboss Styx wings.
 - The ExampleRun file no longer has a missing value in IndexedBy.
 - Indexing Gods by appearanceNum will now work correctly in Styx shop.
