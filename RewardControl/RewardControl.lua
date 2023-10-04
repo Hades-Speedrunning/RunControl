@@ -47,6 +47,16 @@ function RewardControl.CheckRewardEligibility( run, room, reward, previouslyChos
     return true
 end
 
+function RewardControl.CheckForChaos( doors, maxIndex )
+    local count = 0
+    for index, door in ipairs( doors ) do
+        if ModUtil.Path.Get( "Room.RoomSetName", door ) == "Secrets" and index <= maxIndex then
+            count = count + 1
+        end
+    end
+    return count
+end
+
 ModUtil.Path.Wrap( "ChooseRoomReward", function( baseFunc, run, room, rewardStoreName, previouslyChosenRewards, args ) -- c1 reward
     local rewardToUse = baseFunc( run, room, rewardStoreName, previouslyChosenRewards, args )
     local forcedReward = RCLib.GetFromList( RewardControl.CurrentRunData, { dataType = "startingReward" } )
@@ -67,18 +77,13 @@ end, RewardControl )
 
 ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function() -- All other rewards
     local forcedDoors = RCLib.GetFromList( RewardControl.CurrentRunData, { dataType = "exitDoors" } )
-    local doorNumOffset = 0
-
-    ModUtil.Path.Wrap( "wait", function( baseFunc, time )
-        local door = ModUtil.Locals.Stacked().door
-        if ModUtil.Path.Get( "Room.RoomSetName", door ) == "Secrets" then
-            doorNumOffset = doorNumOffset + 1
-        end
-        return baseFunc( time )
-    end, RewardControl )
 
     ModUtil.Path.Wrap( "ChooseRoomReward", function( baseFunc, run, room, rewardStoreName, previouslyChosenRewards, args )
-        local doorIndex = ModUtil.Locals.Stacked().index - doorNumOffset
+        local doorIndex = ModUtil.Locals.Stacked().index
+        local doors = ModUtil.Locals.Stacked().exitDoorsIPairs
+        local doorNumOffset = RewardControl.CheckForChaos( doors, doorIndex )
+        doorIndex = doorIndex - doorNumOffset
+
         local forcedReward = forcedDoors[doorIndex] or {}
         local rewardName = RCLib.EncodeRoomReward( forcedReward.Reward )
         local isValid = RewardControl.CheckRewardEligibility( run, room, forcedReward, previouslyChosenRewards, args )
@@ -100,6 +105,7 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function() -- All other rewards
             end
 
             room.RewardOverrides = overrides
+            DebugPrint({ Text = "Forcing reward " .. rewardName .. " for door " .. doorIndex .. " with offset " .. doorNumOffset })
             return rewardName
         end
     end, RewardControl )
@@ -109,7 +115,11 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function() -- All other rewards
 
         if not RewardControl.config.Enabled then return end
 
-        local doorIndex = ModUtil.Locals.Stacked().index - doorNumOffset
+        local doorIndex = ModUtil.Locals.Stacked().index
+        local doors = ModUtil.Locals.Stacked().exitDoorsIPairs
+        local doorNumOffset = RewardControl.CheckForChaos( doors, doorIndex )
+        doorIndex = doorIndex - doorNumOffset
+
         local forcedDoor = forcedDoors[doorIndex] or {}
 
         if RewardControl.config.PrioritiseKeepsakes and not args.IgnoreForceLootName then -- Overwriting forced gods with keepsake, if applicable
