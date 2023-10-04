@@ -407,12 +407,12 @@ If you don't know exactly what was on a set of doors, you can set a group of roo
 
 ```lua
 Data = {
-    [2] = { ForcedRooms = RCLib.Minibosses },
-    [3] = { Reward = "CharonsObol", EligibleRooms = RCLib.StandardCombats },
+    { ForcedRooms = RCLib.Minibosses },
+    { Reward = "CharonsObol", EligibleRooms = RCLib.StandardCombats },
 }
 ```
 
-This example assumes exit 1 is a Chaos gate, and thus skips to exit 2. It would produce:
+This would produce:
 
 1.  A random Midboss from this biome, if one is eligible
 2.  A random combat room with Obols on the door
