@@ -6,7 +6,7 @@ RunControl.Runs.Croven516Hera = {
         .. " and would go on to stand for an absolutely staggering 15 months, until finally being dethroned the following April by DrkFrst.",
         OriginalTime = "05:16.87",
         OriginalHeat = 9,
-        CreatedFor = "1.0.0",
+        CreatedFor = "1.1.0",
         Tags = { Aspect = "Hera", Weapon = "Bow", Category = "Unmodded Any Heat" },
     },
     IndexedBy = { "chamberNum", "dataType", "rerollNum" },

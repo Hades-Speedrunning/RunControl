@@ -7,7 +7,7 @@ local ExampleRun = { -- To get this to show in-game, it would need to be RunCont
         Description = "This is a description!", -- The description that appears when the run is selected
         OriginalTime = "06:09.69", -- Displayed on the victory screen
         OriginalHeat = 9, -- Displayed on the victory screen
-        CreatedFor = "1.0.0", -- If this is different than the version you're playing on, a warning will pop up
+        CreatedFor = "1.1.0", -- If this is different than the version you're playing on, a warning will pop up
     },
     IndexedBy = { "chamberNum", "dataType", "rerollNum" },
     List = {

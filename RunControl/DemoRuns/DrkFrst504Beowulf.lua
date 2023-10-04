@@ -7,7 +7,7 @@ RunControl.Runs.DrkFrst504Beowulf = {
         .. "\\n\\n We ride at dawn!",
         OriginalTime = "05:04.33",
         OriginalHeat = 9,
-        CreatedFor = "1.0.0",
+        CreatedFor = "1.1.0",
         Tags = { Aspect = "Beowulf", Weapon = "Shield", Category = "Unmodded Any Heat" },
     },
     IndexedBy = { "chamberNum", "dataType", "rerollNum" },
