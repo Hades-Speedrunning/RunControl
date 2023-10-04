@@ -32,9 +32,7 @@ function ShopControl.CheckItemEligibility( item, lookupTable, args )
         return true
     end
 
-    if Contains( args.ExclusionNames, itemCode ) then
-        return false
-    elseif itemType == "Trait" then
+    if itemType == "Trait" then
         return IsTraitEligible( CurrentRun, TraitData[itemCode] )
     end
 
