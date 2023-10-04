@@ -17,7 +17,7 @@ This is a smaller update, which doesn't add many new features to the runs themse
 
 ### Changed
 
-- Chaos gates are no longer counted as number 1 in exitDoors.
+- Chaos gates are no longer counted in exitDoors.
 
 ### Fixed
 
