@@ -5,7 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.1.0] - 2023-10-04
+
+This is a smaller update, which doesn't add many new features to the runs themselves, but adds a little more polish to 1.0.0 (plus some new options).
+
+### Added
+
+- Interface/QOL settings page.
+- Option to always show chamber number in the top-right.
+- Option to replace the modpack version text with the name of the current run.
+
+### Changed
+
+- Chaos gates are no longer counted as number 1 in exitDoors.
+
+### Fixed
+
+- Bosses and Styx midbosses will no longer need to be AlwaysEligible in order to appear, and will not appear on non-midboss Styx wings.
+- The ExampleRun file no longer has a missing value in IndexedBy.
+- Indexing Gods by appearanceNum will now work correctly in Styx shop.
+- Forcing an empty slot as the only Boon from a God will no longer cause a crash.
+- Getting a Light of Ixion the original player did not get will no longer change the possible doors in a run.
 
 ## [1.0.0] - 2023-09-29
 
