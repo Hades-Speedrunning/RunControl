@@ -37,7 +37,7 @@ RunControl.MenuPages = {
             ElementType = "Textbox",
             Style = "SubHeading",
             Args = { X = 960, Y = 570 },
-            TextboxArgs = { Text = "You are playing version " .. RunControl.config.ModpackVersion },
+            TextboxArgs = { Text = "You are playing version " .. RunControl.ModpackVersion },
         },
         {
             ElementName = "UpdateNotice",
@@ -345,6 +345,37 @@ RunControl.MenuPages = {
             Config = "SellControl.config.FillWithEligible",
         },
     },
+    { -- UI & QOL
+        {
+            ElementName = "Title",
+            ElementType = "Textbox",
+            Style = "Heading",
+            Args = { X = 960, Y = 60 },
+            TextboxArgs = { Text = "Interface/QOL" },
+        },
+        {
+            ElementName = "ShowChamberNumber",
+            ElementType = "LabelledCheckbox",
+            Style = "Body",
+            Args = { X = 654, Y = 180 },
+            TextboxArgs = { Text = "Always show chamber number:" },
+
+            CheckboxOffsetX = 600,
+            CheckboxOffsetY = 10,
+            Config = "RunControl.config.ShowChamberNumber",
+        },
+        {
+            ElementName = "ShowRunName",
+            ElementType = "LabelledCheckbox",
+            Style = "Body",
+            Args = { X = 654, Y = 240 },
+            TextboxArgs = { Text = "Show selected run in top-right while playing:" },
+
+            CheckboxOffsetX = 600,
+            CheckboxOffsetY = 10,
+            Config = "RunControl.config.ShowRunName",
+        },
+    }
 }
 
 RunControl.MenuTextStyles = {
@@ -697,7 +728,7 @@ function RunControl.UpdateRunDisplay( screen )
     if RunControl.config.SelectedRun == "None" then
         nameText = "None"
         descText = "You have no run selected!"
-        runVersion = RunControl.config.ModpackVersion
+        runVersion = RunControl.ModpackVersion
     else
         nameText = runMetadata.Name or RunControl.config.SelectedRun..".lua"
         descText = runMetadata.Description or "This run has no description."
@@ -729,7 +760,7 @@ function RunControl.UpdateRunDisplay( screen )
             },
         })
     end
-    if runVersion ~= RunControl.config.ModpackVersion then
+    if runVersion ~= RunControl.ModpackVersion then
         RunControl.CreateMenuElement( screen, {
             ElementName = "VersionWarning",
             ElementType = "Textbox",

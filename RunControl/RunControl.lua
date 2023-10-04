@@ -7,10 +7,13 @@
 ModUtil.Mod.Register( "RunControl" )
 
 local config = {
-    ModpackVersion = "1.0.0",
     SelectedRun = "None",
+    ShowChamberNumber = true,
+    ShowRunName = true,
 }
 RunControl.config = config
+
+RunControl.ModpackVersion = "1.0.0"
 
 RunControl.CurrentRunData = {}
 RunControl.Runs = {}
@@ -62,21 +65,19 @@ RunControl.SortedRuns = {
 }
 
 function RunControl.DisplayVersion()
-    local text_config_table = DeepCopyTable( UIData.CurrentRunDepth.TextFormat )
-    local versionString = "RunControl "..RunControl.config.ModpackVersion
+    local textConfigTable = {
+        color = Color.DimGray,
+        x_pos = 1908,
+        y_pos = 27,
+    }
+    local versionString = "RunControl " .. RunControl.ModpackVersion
+    local runName = ModUtil.IndexArray.Get( RunControl.Runs, { RunControl.config.SelectedRun, "Metadata", "Name" } )
 
-    PrintUtil.createOverlayLine(
-        "ModpackVersion",
-        versionString,
-        MergeTables(
-            text_config_table,
-            {
-                x_pos = 1908,
-                y_pos = 27,
-                color = Color.DimGray
-            }
-        )
-    )
+    if RunControl.config.ShowRunName and runName and CurrentDeathAreaRoom == nil then
+        versionString = runName
+    end
+
+    PrintUtil.createOverlayLine( "ModpackVersion", versionString, textConfigTable )
 end
 
 function RunControl.UpdateRunData()
@@ -91,7 +92,9 @@ end
 
 function RunControl.SaveConfig()
     RunControl.Data.config = {}
-    RunControl.Data.config.SelectedRun = RunControl.config.SelectedRun
+    for k, v in pairs( RunControl.config ) do
+        RunControl.Data.config[k] = v
+    end
 
     BoonControl.Data.config = {}
     for k, v in pairs( BoonControl.config ) do
@@ -125,7 +128,11 @@ function RunControl.SaveConfig()
 end
 
 function RunControl.LoadConfig()
-    RunControl.config.SelectedRun = ModUtil.Path.Get( "RunControl.Data.config.SelectedRun" ) or RunControl.config.SelectedRun
+    if not IsEmpty( ModUtil.Path.Get( "RunControl.Data.config" ) ) then
+        for k, v in pairs( RunControl.Data.config ) do
+            RunControl.config[k] = v
+        end
+    end
 
     if not IsEmpty( ModUtil.Path.Get( "BoonControl.Data.config" ) ) then
         for k, v in pairs( BoonControl.Data.config ) do
@@ -165,6 +172,9 @@ function RunControl.LoadConfig()
 end
 
 ModUtil.LoadOnce( function()
+    UIData.CurrentRunDepth.X = 1780
+    UIData.CurrentRunDepth.Y = 60
+    UIData.CurrentRunDepth.TextFormat.ShadowColor = { 0, 0, 0, 0 }
     RunControl.LoadConfig()
     RunControl.UpdateRunData()
 end )
@@ -172,6 +182,20 @@ end )
 OnAnyLoad{ function()
     RunControl.DisplayVersion()
 end }
+
+ModUtil.Path.Wrap( "StartRoom", function( baseFunc, currentRun, currentRoom )
+    if RunControl.config.ShowChamberNumber then
+        ShowDepthCounter()
+    end
+    baseFunc( currentRun, currentRoom )
+end, RunControl )
+
+ModUtil.Path.Wrap("ShowCombatUI", function( baseFunc, flag )
+    if RunControl.config.ShowChamberNumber then
+        ShowDepthCounter()
+    end
+    baseFunc( flag )
+end, RunControl)
 
 ModUtil.Path.Wrap( "RunClearMessagePresentation", function( baseFunc, screen, message, args )
     message = message or {}
