@@ -55,7 +55,7 @@ RunControl.Runs.SleepSoul607Talos = {
         [2] = {
             roomFeatures = {
                 Data = {
-                    Flipped = true,
+                    Flipped = false,
                 },
             },
             boonMenu = {
