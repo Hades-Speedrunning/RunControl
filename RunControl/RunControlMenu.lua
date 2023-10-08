@@ -204,10 +204,21 @@ RunControl.MenuPages = {
             Config = "RoomControl.config.RequireForcedFeatures",
         },
         {
+            ElementName = "RequireForcedSkips",
+            ElementType = "LabelledCheckbox",
+            Style = "Body",
+            Args = { X = 654, Y = 360 },
+            TextboxArgs = { Text = "Special rooms only appear when forced:" },
+
+            CheckboxOffsetX = 600,
+            CheckboxOffsetY = 10,
+            Config = "RoomControl.config.RequireForcedSkips",
+        },
+        {
             ElementName = "RewardControlEnabled",
             ElementType = "LabelledCheckbox",
             Style = "Body",
-            Args = { X = 654, Y = 420 },
+            Args = { X = 654, Y = 480 },
             TextboxArgs = { Text = "Enable reward control:" },
 
             CheckboxOffsetX = 600,
@@ -218,7 +229,7 @@ RunControl.MenuPages = {
             ElementName = "RewardControlCheckEligibility",
             ElementType = "LabelledCheckbox",
             Style = "Body",
-            Args = { X = 654, Y = 480 },
+            Args = { X = 654, Y = 540 },
             TextboxArgs = { Text = "Only force rewards when eligible:" },
 
             CheckboxOffsetX = 600,
@@ -229,7 +240,7 @@ RunControl.MenuPages = {
             ElementName = "PrioritiseKeepsakes",
             ElementType = "LabelledCheckbox",
             Style = "Body",
-            Args = { X = 654, Y = 540 },
+            Args = { X = 654, Y = 600 },
             TextboxArgs = { Text = "Allow keepsakes to take priority over forced gods:" },
 
             CheckboxOffsetX = 600,
@@ -240,7 +251,7 @@ RunControl.MenuPages = {
             ElementName = "EncounterControlEnabled",
             ElementType = "LabelledCheckbox",
             Style = "Body",
-            Args = { X = 654, Y = 660 },
+            Args = { X = 654, Y = 720 },
             TextboxArgs = { Text = "Enable encounter control:" },
 
             CheckboxOffsetX = 600,
@@ -251,7 +262,7 @@ RunControl.MenuPages = {
             ElementName = "EncounterControlCheckEligibility",
             ElementType = "LabelledCheckbox",
             Style = "Body",
-            Args = { X = 654, Y = 720 },
+            Args = { X = 654, Y = 780 },
             TextboxArgs = { Text = "Only force encounters when eligible:" },
 
             CheckboxOffsetX = 600,
@@ -262,7 +273,7 @@ RunControl.MenuPages = {
             ElementName = "RequireForcedSpecialEncounters",
             ElementType = "LabelledCheckbox",
             Style = "Body",
-            Args = { X = 654, Y = 780 },
+            Args = { X = 654, Y = 840 },
             TextboxArgs = { Text = "Than/survival only appear when forced:" },
 
             CheckboxOffsetX = 600,
