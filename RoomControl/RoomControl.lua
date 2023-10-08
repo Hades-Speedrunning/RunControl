@@ -10,8 +10,31 @@ local config = {
     Enabled = true,
     CheckEligibility = true,
     RequireForcedFeatures = true, -- Will not spawn special objects (Chaos gates, wells, etc) unless they are forced
+    RequireForcedSkips = true, -- Will not roll special rooms (midbosses, story rooms, shops, and fountains) unless they are forced
 }
 RoomControl.config = config
+
+RoomControl.OnlyIfForced = {
+    "A_Shop01",
+    "B_Shop01",
+    "C_Shop01",
+    "A_Story01",
+    "B_Story01",
+    "C_Story01",
+    "A_Reprieve01",
+    "B_Reprieve01",
+    "C_Reprieve01",
+
+    "A_MiniBoss01",
+    "A_MiniBoss02",
+    "A_MiniBoss03",
+    "A_MiniBoss04",
+    "B_Wrapping01",
+    "B_MiniBoss01",
+    "B_MiniBoss02",
+    "C_MiniBoss01",
+    "C_MiniBoss02",
+}
 
 RoomControl.CurrentRunData = {}
 
@@ -72,7 +95,6 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function()
         if forcedRoom.RoomName then
             local roomDataSet = RoomControl.GetNextRoomSet( currentRun, args )
             if IsRoomEligible( currentRun, currentRun.CurrentRoom, roomDataSet[forcedRoom.RoomName], args ) or forcedRoom.AlwaysEligible or not RoomControl.config.CheckEligibility then
-                DebugPrint({ Text = "Forcing room " .. forcedRoom.RoomName .. " for door " .. doorIndex .. " with offset " .. doorNumOffset })
                 args.ForceNextRoom = forcedRoom.RoomName
             end
         end
@@ -96,8 +118,19 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function()
             doorIndex = doorIndex - doorNumOffset
 
             local eligibleRoomSet = ModUtil.IndexArray.Get( forcedDoors, { doorIndex, "EligibleRooms" } )
+            local forcedRoomSet = ModUtil.IndexArray.Get( forcedDoors, { doorIndex, "ForcedRooms" } )
+            local forcedRoomName = ModUtil.IndexArray.Get( forcedDoors, { doorIndex, "RoomName" } )
 
             if not IsEmpty( eligibleRoomSet ) and not Contains( eligibleRoomSet, nextRoomData.Name ) then
+                return false
+            end
+
+            if RoomControl.config.RequireForcedSkips
+            and Contains( RoomControl.OnlyIfForced, nextRoomData.Name )
+            and IsEmpty( eligibleRoomSet )
+            and IsEmpty( forcedRoomSet )
+            and nextRoomData.Name ~= forcedRoomName then
+                DebugPrint({ Text = "blocking " .. nextRoomData.Name })
                 return false
             end
 
