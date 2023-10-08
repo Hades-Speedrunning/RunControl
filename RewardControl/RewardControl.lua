@@ -105,7 +105,6 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function() -- All other rewards
             end
 
             room.RewardOverrides = overrides
-            DebugPrint({ Text = "Forcing reward " .. rewardName .. " for door " .. doorIndex .. " with offset " .. doorNumOffset })
             return rewardName
         end
     end, RewardControl )
