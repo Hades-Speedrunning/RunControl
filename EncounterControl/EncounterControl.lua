@@ -92,14 +92,16 @@ ModUtil.Path.Wrap( "SetupEncounter", function( baseFunc, encounterData, room )
         local waves = data.Waves or {}
         local overrides = data.Overrides or {}
         local forcedWaves = EncounterControl.CreateWaves( encounterData, waves )
+        local forcedWaveCount = data.WaveCount
 
         if not IsEmpty( forcedWaves ) then
             encounterData.SpawnWaves = forcedWaves
-            local forcedWaveCount = TableLength( forcedWaves )
-            encounterData.WaveCount = forcedWaveCount or encounterData.WaveCount
-            encounterData.MinWaves = forcedWaveCount or encounterData.MinWaves
-            encounterData.MaxWaves = forcedWaveCount or encounterData.MaxWaves
+            forcedWaveCount = TableLength( forcedWaves )
         end
+
+        encounterData.MinWaves = forcedWaveCount or encounterData.MinWaves
+        encounterData.MaxWaves = forcedWaveCount or encounterData.MaxWaves
+        encounterData.WaveCount = forcedWaveCount or encounterData.WaveCount
 
         ModUtil.Table.Merge( encounterData, overrides )
     end
