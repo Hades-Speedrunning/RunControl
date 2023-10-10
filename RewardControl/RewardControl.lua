@@ -13,6 +13,10 @@ local config = {
 }
 RewardControl.config = config
 
+RewardControl.RoomSetsToIgnore = {
+    "Secrets",
+}
+
 RewardControl.CurrentRunData = {}
 
 function RewardControl.CheckRewardEligibility( run, room, reward, previouslyChosenRewards, args )
@@ -50,7 +54,8 @@ end
 function RewardControl.CheckForChaos( doors, maxIndex )
     local count = 0
     for index, door in ipairs( doors ) do
-        if ModUtil.Path.Get( "Room.RoomSetName", door ) == "Secrets" and index <= maxIndex then
+        local roomSetName = ModUtil.Path.Get( "Room.RoomSetName", door )
+        if Contains( RewardControl.RoomSetsToIgnore, roomSetName ) and index <= maxIndex then
             count = count + 1
         end
     end

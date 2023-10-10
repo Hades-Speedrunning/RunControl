@@ -14,6 +14,10 @@ local config = {
 }
 RoomControl.config = config
 
+RoomControl.RoomSetsToIgnore = {
+    "Secrets",
+}
+
 RoomControl.OnlyIfForced = {
     "A_Shop01",
     "B_Shop01",
@@ -58,7 +62,8 @@ end
 function RoomControl.CheckForChaos( doors, maxIndex )
     local count = 0
     for index, door in ipairs( doors ) do
-        if ModUtil.Path.Get( "Room.RoomSetName", door ) == "Secrets" and index <= maxIndex then
+        local roomSetName = ModUtil.Path.Get( "Room.RoomSetName", door )
+        if Contains( RoomControl.RoomSetsToIgnore, roomSetName ) and index <= maxIndex then
             count = count + 1
         end
     end
