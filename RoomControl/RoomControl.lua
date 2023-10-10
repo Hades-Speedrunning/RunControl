@@ -135,7 +135,6 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function()
             and IsEmpty( eligibleRoomSet )
             and IsEmpty( forcedRoomSet )
             and nextRoomData.Name ~= forcedRoomName then
-                DebugPrint({ Text = "blocking " .. nextRoomData.Name })
                 return false
             end
 
