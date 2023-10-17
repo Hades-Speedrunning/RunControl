@@ -27,6 +27,20 @@ EncounterControl.RoomSetEncounters = {
 
 EncounterControl.CurrentRunData = {}
 
+function EncounterControl.GetEncounterData( room )
+    local chamberNumOverride = GetRunDepth( CurrentRun )
+    local roomName = ModUtil.Path.Get( "Name", room )
+    if roomName ~= "RoomOpening" then -- All rooms other than chamber 1 generate their encounter while GetRunDepth is still returning the previous chamber number
+        chamberNumOverride = chamberNumOverride + 1
+    end
+    local output = RCLib.GetFromList( EncounterControl.CurrentRunData, { dataType = "encounter", chamberNum = chamberNumOverride } )
+
+    local currentBiome = ModUtil.Path.Get( "RoomSetName", room )
+    output.Name = output.Name or EncounterControl.RoomEncounters[roomName] or EncounterControl.RoomSetEncounters[currentBiome]
+
+    return output
+end
+
 function EncounterControl.CreateWaves( encounterData, waveSet )
     local output = {}
 
@@ -49,12 +63,7 @@ function EncounterControl.CreateWaves( encounterData, waveSet )
 end
 
 ModUtil.Path.Wrap( "IsEncounterEligible", function( baseFunc, currentRun, room, nextEncounterData )
-    local chamberNumOverride = GetRunDepth( CurrentRun )
-    local roomName = ModUtil.Path.Get( "Name", room )
-    if roomName ~= "RoomOpening" then -- All rooms other than chamber 1 generate their encounter while GetRunDepth is still returning the previous chamber number
-        chamberNumOverride = chamberNumOverride + 1
-    end
-    local data = RCLib.GetFromList( EncounterControl.CurrentRunData, { dataType = "encounter", chamberNum = chamberNumOverride } )
+    local data = EncounterControl.GetEncounterData( room )
 
     local isThanatos = Contains( EncounterSets.ThanatosEncounters, nextEncounterData.Name )
     local isSurvival = nextEncounterData.EncounterType == "SurvivalChallenge"
@@ -69,21 +78,28 @@ ModUtil.Path.Wrap( "IsEncounterEligible", function( baseFunc, currentRun, room, 
     return baseFunc( currentRun, room, nextEncounterData )
 end, EncounterControl )
 
-ModUtil.Path.Wrap( "SetupEncounter", function( baseFunc, encounterData, room )
-    local chamberNumOverride = GetRunDepth( CurrentRun )
-    local roomName = ModUtil.Path.Get( "Name", room )
-    if roomName ~= "RoomOpening" then -- All rooms other than chamber 1 generate their encounter while GetRunDepth is still returning the previous chamber number
-        chamberNumOverride = chamberNumOverride + 1
+ModUtil.Path.Wrap( "FillEnemyTypes", function( baseFunc, encounter, wave, room )
+    local data = EncounterControl.GetEncounterData( room )
+    local forcedTypes = ModUtil.IndexArray.Get( data, { "EnemyTypes", wave.WaveIndex } )
+
+    if not EncounterControl.config.Enabled or IsEmpty( forcedTypes ) then
+        return baseFunc( encounter, wave, room )
     end
-    local data = RCLib.GetFromList( EncounterControl.CurrentRunData, { dataType = "encounter", chamberNum = chamberNumOverride } )
+
+    wave.Spawns = {}
+
+    for i, enemyName in ipairs( forcedTypes ) do
+        local enemyCode = RCLib.EncodeEnemy( enemyName )
+        if enemyCode then AddToSpawnTable( wave.Spawns, enemyCode ) end
+    end
+end, EncounterControl )
+
+ModUtil.Path.Wrap( "SetupEncounter", function( baseFunc, encounterData, room )
+    local data = EncounterControl.GetEncounterData( room )
 
     if not EncounterControl.config.Enabled or IsEmpty( data ) then
         return baseFunc( encounterData, room )
     end
-
-    local currentBiome = ModUtil.Path.Get( "RoomSetName", room )
-    if not data.Name then data.Name = EncounterControl.RoomEncounters[roomName] end
-    if not data.Name then data.Name = EncounterControl.RoomSetEncounters[currentBiome] end
 
     local newEncounterData = EncounterData[data.Name]
     if room and newEncounterData and ( IsEncounterEligible( CurrentRun, room, newEncounterData ) or data.AlwaysEligible or not EncounterControl.config.CheckEligibility ) then
