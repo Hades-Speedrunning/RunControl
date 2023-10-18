@@ -9,6 +9,7 @@ ModUtil.Mod.Register( "RewardControl" )
 local config = {
     Enabled = true,
     CheckEligibility = true,
+    RemoveFromBag = false, -- EXPERIMENTAL, currently weird and a little broken sometimes
     PrioritiseKeepsakes = true, -- If true, keepsakes that force a god will take priority over what we force
 }
 RewardControl.config = config
@@ -48,14 +49,52 @@ function RewardControl.CheckRewardEligibility( run, room, reward, previouslyChos
         return false
     end
 
+    if RewardControl.config.RemoveFromBag then
+        return RewardControl.GetFromBag( rewardCode )
+    end
+
     return true
 end
 
-function RewardControl.CheckForChaos( doors, maxIndex )
-    local count = 0
+function RewardControl.GetFromBag( rewardCode )
+    local rewardStore = RCLib.RewardLaurels[rewardCode]
+    if not rewardStore or not ModUtil.IndexArray.Get( CurrentRun, { "RewardStores", rewardStore } ) then return true end
+
+    RewardControl.DumpBag = CurrentRun.RewardStores[rewardStore]
+
+    DebugPrint({ Text = "Looking in " .. rewardStore .. " for " .. rewardCode })
+    DebugPrint({ Text = "Bag contents: " })
+    for index, reward in pairs( CurrentRun.RewardStores[rewardStore] ) do
+        DebugPrint({ Text = reward.Name })
+        if reward.Name == rewardCode then
+            DebugPrint({ Text = "Found " .. rewardCode })
+            reward = nil
+            return true
+        end
+    end
+
+    DebugPrint({ Text = rewardCode .. " is not in bag" })
+    return false
+end
+
+function RewardControl.CreateIgnoreList( doors )
+    local output = {}
     for index, door in ipairs( doors ) do
         local roomSetName = ModUtil.Path.Get( "Room.RoomSetName", door )
-        if Contains( RewardControl.RoomSetsToIgnore, roomSetName ) and index <= maxIndex then
+        if Contains( RewardControl.RoomSetsToIgnore, roomSetName ) then
+            output[index] = true
+        else
+            output[index] = false
+        end
+    end
+    return output
+end
+
+function RewardControl.GetIgnoreCount( maxIndex, ignoreList )
+    local count = 0
+    for index, value in ipairs( ignoreList ) do
+        if index > maxIndex then return count end
+        if value == true then
             count = count + 1
         end
     end
@@ -82,11 +121,16 @@ end, RewardControl )
 
 ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function() -- All other rewards
     local forcedDoors = RCLib.GetFromList( RewardControl.CurrentRunData, { dataType = "exitDoors" } )
+    local ignoreList = {}
 
     ModUtil.Path.Wrap( "ChooseRoomReward", function( baseFunc, run, room, rewardStoreName, previouslyChosenRewards, args )
-        local doorIndex = ModUtil.Locals.Stacked().index
         local doors = ModUtil.Locals.Stacked().exitDoorsIPairs
-        local doorNumOffset = RewardControl.CheckForChaos( doors, doorIndex )
+        if IsEmpty( ignoreList ) then
+            ignoreList = RewardControl.CreateIgnoreList( doors )
+        end
+
+        local doorIndex = ModUtil.Locals.Stacked().index
+        local doorNumOffset = RewardControl.GetIgnoreCount( doorIndex, ignoreList )
         doorIndex = doorIndex - doorNumOffset
 
         local forcedReward = forcedDoors[doorIndex] or {}
@@ -119,9 +163,13 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function() -- All other rewards
 
         if not RewardControl.config.Enabled then return end
 
-        local doorIndex = ModUtil.Locals.Stacked().index
         local doors = ModUtil.Locals.Stacked().exitDoorsIPairs
-        local doorNumOffset = RewardControl.CheckForChaos( doors, doorIndex )
+        if IsEmpty( ignoreList ) then
+            ignoreList = RewardControl.CreateIgnoreList( doors )
+        end
+
+        local doorIndex = ModUtil.Locals.Stacked().index
+        local doorNumOffset = RewardControl.GetIgnoreCount( doorIndex, ignoreList )
         doorIndex = doorIndex - doorNumOffset
 
         local forcedDoor = forcedDoors[doorIndex] or {}
