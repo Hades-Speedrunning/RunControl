@@ -48,7 +48,7 @@ end
 function ShopControl.BuildShopList( forced, lookupTable, args )
     local output = {}
 
-    for index, data in ipairs( forced ) do
+    for index, data in pairs( forced ) do
         local forcedItem = {}
         local itemCode = lookupTable[data.Item]
         local itemType = RCLib.InferItemType( itemCode )
@@ -99,7 +99,7 @@ ModUtil.Path.Wrap( "FillInShopOptions", function( baseFunc, args )
     if ShopControl.config.FillWithEligible then
         local baseStore = baseFunc( args )
 
-        for index, data in ipairs( baseStore.StoreOptions ) do
+        for index, data in pairs( baseStore.StoreOptions ) do
             if options[index] == nil and not ModUtil.IndexArray.Get( forced, { index, "EmptySlot" } ) then
                 options[index] = data
             end
