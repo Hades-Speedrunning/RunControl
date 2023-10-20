@@ -124,7 +124,7 @@ ModUtil.Path.Wrap( "CreateStoreButtons", function( baseFunc ) -- Twists
 
     local forced = RCLib.GetFromList( ShopControl.CurrentRunData, { dataType = "shop", rerollNum = ShopControl.WellRerollNum } )
 
-    for index, data in ipairs( forced ) do
+    for index, data in pairs( forced ) do
         if data.Item == "FatefulTwist" and data.Contents then
             local forcedContents = RCLib.EncodeWellItem( data.Contents )
             local contentsType = RCLib.InferItemType( forcedContents )
@@ -151,10 +151,11 @@ ModUtil.Path.Context.Wrap( "UnwrapRandomLoot", function( spawnId ) -- Random bag
         local forcedShopData = RCLib.GetFromList( ShopControl.CurrentRunData, { dataType = "shop" } )
 
         if ShopControl.config.Enabled then
-            for i, itemData in ipairs( shopItems ) do
+            for i, itemData in pairs( shopItems ) do
                 if itemData.ObjectId == spawnId then
                     local randomBagData = forcedShopData[i] or {}
                     args.ForceLootName = RCLib.EncodeBoonSet( randomBagData.Contents ) or args.ForceLootName
+                    break
                 end
             end
         end
