@@ -226,7 +226,12 @@ ModUtil.Path.Context.Wrap( "HandleSecretSpawns", function()
     local roomData = RCLib.GetFromList( RoomControl.CurrentRunData, { dataType = "roomFeatures" } )
 
     ModUtil.Path.Wrap( "IsSecretDoorEligible", function( baseFunc, ... ) -- Chaos gate spawn
+        -- true, false, and nil are all distinct
+        -- If true, force a gate. If false, force no gate (they cannot appear naturally or due to Ix). If nil, neither
+        -- If nil and RequireForcedFeatures is true, they cannot appear randomly but can due to Ix
+        -- Same logic is used for all room features
         local isChaosForced = ModUtil.Path.Get( "ChaosGate.Force", roomData )
+        if isChaosForced == false then return false end
         if RoomControl.config.RequireForcedFeatures then
             return HasHeroTraitValue( "ForceSecretDoor" ) or isChaosForced or false
         end
@@ -246,6 +251,7 @@ ModUtil.Path.Context.Wrap( "HandleSecretSpawns", function()
     end, RoomControl )
 
     ModUtil.Path.Wrap( "IsShrinePointDoorEligible", function( baseFunc, ... ) -- Erebus gate spawn
+        -- true, false, and nil are all distinct; See Chaos gates
         local isErebusForced = ModUtil.Path.Get( "ErebusGate.Force", roomData )
         if RoomControl.config.RequireForcedFeatures then
             return isErebusForced or false
@@ -257,7 +263,9 @@ ModUtil.Path.Context.Wrap( "HandleSecretSpawns", function()
     end, RoomControl )
 
     ModUtil.Path.Wrap( "IsChallengeSwitchEligible", function( baseFunc, ... ) -- Trove spawn
+        -- true, false, and nil are all distinct; See Chaos gates
         local isTroveForced = ModUtil.Path.Get( "Trove.Force", roomData )
+        if isTroveForced == false then return false end
         if RoomControl.config.RequireForcedFeatures then
             return HasHeroTraitValue( "ForceChallengeSwitch" ) or isTroveForced or false
         end
@@ -267,30 +275,36 @@ ModUtil.Path.Context.Wrap( "HandleSecretSpawns", function()
         return isTroveForced
     end, RoomControl )
 
-    ModUtil.Path.Wrap( "IsWellShopEligible", function( baseFunc, ... ) -- Well spawn
+    ModUtil.Path.Wrap( "IsWellShopEligible", function( baseFunc, currentRun, currentRoom ) -- Well spawn
+        -- true, false, and nil are all distinct; See Chaos gates
         local isWellForced = ModUtil.Path.Get( "Well.Force", roomData )
+        if isWellForced == false then return false end
         if RoomControl.config.RequireForcedFeatures then
-            return isWellForced or false
+            return currentRoom.ForceWellShop or isWellForced or false
         end
         if isWellForced == nil then
-            return baseFunc( ... )
+            return baseFunc( currentRun, currentRoom )
         end
         return isWellForced
     end, RoomControl )
 
-    ModUtil.Path.Wrap( "IsSellTraitShopEligible", function( baseFunc, ... ) -- Sell well spawn
+    ModUtil.Path.Wrap( "IsSellTraitShopEligible", function( baseFunc, currentRun, currentRoom ) -- Sell well spawn
+        -- true, false, and nil are all distinct; See Chaos gates
         local isSellWellForced = ModUtil.Path.Get( "SellWell.Force", roomData )
+        if isSellWellForced == false then return false end
         if RoomControl.config.RequireForcedFeatures then
-            return isSellWellForced or false
+            return currentRoom.ForceSellTraitShop or isSellWellForced or false
         end
         if isSellWellForced == nil then
-            return baseFunc( ... )
+            return baseFunc( currentRun, currentRoom )
         end
         return isSellWellForced
     end, RoomControl )
 
     ModUtil.Path.Wrap( "IsFishingEligible", function( baseFunc, ... ) -- Fishing point spawn
+        -- true, false, and nil are all distinct; See Chaos gates
         local isFishingPointForced = ModUtil.Path.Get( "FishingPoint.Force", roomData )
+        if isFishingPointForced == false then return false end
         if RoomControl.config.RequireForcedFeatures then
             return HasHeroTraitValue( "ForceFishingPoint" ) or isFishingPointForced or false
         end
