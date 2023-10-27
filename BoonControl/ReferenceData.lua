@@ -42,4 +42,8 @@ BoonControl.OverrideRequirements = {
             "ChaosBlessingAlphaStrikeTrait",
         },
     },
+    RareCrop = {
+		RequiredUpgradeableGodTraits = 1,
+		RequiredFalseTrait = "HarvestBoonTrait",
+	},
 }

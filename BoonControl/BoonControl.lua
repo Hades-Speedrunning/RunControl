@@ -21,6 +21,134 @@ BoonControl.CurrentRunData = {}
 BoonControl.GodAppearances = {}
 BoonControl.GodRerollNums = {}
 
+function BoonControl.BuildEligibleSet( lootData, upgradeChoiceData, lookupTable ) -- Return a list of eligible boons, including any we've overridden the requirements for
+	-- This whole function is kind of a refactor of GetEligibleUpgrades() to implement requirement overrides
+	local eligible = {}
+
+	if lootData.StackOnly then
+		local upgradeableGodTraitsKVPs = CollapseTableAsOrderedKeyValuePairs(GetAllUpgradeableGodTraits())
+		for i, kvp in ipairs( upgradeableGodTraitsKVPs ) do
+			table.insert( eligible, kvp.Key )
+		end
+	else
+		local weaponUpgrades = GetEligibleWeaponTraits( upgradeChoiceData.WeaponUpgrades )
+		local traitUpgrades = GetEligibleTraitUpgrades( upgradeChoiceData )
+		local consumables = upgradeChoiceData.Consumables
+		eligible = ModUtil.Array.Join( eligible, weaponUpgrades, traitUpgrades, consumables )
+	end
+
+	local toRemove = {}
+	for i, boonCode in ipairs( eligible ) do
+		local boonName = lookupTable[boonCode]
+		local requirements = BoonControl.OverrideRequirements[boonName] or RCLib.InferItemData( boonCode )
+
+		if not lootData.StackOnly and RCLib.InferItemType( boonCode ) == "Trait" and HeroHasTrait( boonCode ) then
+			table.insert( toRemove, boonCode )
+		elseif not lootData.StripRequirements and not IsGameStateEligible( CurrentRun, requirements ) then
+			table.insert( toRemove, boonCode )
+		end
+	end
+
+	for i, value in ipairs( toRemove ) do
+		RemoveValue( eligible, value )
+	end
+
+	local output = {}
+	for k, trait in pairs( eligible ) do
+		table.insert( output, lookupTable[trait] )
+	end
+	return output
+end
+
+function BoonControl.GetReplaceData( boon ) -- If a boon can be used as a replace, get the data for that replace. Otherwise, return nil
+	local boonCode = RCLib.EncodeBoon( boon )
+	local boonData = RCLib.InferItemData( boonCode )
+
+	if not IsGameStateEligible( CurrentRun, boonData )
+	or HeroHasTrait( boonCode )
+	or not boonData.Slot then
+		return nil
+	end
+
+	for i, existingBoon in pairs( CurrentRun.Hero.Traits ) do
+		if existingBoon.Slot == boonData.Slot then
+			local oldRarity = existingBoon.Rarity
+			local newRarity = GetUpgradedRarity( oldRarity )
+			return {
+				ItemName = boonCode,
+				Type = "Trait",
+				TraitToReplace = existingBoon.Name,
+				OldRarity = oldRarity,
+				Rarity = newRarity,
+			}
+		end
+	end
+
+	return nil
+end
+
+function BoonControl.BuildEligibleReplaceSet( traitNames ) -- Return a list of the eligible replaces for a god
+	if traitNames == nil then
+		return {}
+	end
+
+	local priorityOptions = {}
+	local occupiedSlots = {}
+
+	for i, traitData in pairs( CurrentRun.Hero.Traits ) do
+		if traitData.Slot then
+			if not occupiedSlots[traitData.Slot] then
+				occupiedSlots[traitData.Slot] = { TraitName = traitData.Name, Rarity = "Common" }
+			end
+			if  traitData.Rarity ~= nil and GetRarityValue( traitData.Rarity ) > GetRarityValue( occupiedSlots[traitData.Slot].Rarity ) then
+				occupiedSlots[traitData.Slot].Rarity = traitData.Rarity
+			end
+		end
+	end
+
+	for index, traitName in ipairs( traitNames ) do
+		local slot = TraitData[traitName].Slot
+		if IsGameStateEligible( CurrentRun, TraitData[traitName] ) and not HeroHasTrait( traitName ) and occupiedSlots[slot] and GetUpgradedRarity( occupiedSlots[slot].Rarity ) ~= nil then
+			table.insert( priorityOptions, traitName )
+		end
+	end
+	return priorityOptions
+end
+
+function BoonControl.RollRarityForBoon( boon, rarityChances, lookupTable )
+	local boonName = lookupTable[boon]
+	local validRarities = {
+		Common = false,
+		Rare = false,
+		Epic = false,
+		Heroic = false,
+		Legendary = false,
+	}
+	local rarityLevels = RCLib.InferItemData( boonName ).RarityLevels
+
+	if rarityLevels == nil then
+		rarityLevels = { Common = true }
+	end
+
+	for key, value in pairs( rarityLevels ) do
+		if value ~= nil then
+			validRarities[key] = true
+		end
+	end
+
+	local chosenRarity = "Common"
+	if validRarities.Legendary and rarityChances.Legendary and RandomChance( rarityChances.Legendary ) then
+		chosenRarity = "Legendary"
+	elseif validRarities.Heroic and rarityChances.Heroic and RandomChance( rarityChances.Heroic ) then
+		chosenRarity = "Heroic"
+	elseif validRarities.Epic and rarityChances.Epic and RandomChance( rarityChances.Epic ) then
+		chosenRarity = "Epic"
+	elseif validRarities.Rare and rarityChances.Rare and RandomChance( rarityChances.Rare ) then
+		chosenRarity = "Rare"
+	end
+	return chosenRarity
+end
+
 function BoonControl.BuildTraitList( forced, eligible, eligibleReplaces, rarityTable, lookupTable )
 	local traitOptions = {}
 	local maxOptions = GetTotalLootChoices() -- TODO possible LootChoiceExt compat
@@ -68,7 +196,6 @@ end
 
 function BoonControl.BuildEligibleTransformingSet( traitCodes, lookupTable ) -- Return a list of eligible Chaos boons, including any we've overridden the requirements for
 	local output = {}
-	lookupTable = lookupTable or {}
 	for i, traitCode in pairs( traitCodes ) do
 		local traitName = lookupTable[traitCode] or traitCode
 		local requirements = BoonControl.OverrideRequirements[traitName] or TraitData[traitCode]
@@ -79,7 +206,7 @@ function BoonControl.BuildEligibleTransformingSet( traitCodes, lookupTable ) -- 
 	return output
 end
 
-function BoonControl.BuildTransformingTraitList( forced, eligible, rarityTable, lookupTable ) -- Chaos
+function BoonControl.BuildTransformingTraitList( forced, eligible, rarityTable, lookupTable ) -- Used for Chaos
 	local traitOptions = {}
 	local isValid = false
 	local maxOptions = GetTotalLootChoices() -- TODO possible LootChoiceExt compat
@@ -116,94 +243,6 @@ function BoonControl.BuildTransformingTraitList( forced, eligible, rarityTable, 
 	return traitOptions
 end
 
-function BoonControl.GetEligibleReplaceSet( traitNames ) -- Return a list of the eligible replaces for a god
-	if traitNames == nil then
-		return {}
-	end
-
-	local priorityOptions = {}
-	local occupiedSlots = {}
-
-	for i, traitData in pairs( CurrentRun.Hero.Traits ) do
-		if traitData.Slot then
-			if not occupiedSlots[traitData.Slot] then
-				occupiedSlots[traitData.Slot] = { TraitName = traitData.Name, Rarity = "Common" }
-			end
-			if  traitData.Rarity ~= nil and GetRarityValue( traitData.Rarity ) > GetRarityValue( occupiedSlots[traitData.Slot].Rarity ) then
-				occupiedSlots[traitData.Slot].Rarity = traitData.Rarity
-			end
-		end
-	end
-
-	for index, traitName in ipairs( traitNames ) do
-		local slot = TraitData[traitName].Slot
-		if IsGameStateEligible( CurrentRun, TraitData[traitName] ) and not HeroHasTrait( traitName ) and occupiedSlots[slot] and GetUpgradedRarity( occupiedSlots[slot].Rarity ) ~= nil then
-			table.insert( priorityOptions, traitName )
-		end
-	end
-	return priorityOptions
-end
-
-function BoonControl.GetReplaceData( boon ) -- If a boon can be used as a replace, get the data for that replace. Otherwise, return nil.
-	local boonCode = RCLib.EncodeBoon( boon )
-	local boonData = RCLib.InferItemData( boonCode )
-
-	if not IsGameStateEligible( CurrentRun, boonData )
-	or HeroHasTrait( boonCode )
-	or not boonData.Slot then
-		return nil
-	end
-
-	for i, existingBoon in pairs( CurrentRun.Hero.Traits ) do
-		if existingBoon.Slot == boonData.Slot then
-			local oldRarity = existingBoon.Rarity
-			local newRarity = GetUpgradedRarity( oldRarity )
-			return {
-				ItemName = boonCode,
-				Type = "Trait",
-				TraitToReplace = existingBoon.Name,
-				OldRarity = oldRarity,
-				Rarity = newRarity,
-			}
-		end
-	end
-
-	return nil
-end
-
-function BoonControl.RollRarityForBoon( boon, rarityChances, lookupTable )
-	local boonName = lookupTable[boon]
-	local validRarities = {
-		Common = false,
-		Rare = false,
-		Epic = false,
-		Heroic = false,
-		Legendary = false,
-	}
-	local rarityLevels = RCLib.InferItemData( boonName ).RarityLevels
-
-	if rarityLevels == nil then
-		rarityLevels = { Common = true }
-	end
-
-	for key, value in pairs( rarityLevels ) do
-		if value ~= nil then
-			validRarities[key] = true
-		end
-	end
-
-	local chosenRarity = "Common"
-	if validRarities.Legendary and rarityChances.Legendary and RandomChance( rarityChances.Legendary ) then
-		chosenRarity = "Legendary"
-	elseif validRarities.Heroic and rarityChances.Heroic and RandomChance( rarityChances.Heroic ) then
-		chosenRarity = "Heroic"
-	elseif validRarities.Epic and rarityChances.Epic and RandomChance( rarityChances.Epic ) then
-		chosenRarity = "Epic"
-	elseif validRarities.Rare and rarityChances.Rare and RandomChance( rarityChances.Rare ) then
-		chosenRarity = "Rare"
-	end
-	return chosenRarity
-end
 
 ModUtil.Path.Wrap( "StartRoom", function( baseFunc, currentRun, currentRoom )
 	BoonControl.GodAppearances = ModUtil.Table.Copy( currentRun.LootTypeHistory )
@@ -214,18 +253,8 @@ ModUtil.Path.Wrap( "StartRoom", function( baseFunc, currentRun, currentRoom )
 end, BoonControl )
 
 ModUtil.Path.Wrap( "SetTraitsOnLoot", function( baseFunc, lootData, args )
-	args = args or {}
-
 	local godCode = lootData.Name
 	local upgradeChoiceData = LootData[godCode]
-	local forcedBoons = {}
-	local boonOptions = {}
-
-	if not BoonControl.config.Enabled
-	or IsEmpty( BoonControl.CurrentRunData )
-	or upgradeChoiceData.TransformingTraits then -- Chaos is handled in a separate function, which baseFunc will call
-		return baseFunc( lootData, args )
-	end
 
 	local conditions = {}
 	conditions.dataType = "boonMenu"
@@ -233,20 +262,25 @@ ModUtil.Path.Wrap( "SetTraitsOnLoot", function( baseFunc, lootData, args )
 	conditions.appearanceNum = ( BoonControl.GodAppearances[godCode] or 0 ) + 1
 	conditions.rerollNum = ( BoonControl.GodRerollNums[godCode] or 0 ) + 1
 
-	forcedBoons = RCLib.GetFromList( BoonControl.CurrentRunData, conditions )
+	local forcedBoons = RCLib.GetFromList( BoonControl.CurrentRunData, conditions )
 
-	local eligibleUpgradeSet = GetEligibleUpgrades( boonOptions, lootData, upgradeChoiceData )
+	if not BoonControl.config.Enabled
+	or IsEmpty( forcedBoons )
+	or upgradeChoiceData.TransformingTraits then -- Chaos is handled in a separate function, which baseFunc will call
+		return baseFunc( lootData, args )
+	end
+
 	local tableName = "Boons"
-	if conditions.godName == "Hammer" then
+	if godCode == "WeaponUpgrade" then
 		tableName = "Hammers"
 	end
-	local eligibleList = {}
-	for key, trait in pairs( eligibleUpgradeSet ) do
-		table.insert( eligibleList, RCLib.CodeToName[tableName][trait.ItemName] )
-	end
-	local eligibleReplaces = BoonControl.GetEligibleReplaceSet( lootData.PriorityUpgrades )
+	local eligibleBoons = BoonControl.BuildEligibleSet( lootData, upgradeChoiceData, RCLib.CodeToName[tableName] )
+	local eligibleReplaces = BoonControl.BuildEligibleReplaceSet( lootData.PriorityUpgrades )
 
-	boonOptions = BoonControl.BuildTraitList( forcedBoons, eligibleList, eligibleReplaces, lootData.RarityChances, RCLib.NameToCode[tableName] )
+	BoonControl.DumpEligible = eligibleBoons
+	BoonControl.DumpReplaces = eligibleReplaces
+
+	local boonOptions = BoonControl.BuildTraitList( forcedBoons, eligibleBoons, eligibleReplaces, lootData.RarityChances, RCLib.NameToCode[tableName] )
 
 	if BoonControl.config.FillWithEligible then
 		local baseData = ModUtil.Table.Copy( lootData )
@@ -288,26 +322,22 @@ ModUtil.Path.Wrap( "SetTraitsOnLoot", function( baseFunc, lootData, args )
 	lootData.UpgradeOptions = boonOptions
 end, BoonControl )
 
-ModUtil.Path.Wrap( "SetTransformingTraitsOnLoot", function( baseFunc, lootData, args )
-	args = args or {}
-	local conditions = {}
-
+ModUtil.Path.Wrap( "SetTransformingTraitsOnLoot", function( baseFunc, lootData, args ) -- Used for Chaos
 	local godCode = lootData.Name
 	local upgradeChoiceData = LootData[godCode]
-	local forcedBoons = {}
-	local boonOptions = {}
 
-	if not BoonControl.config.Enabled
-	or IsEmpty( BoonControl.CurrentRunData ) then
-		return baseFunc( lootData, args )
-	end
-
+	local conditions = {}
 	conditions.dataType = "boonMenu"
 	conditions.godName = RCLib.DecodeBoonSet( godCode )
 	conditions.appearanceNum = ( BoonControl.GodAppearances[godCode] or 0 ) + 1
 	conditions.rerollNum = ( BoonControl.GodRerollNums[godCode] or 0 ) + 1
 	
-	forcedBoons = RCLib.GetFromList( BoonControl.CurrentRunData, conditions ) or {}
+	local forcedBoons = RCLib.GetFromList( BoonControl.CurrentRunData, conditions ) or {}
+
+	if not BoonControl.config.Enabled
+	or IsEmpty( forcedBoons ) then
+		return baseFunc( lootData, args )
+	end
 
 	local eligibleList = {}
 	eligibleList.Temporary = BoonControl.BuildEligibleTransformingSet( upgradeChoiceData.TemporaryTraits, RCLib.CodeToName.ChaosCurses )
@@ -317,7 +347,7 @@ ModUtil.Path.Wrap( "SetTransformingTraitsOnLoot", function( baseFunc, lootData, 
 	lookupTables.Temporary = RCLib.NameToCode.ChaosCurses
 	lookupTables.Permanent = RCLib.NameToCode.ChaosBlessings
 
-	boonOptions = BoonControl.BuildTransformingTraitList( forcedBoons, eligibleList, lootData.RarityChances, lookupTables )
+	local boonOptions = BoonControl.BuildTransformingTraitList( forcedBoons, eligibleList, lootData.RarityChances, lookupTables )
 
 	if BoonControl.config.FillWithEligible then
 		local baseData = ModUtil.Table.Copy( lootData )
