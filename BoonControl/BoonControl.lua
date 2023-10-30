@@ -243,7 +243,6 @@ function BoonControl.BuildTransformingTraitList( forced, eligible, rarityTable, 
 	return traitOptions
 end
 
-
 ModUtil.Path.Wrap( "StartRoom", function( baseFunc, currentRun, currentRoom )
 	BoonControl.GodAppearances = ModUtil.Table.Copy( currentRun.LootTypeHistory )
 	-- LootTypeHistory is always accurate at the start and end of a room, but increments at an unpredictable time.
@@ -276,9 +275,6 @@ ModUtil.Path.Wrap( "SetTraitsOnLoot", function( baseFunc, lootData, args )
 	end
 	local eligibleBoons = BoonControl.BuildEligibleSet( lootData, upgradeChoiceData, RCLib.CodeToName[tableName] )
 	local eligibleReplaces = BoonControl.BuildEligibleReplaceSet( lootData.PriorityUpgrades )
-
-	BoonControl.DumpEligible = eligibleBoons
-	BoonControl.DumpReplaces = eligibleReplaces
 
 	local boonOptions = BoonControl.BuildTraitList( forcedBoons, eligibleBoons, eligibleReplaces, lootData.RarityChances, RCLib.NameToCode[tableName] )
 
