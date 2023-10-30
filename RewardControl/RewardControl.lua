@@ -60,8 +60,6 @@ function RewardControl.GetFromBag( rewardCode )
     local rewardStore = RCLib.RewardLaurels[rewardCode]
     if not rewardStore or not ModUtil.IndexArray.Get( CurrentRun, { "RewardStores", rewardStore } ) then return true end
 
-    RewardControl.DumpBag = CurrentRun.RewardStores[rewardStore]
-
     DebugPrint({ Text = "Looking in " .. rewardStore .. " for " .. rewardCode })
     DebugPrint({ Text = "Bag contents: " })
     for index, reward in pairs( CurrentRun.RewardStores[rewardStore] ) do
