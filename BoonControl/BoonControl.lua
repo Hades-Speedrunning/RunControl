@@ -243,6 +243,37 @@ function BoonControl.BuildTransformingTraitList( forced, eligible, rarityTable, 
 	return traitOptions
 end
 
+function BoonControl.FillTraitListFromBase( list, forced, base ) -- Fill list with the contents of base, ensuring no traits are duplicated
+	local neededEmptySlots = 0
+	for index, trait in ipairs( forced ) do
+		if trait.EmptySlot then
+			neededEmptySlots = neededEmptySlots + 1
+		end
+	end
+
+	for index, trait in ipairs( base ) do
+		if TableLength( list ) + neededEmptySlots >= GetTotalLootChoices() then break end
+
+		local isValid = true
+		for _, forcedTrait in ipairs( list ) do
+			if trait.ItemName == forcedTrait.ItemName then
+				isValid = false
+			end
+		end
+
+		if ModUtil.IndexArray.Get( forced, { index, "EmptySlot" } ) then
+			isValid = false
+		end
+
+		if isValid then
+			local insertIndex = math.min( index, #list + 1 )
+			table.insert( list, insertIndex, trait )
+		end
+	end
+
+	return list
+end
+
 ModUtil.Path.Wrap( "StartRoom", function( baseFunc, currentRun, currentRoom )
 	BoonControl.GodAppearances = ModUtil.Table.Copy( currentRun.LootTypeHistory )
 	-- LootTypeHistory is always accurate at the start and end of a room, but increments at an unpredictable time.
@@ -281,33 +312,8 @@ ModUtil.Path.Wrap( "SetTraitsOnLoot", function( baseFunc, lootData, args )
 	if BoonControl.config.FillWithEligible then
 		local baseData = ModUtil.Table.Copy( lootData )
 		baseFunc( baseData, args )
-		
-		local neededEmptySlots = 0
-		for index, trait in ipairs( forcedBoons ) do
-			if trait.EmptySlot then
-				neededEmptySlots = neededEmptySlots + 1
-			end
-		end
 
-		for index, trait in ipairs( baseData.UpgradeOptions ) do
-			if TableLength( boonOptions ) + neededEmptySlots >= GetTotalLootChoices() then break end
-
-			local isValid = true
-			for _, forcedTrait in ipairs( boonOptions ) do
-				if trait.ItemName == forcedTrait.ItemName then
-					isValid = false
-				end
-			end
-
-			if ModUtil.IndexArray.Get( forcedBoons, { index, "EmptySlot" } ) then
-				isValid = false
-			end
-
-			if isValid then
-				local insertIndex = math.min( index, #boonOptions + 1 )
-				table.insert( boonOptions, insertIndex, trait )
-			end
-		end
+		boonOptions = BoonControl.FillTraitListFromBase( boonOptions, forcedBoons, baseData.UpgradeOptions )
 	end
 	if IsEmpty( boonOptions ) and BoonControl.config.UseSpareWealth then -- Failsafe; can be triggered by errors in presets but also by no forced boons being eligible
 		table.insert( boonOptions, RCLib.SpareWealth )
@@ -348,32 +354,8 @@ ModUtil.Path.Wrap( "SetTransformingTraitsOnLoot", function( baseFunc, lootData, 
 	if BoonControl.config.FillWithEligible then
 		local baseData = ModUtil.Table.Copy( lootData )
 		baseFunc( baseData, args )
-		
-		local neededEmptySlots = 0
-		for index, trait in ipairs( forcedBoons ) do
-			if trait.EmptySlot then
-				neededEmptySlots = neededEmptySlots + 1
-			end
-		end
 
-		for index, trait in ipairs( baseData.UpgradeOptions ) do
-			if TableLength( boonOptions ) + neededEmptySlots >= GetTotalLootChoices() then break end
-
-			local isValid = true
-			for _, forcedTrait in ipairs( boonOptions ) do
-				if trait.ItemName == forcedTrait.ItemName then
-					isValid = false
-				end
-			end
-
-			if ModUtil.IndexArray.Get( forcedBoons, { index, "EmptySlot" } ) then
-				isValid = false
-			end
-
-			if isValid then
-				table.insert( boonOptions, index, trait )
-			end
-		end
+		boonOptions = BoonControl.FillTraitListFromBase( boonOptions, forcedBoons, baseData.UpgradeOptions )
 	end
 	if IsEmpty( boonOptions ) and BoonControl.config.UseSpareWealth then -- Failsafe; can be triggered by errors in presets but also by no forced boons being eligible
 		table.insert( boonOptions, RCLib.SpareWealth )
@@ -393,7 +375,7 @@ ModUtil.Path.Context.Wrap( "CreateBoonLootButtons", function()
 			local boonOptions = locals.upgradeOptions
 			local boonIndex = locals.itemIndex
 			local forcedBoonData = boonOptions[boonIndex].BoonControlData or {}
-			
+
 			if RCLib.DecodeChaosBlessing( processedData.Name ) == forcedBoonData.BlessingName then
 				local pathToSet = BoonControl.PathsToSet.ChaosBlessings[forcedBoonData.BlessingName]
 				if forcedBoonData.BlessingValue then ModUtil.IndexArray.Set( processedData, pathToSet, forcedBoonData.BlessingValue ) end
