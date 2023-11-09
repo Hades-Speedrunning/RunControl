@@ -723,38 +723,13 @@ RCLib.NameToCode = {
         FatefulTwist = "RandomStoreItem",
         TingeOfErebus = "MetaDropRange",
         GaeasTreasure = "GemDropRange",
-    }
-}
-RCLib.CodeToName = {
-    Aspects = {},
-    Boons = {},
-    BoonSets = {},
-    Bosses = {},
-    ChaosBlessings = {},
-    ChaosCurses = {},
-    Enemies = {},
-    EnemySets = {},
-    Hammers = {},
-    Keepsakes = {},
-    RoomRewards = {},
-    ShopRewards = {},
-    WellItems = {}
+    },
 }
 
-RCLib.CodeToName.Aspects = ModUtil.Table.Transpose( RCLib.NameToCode.Aspects )
-RCLib.CodeToName.Boons = ModUtil.Table.Transpose( RCLib.NameToCode.Boons )
-RCLib.CodeToName.BoonSets = ModUtil.Table.Transpose( RCLib.NameToCode.BoonSets )
-RCLib.CodeToName.Bosses = ModUtil.Table.Transpose( RCLib.NameToCode.Bosses )
-RCLib.CodeToName.ChaosBlessings = ModUtil.Table.Transpose( RCLib.NameToCode.ChaosBlessings )
-RCLib.CodeToName.ChaosCurses = ModUtil.Table.Transpose( RCLib.NameToCode.ChaosCurses )
-RCLib.CodeToName.Enemies = ModUtil.Table.Transpose( RCLib.NameToCode.Enemies )
-RCLib.CodeToName.EnemySets = ModUtil.Table.Transpose( RCLib.NameToCode.EnemySets )
-RCLib.CodeToName.Hammers = ModUtil.Table.Transpose( RCLib.NameToCode.Hammers )
-RCLib.CodeToName.Keepsakes = ModUtil.Table.Transpose( RCLib.NameToCode.Keepsakes )
-RCLib.CodeToName.Laurels = ModUtil.Table.Transpose( RCLib.NameToCode.Laurels )
-RCLib.CodeToName.RoomRewards = ModUtil.Table.Transpose( RCLib.NameToCode.RoomRewards )
-RCLib.CodeToName.ShopRewards = ModUtil.Table.Transpose( RCLib.NameToCode.ShopRewards )
-RCLib.CodeToName.WellItems = ModUtil.Table.Transpose( RCLib.NameToCode.WellItems )
+for k, table in pairs( RCLib.NameToCode ) do -- Duplicate this table and its contents in reverse
+    local transposed = ModUtil.Table.Transpose( table )
+    ModUtil.IndexArray.Set( RCLib, { "CodeToName", k }, transposed )
+end
 
 function RCLib.EncodeAspect( name )
     return RCLib.NameToCode.Aspects[name]
