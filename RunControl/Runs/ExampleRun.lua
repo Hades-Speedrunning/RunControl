@@ -1,4 +1,4 @@
---[[ This is a commented example run, which you can use to understand the format. It won't appear in-game.]]
+--[[ This is a commented example run, which you can use to understand the format. It won't appear in-game. ]]
 
 
 local ExampleRun = { -- To get this to show in-game, it would need to be RunControl.Runs.ExampleRun
@@ -51,7 +51,7 @@ local ExampleRun = { -- To get this to show in-game, it would need to be RunCont
                 Data = {
                     Flipped = false, -- Room will face to the right
                     GoldPotNum = 4, -- Forces 4 gold pots to appear
-                    ChaosGate = { Force = true, RoomName = "RoomSecret02" }, -- Forces a Chaos to appear, as well as what room it is
+                    ChaosGate = { Force = true, RoomName = "RoomSecret02" }, -- Forces a Chaos containing RoomSecret02 to appear
                 },
             },
             boonMenu = {
@@ -90,7 +90,7 @@ local ExampleRun = { -- To get this to show in-game, it would need to be RunCont
             shop = {
                 Data = {
                     { Item = "Boon", GodName = "Artemis" }, -- An Artemis boon, assuming you have not already filled your pool to avoid her
-                    { Item = "Boon", GodName = "Zeus" }, -- A random bag which will always contain Zeus
+                    { Item = "RandomBag", Contents = "Zeus" }, -- A random bag which will always contain Zeus
                     -- Third slot will be filled with whatever would be there normally
                 },
             },
@@ -103,12 +103,6 @@ local ExampleRun = { -- To get this to show in-game, it would need to be RunCont
             },
         },
         [15] = { -- Pre-Aspho Midbiome
-            roomFeatures = {
-                Data = { -- There should always be a well and sell well in every midbiome
-                    Well = { Force = true },
-                    SellWell = { Force = true },
-                },
-            },
             shop = { -- Wells still use 'shop' data type
                 [1] = { -- Menu 1 (before rerolling)
                     Data = {
