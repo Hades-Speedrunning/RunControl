@@ -64,6 +64,15 @@ RunControl.SortedRuns = {
     "Ananke629Demeter",
 }
 
+RunControl.ModIndex = {
+    "BoonControl",
+    "EncounterControl",
+    "RewardControl",
+    "RoomControl",
+    "SellControl",
+    "ShopControl",
+}
+
 function RunControl.DisplayVersion()
     local textConfigTable = {
         color = Color.DimGray,
@@ -82,12 +91,11 @@ end
 
 function RunControl.UpdateRunData()
     RunControl.CurrentRunData = RunControl.Runs[RunControl.config.SelectedRun] or {}
-    BoonControl.CurrentRunData = RunControl.CurrentRunData
-    EncounterControl.CurrentRunData = RunControl.CurrentRunData
-    RewardControl.CurrentRunData = RunControl.CurrentRunData
-    RoomControl.CurrentRunData = RunControl.CurrentRunData
-    SellControl.CurrentRunData = RunControl.CurrentRunData
-    ShopControl.CurrentRunData = RunControl.CurrentRunData
+    for _, modName in ipairs( RunControl.ModIndex ) do
+        if ModUtil.Path.Get( modName ) then
+            ModUtil.Path.Set( modName .. ".CurrentRunData", RunControl.CurrentRunData )
+        end
+    end
 end
 
 function RunControl.SaveConfig()
@@ -96,34 +104,15 @@ function RunControl.SaveConfig()
         RunControl.Data.config[k] = v
     end
 
-    BoonControl.Data.config = {}
-    for k, v in pairs( BoonControl.config ) do
-        BoonControl.Data.config[k] = v
-    end
+    for _, modName in ipairs( RunControl.ModIndex ) do
+        local modConfig = ModUtil.Path.Get( modName .. ".config" ) or {}
 
-    EncounterControl.Data.config = {}
-    for k, v in pairs( EncounterControl.config ) do
-        EncounterControl.Data.config[k] = v
-    end
-
-    RewardControl.Data.config = {}
-    for k, v in pairs( RewardControl.config ) do
-        RewardControl.Data.config[k] = v
-    end
-
-    RoomControl.Data.config = {}
-    for k, v in pairs( RoomControl.config ) do
-        RoomControl.Data.config[k] = v
-    end
-
-    SellControl.Data.config = {}
-    for k, v in pairs( SellControl.config ) do
-        SellControl.Data.config[k] = v
-    end
-
-    ShopControl.Data.config = {}
-    for k, v in pairs( ShopControl.config ) do
-        ShopControl.Data.config[k] = v
+        if not IsEmpty( modConfig ) and modConfig.SaveToRunControl ~= false then -- We don't want to create a Data.config table to save into unless there's something to save
+            ModUtil.IndexArray.Set( _G, { modName, "Data", "config" }, {} ) -- Create (or empty) the Data.config table for this mod
+            for k, v in pairs( modConfig ) do
+                ModUtil.IndexArray.Set( _G, { modName, "Data", "config", k }, v ) -- Copy from <modName>.config (which is not saved) to <modName>.Data.config (which is)
+            end
+        end
     end
 end
 
@@ -134,39 +123,14 @@ function RunControl.LoadConfig()
         end
     end
 
-    if not IsEmpty( ModUtil.Path.Get( "BoonControl.Data.config" ) ) then
-        for k, v in pairs( BoonControl.Data.config ) do
-            BoonControl.config[k] = v
-        end
-    end
+    for _, modName in ipairs( RunControl.ModIndex ) do
+        local savedModConfig = ModUtil.Path.Get( modName .. ".Data.config" ) or {}
+        local useSaveData = ModUtil.Path.Get( modName .. ".config.SaveToRunControl" )
 
-    if not IsEmpty( ModUtil.Path.Get( "EncounterControl.Data.config" ) ) then
-        for k, v in pairs( EncounterControl.Data.config ) do
-            EncounterControl.config[k] = v
-        end
-    end
-
-    if not IsEmpty( ModUtil.Path.Get( "RewardControl.Data.config" ) ) then
-        for k, v in pairs( RewardControl.Data.config ) do
-            RewardControl.config[k] = v
-        end
-    end
-
-    if not IsEmpty( ModUtil.Path.Get( "RoomControl.Data.config" ) ) then
-        for k, v in pairs( RoomControl.Data.config ) do
-            RoomControl.config[k] = v
-        end
-    end
-
-    if not IsEmpty( ModUtil.Path.Get( "SellControl.Data.config" ) ) then
-        for k, v in pairs( SellControl.Data.config ) do
-            SellControl.config[k] = v
-        end
-    end
-
-    if not IsEmpty( ModUtil.Path.Get( "ShopControl.Data.config" ) ) then
-        for k, v in pairs( ShopControl.Data.config ) do
-            ShopControl.config[k] = v
+        if not IsEmpty( savedModConfig ) and useSaveData ~= false then -- We don't want to create a Data.config table to save into unless there's something to save
+            for k, v in pairs( savedModConfig ) do
+                ModUtil.IndexArray.Set( _G, { modName, "config", k }, v ) -- Copy from <modName>.Data.config (saved data) to <modName>.config (actively used)
+            end
         end
     end
 end
