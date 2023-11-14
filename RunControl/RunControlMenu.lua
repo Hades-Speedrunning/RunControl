@@ -4,21 +4,19 @@ RunControl.MenuPages = {
             ElementName = "Title",
             ElementType = "Textbox",
             Style = "Heading",
-            Args = { X = 960, Y = 60 },
             TextboxArgs = { Text = "Introduction" },
         },
         {
             ElementName = "WelcomeBanner",
             ElementType = "Textbox",
             Style = "SubHeading",
-            Args = { X = 960, Y = 180 },
+            Args = { Y = 180 },
             TextboxArgs = { Text = "Welcome to RunControl!" },
         },
         {
             ElementName = "Introduction",
             ElementType = "Textbox",
-            Style = "Body",
-            Args = { X = 960, Y = 240 },
+            Args = { Y = 240 },
             TextboxArgs = {
                 Text = "This modpack allows complete control over the events of a Hades run. Recreate your personal bests, test yourself"
                 .. " against world records, or just try out a build you've always wanted- the possibilities are limitless!"
@@ -36,14 +34,13 @@ RunControl.MenuPages = {
             ElementName = "VersionBanner",
             ElementType = "Textbox",
             Style = "SubHeading",
-            Args = { X = 960, Y = 570 },
+            Args = { Y = 570 },
             TextboxArgs = { Text = "You are playing version " .. RunControl.ModpackVersion },
         },
         {
             ElementName = "UpdateNotice",
             ElementType = "Textbox",
-            Style = "Body",
-            Args = { X = 960, Y = 630 },
+            Args = { Y = 630 },
             TextboxArgs = {
                 Text = "Please note that runs created on different versions may not play correctly on this one; this will be noted when you select them."
                 .. " The most recent release can be found at github.com/Hades-Speedrunning/RunControl/releases- remember to check now and again to make sure you're up to date.",
@@ -54,8 +51,7 @@ RunControl.MenuPages = {
         {
             ElementName = "SpecialThanks",
             ElementType = "Textbox",
-            Style = "Body",
-            Args = { X = 960, Y = 800 },
+            Args = { Y = 800 },
             TextboxArgs = {
                 Text = "Special thanks to: "
                 .. "\\n\\n Lili, Ananke, 185, Croven, ocaml, DrkFrst, BIGP, OckE, Vorime; nnevic, grizz, CardDweeb, c_gull, Tounis; Museus, Magic_Gonads, Zyruvias; Angel1C."
@@ -71,7 +67,6 @@ RunControl.MenuPages = {
             ElementName = "Title",
             ElementType = "Textbox",
             Style = "Heading",
-            Args = { X = 960, Y = 60 },
             TextboxArgs = { Text = "Select a run" },
         },
         {
@@ -84,74 +79,54 @@ RunControl.MenuPages = {
             ElementName = "Title",
             ElementType = "Textbox",
             Style = "Heading",
-            Args = { X = 960, Y = 60 },
             TextboxArgs = { Text = "Boons/Hammers" },
         },
         {
             ElementName = "Enabled",
             ElementType = "LabelledCheckbox",
-            Style = "Body",
-            Args = { X = 654, Y = 180 },
+            Args = { Y = 180 },
             TextboxArgs = { Text = "Enable boon and hammer control:" },
 
-            CheckboxOffsetX = 600,
-            CheckboxOffsetY = 10,
             Config = "BoonControl.config.Enabled",
         },
         {
             ElementName = "CheckEligibility",
             ElementType = "LabelledCheckbox",
-            Style = "Body",
-            Args = { X = 654, Y = 240 },
+            Args = { Y = 240 },
             TextboxArgs = { Text = "Only force boons and hammers when eligible:" },
-            CheckboxOffsetX = 600,
-            CheckboxOffsetY = 10,
+
             Config = "BoonControl.config.CheckEligibility",
         },
         {
             ElementName = "FillWithEligible",
             ElementType = "LabelledCheckbox",
-            Style = "Body",
-            Args = { X = 654, Y = 300 },
+            Args = { Y = 300 },
             TextboxArgs = { Text = "Fill empty slots with eligible boons/hammers:" },
 
-            CheckboxOffsetX = 600,
-            CheckboxOffsetY = 10,
             Config = "BoonControl.config.FillWithEligible",
         },
         {
             ElementName = "InferReplaces",
             ElementType = "LabelledCheckbox",
-            Style = "Body",
-            Args = { X = 654, Y = 360 },
+            Args = { Y = 360 },
             TextboxArgs = { Text = "Try to offer ineligible boons as replaces:" },
 
-            CheckboxOffsetX = 600,
-            CheckboxOffsetY = 10,
             Config = "BoonControl.config.InferReplaces",
         },
         {
             ElementName = "UseSpareWealth",
             ElementType = "LabelledCheckbox",
-            Style = "Body",
-            Args = { X = 654, Y = 420 },
+            Args = { Y = 420 },
             TextboxArgs = { Text = "Fill empty menus with spare wealth:" },
 
-            CheckboxOffsetX = 600,
-            CheckboxOffsetY = 10,
             Config = "BoonControl.config.UseSpareWealth",
         },
         {
             ElementName = "DefaultRarity",
             ElementType = "LabelledDropdown",
-            Style = "Body",
-            Args = { X = 654, Y = 480 },
+            Args = { Y = 480 },
             TextboxArgs = { Text = "Default boon rarity:" },
 
-            DropdownOffsetX = 600,
-            DropdownOffsetY = 10,
-            DropdownXScale = .2,
-            DropdownYScale = .5,
             Config = "BoonControl.config.DefaultRarity",
             Options = {
                 { Value = "Common" },
@@ -162,123 +137,108 @@ RunControl.MenuPages = {
             },
         },
     },
-    { -- RoomControl/RewardControl/EncounterControl
+    { -- RoomControl/RewardControl
         {
             ElementName = "Title",
             ElementType = "Textbox",
             Style = "Heading",
-            Args = { X = 960, Y = 60 },
-            TextboxArgs = { Text = "Rooms/Encounters" },
+            TextboxArgs = { Text = "Rooms/Rewards" },
         },
         {
             ElementName = "RoomControlEnabled",
             ElementType = "LabelledCheckbox",
-            Style = "Body",
-            Args = { X = 654, Y = 180 },
+            Args = { Y = 180 },
             TextboxArgs = { Text = "Enable room control:" },
 
-            CheckboxOffsetX = 600,
-            CheckboxOffsetY = 10,
             Config = "RoomControl.config.Enabled",
         },
         {
             ElementName = "RoomControlCheckEligibility",
             ElementType = "LabelledCheckbox",
-            Style = "Body",
-            Args = { X = 654, Y = 240 },
+            Args = { Y = 240 },
             TextboxArgs = { Text = "Only force rooms when eligible:" },
 
-            CheckboxOffsetX = 600,
-            CheckboxOffsetY = 10,
             Config = "RoomControl.config.CheckEligibility",
         },
         {
             ElementName = "RequireForcedFeatures",
             ElementType = "LabelledCheckbox",
-            Style = "Body",
-            Args = { X = 654, Y = 300 },
+            Args = { Y = 300 },
             TextboxArgs = { Text = "Room features only appear when forced:" },
 
-            CheckboxOffsetX = 600,
-            CheckboxOffsetY = 10,
             Config = "RoomControl.config.RequireForcedFeatures",
-        },
-        {
-            ElementName = "RequireForcedSkips",
-            ElementType = "LabelledCheckbox",
-            Style = "Body",
-            Args = { X = 654, Y = 360 },
-            TextboxArgs = { Text = "Special rooms only appear when forced:" },
-
-            CheckboxOffsetX = 600,
-            CheckboxOffsetY = 10,
-            Config = "RoomControl.config.RequireForcedSkips",
         },
         {
             ElementName = "RewardControlEnabled",
             ElementType = "LabelledCheckbox",
-            Style = "Body",
-            Args = { X = 654, Y = 480 },
+            Args = { Y = 420 },
             TextboxArgs = { Text = "Enable reward control:" },
 
-            CheckboxOffsetX = 600,
-            CheckboxOffsetY = 10,
             Config = "RewardControl.config.Enabled",
         },
         {
             ElementName = "RewardControlCheckEligibility",
             ElementType = "LabelledCheckbox",
-            Style = "Body",
-            Args = { X = 654, Y = 540 },
+            Args = { Y = 480 },
             TextboxArgs = { Text = "Only force rewards when eligible:" },
 
-            CheckboxOffsetX = 600,
-            CheckboxOffsetY = 10,
             Config = "RewardControl.config.CheckEligibility",
         },
         {
             ElementName = "PrioritiseKeepsakes",
             ElementType = "LabelledCheckbox",
-            Style = "Body",
-            Args = { X = 654, Y = 600 },
+            Args = { Y = 540 },
             TextboxArgs = { Text = "Allow keepsakes to take priority over forced gods:" },
 
-            CheckboxOffsetX = 600,
-            CheckboxOffsetY = 10,
             Config = "RewardControl.config.PrioritiseKeepsakes",
+        },
+    },
+    { -- BossControl/EncounterControl
+        {
+            ElementName = "Title",
+            ElementType = "Textbox",
+            Style = "Heading",
+            TextboxArgs = { Text = "Encounters/Bosses" },
         },
         {
             ElementName = "EncounterControlEnabled",
             ElementType = "LabelledCheckbox",
-            Style = "Body",
-            Args = { X = 654, Y = 720 },
+            Args = { Y = 180 },
             TextboxArgs = { Text = "Enable encounter control:" },
 
-            CheckboxOffsetX = 600,
-            CheckboxOffsetY = 10,
             Config = "EncounterControl.config.Enabled",
         },
         {
             ElementName = "EncounterControlCheckEligibility",
             ElementType = "LabelledCheckbox",
-            Style = "Body",
-            Args = { X = 654, Y = 780 },
+            Args = { Y = 240 },
             TextboxArgs = { Text = "Only force encounters when eligible:" },
 
-            CheckboxOffsetX = 600,
-            CheckboxOffsetY = 10,
             Config = "EncounterControl.config.CheckEligibility",
         },
         {
             ElementName = "RequireForcedSpecialEncounters",
             ElementType = "LabelledCheckbox",
-            Style = "Body",
-            Args = { X = 654, Y = 840 },
+            Args = { Y = 300 },
             TextboxArgs = { Text = "Than/survival only appear when forced:" },
 
-            CheckboxOffsetX = 600,
-            CheckboxOffsetY = 10,
             Config = "EncounterControl.config.RequireForcedSpecialEncounters",
+        },
+        {
+            ElementName = "BossControlEnabled",
+            ElementType = "LabelledCheckbox",
+            Args = { Y = 420 },
+            TextboxArgs = { Text = "Allow control of boss mechanics:" },
+
+            Config = "BossControl.config.Enabled",
+        },
+        {
+            ElementName = "CheckTheseusGodEligibility",
+            ElementType = "LabelledCheckbox",
+            Args = { Y = 480 },
+            TextboxArgs = { Text = "Only force Theseus summons when eligible:" },
+
+            Config = "BossControl.config.CheckTheseusGodEligibility",
         },
     },
     { -- ShopControl/SellControl
@@ -286,73 +246,54 @@ RunControl.MenuPages = {
             ElementName = "Title",
             ElementType = "Textbox",
             Style = "Heading",
-            Args = { X = 960, Y = 60 },
             TextboxArgs = { Text = "Shops/Wells" },
         },
         {
             ElementName = "ShopControlEnabled",
             ElementType = "LabelledCheckbox",
-            Style = "Body",
-            Args = { X = 654, Y = 180 },
+            Args = { Y = 180 },
             TextboxArgs = { Text = "Enable shop and well control:" },
 
-            CheckboxOffsetX = 600,
-            CheckboxOffsetY = 10,
             Config = "ShopControl.config.Enabled",
         },
         {
             ElementName = "CheckEligibility",
             ElementType = "LabelledCheckbox",
-            Style = "Body",
-            Args = { X = 654, Y = 240 },
+            Args = { Y = 240 },
             TextboxArgs = { Text = "Only force shop/well items when eligible:" },
 
-            CheckboxOffsetX = 600,
-            CheckboxOffsetY = 10,
             Config = "ShopControl.config.CheckEligibility",
         },
         {
             ElementName = "ShopControlFillWithEligible",
             ElementType = "LabelledCheckbox",
-            Style = "Body",
-            Args = { X = 654, Y = 300 },
+            Args = { Y = 300 },
             TextboxArgs = { Text = "Fill empty slots with eligible items:" },
 
-            CheckboxOffsetX = 600,
-            CheckboxOffsetY = 10,
             Config = "ShopControl.config.FillWithEligible",
         },
         {
             ElementName = "SortWells",
             ElementType = "LabelledCheckbox",
-            Style = "Body",
-            Args = { X = 654, Y = 360 },
+            Args = { Y = 360 },
             TextboxArgs = { Text = "Sort wells after forcing:" },
 
-            CheckboxOffsetX = 600,
-            CheckboxOffsetY = 10,
             Config = "ShopControl.config.SortWells",
         },
         {
             ElementName = "SellControlEnabled",
             ElementType = "LabelledCheckbox",
-            Style = "Body",
-            Args = { X = 654, Y = 480 },
+            Args = { Y = 480 },
             TextboxArgs = { Text = "Enable sell well control:" },
 
-            CheckboxOffsetX = 600,
-            CheckboxOffsetY = 10,
             Config = "SellControl.config.Enabled",
         },
         {
             ElementName = "SellControlFillWithEligible",
             ElementType = "LabelledCheckbox",
-            Style = "Body",
-            Args = { X = 654, Y = 540 },
+            Args = { Y = 540 },
             TextboxArgs = { Text = "Fill empty sell slots with eligible boons:" },
 
-            CheckboxOffsetX = 600,
-            CheckboxOffsetY = 10,
             Config = "SellControl.config.FillWithEligible",
         },
     },
@@ -361,35 +302,51 @@ RunControl.MenuPages = {
             ElementName = "Title",
             ElementType = "Textbox",
             Style = "Heading",
-            Args = { X = 960, Y = 60 },
             TextboxArgs = { Text = "Interface/QOL" },
         },
         {
             ElementName = "ShowChamberNumber",
             ElementType = "LabelledCheckbox",
-            Style = "Body",
-            Args = { X = 654, Y = 180 },
+            Args = { Y = 180 },
             TextboxArgs = { Text = "Always show chamber number:" },
 
-            CheckboxOffsetX = 600,
-            CheckboxOffsetY = 10,
             Config = "RunControl.config.ShowChamberNumber",
         },
         {
             ElementName = "ShowRunName",
             ElementType = "LabelledCheckbox",
-            Style = "Body",
-            Args = { X = 654, Y = 240 },
+            Args = { Y = 240 },
             TextboxArgs = { Text = "Show selected run in top-right while playing:" },
 
-            CheckboxOffsetX = 600,
-            CheckboxOffsetY = 10,
             Config = "RunControl.config.ShowRunName",
         },
     }
 }
 
-RunControl.MenuTextStyles = {
+RunControl.ElementDefaults = {
+    Textbox = {
+        Style = "Body",
+        Args = { X = 960, Y = 60 },
+    },
+    LabelledCheckbox = {
+        Style = "Body",
+        Args = { X = 654 },
+        
+        CheckboxOffsetX = 600,
+        CheckboxOffsetY = 10,
+    },
+    LabelledDropdown = {
+        Style = "Body",
+        Args = { X = 654 },
+
+        DropdownOffsetX = 600,
+        DropdownOffsetY = 10,
+        DropdownXScale = .2,
+        DropdownYScale = .5,
+    },
+}
+
+RunControl.TextStyles = {
     Heading = {
         FontSize = 16,
         Color = Color.White,
@@ -532,104 +489,74 @@ function RunControl.CloseMenuPage( screen )
 end
 
 function RunControl.CreateMenuElement( screen, element )
+    local defaults = ModUtil.Table.Copy.Deep( RunControl.ElementDefaults[element.ElementType] or {} )
+    local merged = ModUtil.Table.Merge( defaults, element )
+
+    if merged.ElementType == "Textbox" or merged.ElementType == "LabelledCheckbox" or merged.ElementType == "LabelledDropdown" then
+        RunControl.CreateTextbox( screen, merged )
+    end
+
+    if merged.ElementType == "Checkbox" or merged.ElementType == "LabelledCheckbox" then
+        RunControl.CreateCheckbox( screen, merged )
+    end
+
+    if merged.ElementType == "Dropdown" or merged.ElementType == "LabelledDropdown" then
+        RunControl.CreateDropdown( screen, merged )
+    end
+
+    if merged.ElementType == "ManualElement" then
+        merged.ElementFunction( screen )
+    end
+end
+
+function RunControl.CreateTextbox( screen, element )
+    local textboxName = element.ElementName .. "Text"
     local args = element.Args or {}
+    local textArgs = element.TextboxArgs or {}
+    local styleData = RunControl.TextStyles[element.Style] or {}
 
-    if element.ElementType == "Textbox" or element.ElementType == "LabelledCheckbox" or element.ElementType == "LabelledDropdown" then
-        local textboxName = element.ElementName .. "Text"
-        local textArgs = element.TextboxArgs or {}
-        local styleData = RunControl.MenuTextStyles[element.Style] or {}
-
-        local textbox = CreateScreenComponent({
-            Name = args.Name or "BlankObstacle",
-            Scale = args.Scale or 1,
-            X = args.X or 0,
-            Y = args.Y or 0,
-            Group = "Combat_Menu"
-        })
-        CreateTextBox({
-            Id = textbox.Id,
-            Text = textArgs.Text or "",
-            Color = textArgs.Color or styleData.Color or Color.White,
-            Font = textArgs.Font or styleData.Font or "AlegrayaSansSCRegular",
-            ShadowBlur = textArgs.ShadowBlur or styleData.ShadowBlur,
-            ShadowColor = textArgs.ShadowColor or styleData.ShadowColor,
-            ShadowOffset = textArgs.ShadowOffset or styleData.ShadowOffset,
-            Justification = textArgs.Justification or styleData.Justification or "Left",
-            VerticalJustification = textArgs.VerticalJustification or styleData.VerticalJustification or "Top",
-            Width = textArgs.Width or styleData.Width,
-            Group = "Combat_Menu"
-        })
-
-        screen.Components[textboxName] = textbox
-    end
-
-    if element.ElementType == "Checkbox" or element.ElementType == "LabelledCheckbox" then
-        local checkboxName = element.ElementName .. "Checkbox"
-        local offsetX = element.CheckboxOffsetX or 0
-        local offsetY = element.CheckboxOffsetY or 0
-
-        local checkbox = CreateScreenComponent({
-        Name = "RadioButton",
-        Scale = 1,
-        X = ( args.X or 0 ) + offsetX,
-        Y = ( args.Y or 0 ) + offsetY,
+    local textbox = CreateScreenComponent({
+        Name = args.Name or "BlankObstacle",
+        Scale = args.Scale or 1,
+        X = args.X or 0,
+        Y = args.Y or 0,
         Group = "Combat_Menu"
-        })
-        checkbox.Config = element.Config
-        checkbox.OnPressedFunctionName = "RunControl.ToggleCheckbox"
-        RunControl.UpdateCheckbox( screen, checkbox )
+    })
+    CreateTextBox({
+        Id = textbox.Id,
+        Text = textArgs.Text or "",
+        Color = textArgs.Color or styleData.Color or Color.White,
+        Font = textArgs.Font or styleData.Font or "AlegrayaSansSCRegular",
+        ShadowBlur = textArgs.ShadowBlur or styleData.ShadowBlur,
+        ShadowColor = textArgs.ShadowColor or styleData.ShadowColor,
+        ShadowOffset = textArgs.ShadowOffset or styleData.ShadowOffset,
+        Justification = textArgs.Justification or styleData.Justification or "Left",
+        VerticalJustification = textArgs.VerticalJustification or styleData.VerticalJustification or "Top",
+        Width = textArgs.Width or styleData.Width,
+        Group = "Combat_Menu"
+    })
 
-        screen.Components[checkboxName] = checkbox
-    end
+    screen.Components[textboxName] = textbox
+end
 
-    if element.ElementType == "Dropdown" or element.ElementType == "LabelledDropdown" then
-        local dropdownName = element.ElementName .. "Dropdown"
-        local offsetX = element.DropdownOffsetX or 0
-        local offsetY = element.DropdownOffsetY or 0
-        local xScale = element.DropdownXScale or 1
-        local yScale = element.DropdownYScale or 1
+function RunControl.CreateCheckbox( screen, element )
+    local checkboxName = element.ElementName .. "Checkbox"
+    local args = element.Args or {}
+    local offsetX = element.CheckboxOffsetX or 0
+    local offsetY = element.CheckboxOffsetY or 0
 
-        local configPathArray = ModUtil.Path.IndexArray( element.Config )
-        local configValue = ModUtil.Path.Get( element.Config )
-        local dropdownOptions = {}
-        local defaultOption = ModUtil.IndexArray.Get( element, { "Options", "Default" } ) or {}
-        dropdownOptions.Default = {
-            event = function( dropdown )
-                if configValue ~= nil then
-                    ModUtil.IndexArray.Set( _G, configPathArray, defaultOption.Value or configValue )
-                end
-            end,
-            Text = defaultOption.Text or configValue or "None",
-        }
-        for index, option in ipairs( element.Options ) do
-            table.insert( dropdownOptions, {
-                event = function( dropdown )
-                    if configValue ~= nil then
-                        ModUtil.IndexArray.Set( _G, configPathArray, option.Value )
-                    end
-                end,
-                Text = option.Text or option.Value or "Nil"
-            })
-        end
+    local checkbox = CreateScreenComponent({
+    Name = "RadioButton",
+    Scale = 1,
+    X = ( args.X or 0 ) + offsetX,
+    Y = ( args.Y or 0 ) + offsetY,
+    Group = "Combat_Menu"
+    })
+    checkbox.Config = element.Config
+    checkbox.OnPressedFunctionName = "RunControl.ToggleCheckbox"
+    RunControl.UpdateCheckbox( screen, checkbox )
 
-        local dropdown = ErumiUILib.Dropdown.CreateDropdown( screen, {
-            Name = dropdownName,
-            Group = "Combat_Menu",
-            X = ( args.X or 0 ) + offsetX,
-            Y = ( args.Y or 0 ) + offsetY,
-            Scale = { X = xScale, Y = yScale },
-            Padding = { X = 0, Y = 2 },
-            Font = "AlegrayaSansSCRegular",
-            GeneralFontSize = 16,
-            Items = dropdownOptions,
-        })
-
-        screen.Components[dropdownName] = dropdown
-    end
-
-    if element.ElementType == "ManualElement" then
-        element.ElementFunction( screen )
-    end
+    screen.Components[checkboxName] = checkbox
 end
 
 function RunControl.UpdateCheckbox( screen, button )
@@ -666,6 +593,52 @@ function RunControl.ToggleCheckbox( screen, button )
         ModUtil.IndexArray.Set( _G, configPathArray, not configValue )
         RunControl.UpdateCheckbox( screen, button )
     end
+end
+
+function RunControl.CreateDropdown( screen, element )
+    local dropdownName = element.ElementName .. "Dropdown"
+    local args = element.Args or {}
+    local offsetX = element.DropdownOffsetX or 0
+    local offsetY = element.DropdownOffsetY or 0
+    local xScale = element.DropdownXScale or 1
+    local yScale = element.DropdownYScale or 1
+
+    local configPathArray = ModUtil.Path.IndexArray( element.Config )
+    local configValue = ModUtil.Path.Get( element.Config )
+    local dropdownOptions = {}
+    local defaultOption = ModUtil.IndexArray.Get( element, { "Options", "Default" } ) or {}
+    dropdownOptions.Default = {
+        event = function( dropdown )
+            if configValue ~= nil then
+                ModUtil.IndexArray.Set( _G, configPathArray, defaultOption.Value or configValue )
+            end
+        end,
+        Text = defaultOption.Text or configValue or "None",
+    }
+    for index, option in ipairs( element.Options ) do
+        table.insert( dropdownOptions, {
+            event = function( dropdown )
+                if configValue ~= nil then
+                    ModUtil.IndexArray.Set( _G, configPathArray, option.Value )
+                end
+            end,
+            Text = option.Text or option.Value or "Nil"
+        })
+    end
+
+    local dropdown = ErumiUILib.Dropdown.CreateDropdown( screen, {
+        Name = dropdownName,
+        Group = "Combat_Menu",
+        X = ( args.X or 0 ) + offsetX,
+        Y = ( args.Y or 0 ) + offsetY,
+        Scale = { X = xScale, Y = yScale },
+        Padding = { X = 0, Y = 2 },
+        Font = "AlegrayaSansSCRegular",
+        GeneralFontSize = 16,
+        Items = dropdownOptions,
+    })
+
+    screen.Components[dropdownName] = dropdown
 end
 
 function RunControl.CreateRunSelector( screen )
