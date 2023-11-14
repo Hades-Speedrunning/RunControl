@@ -66,6 +66,7 @@ RunControl.SortedRuns = {
 
 RunControl.ModIndex = {
     "BoonControl",
+    "BossControl",
     "EncounterControl",
     "RewardControl",
     "RoomControl",
@@ -125,9 +126,9 @@ function RunControl.LoadConfig()
 
     for _, modName in ipairs( RunControl.ModIndex ) do
         local savedModConfig = ModUtil.Path.Get( modName .. ".Data.config" ) or {}
-        local useSaveData = ModUtil.Path.Get( modName .. ".config.SaveToRunControl" )
+        local useSaveData = ModUtil.Path.Get( modName .. ".config.SaveToRunControl" ) -- Allows mods to opt out of the save data system
 
-        if not IsEmpty( savedModConfig ) and useSaveData ~= false then -- We don't want to create a Data.config table to save into unless there's something to save
+        if not IsEmpty( savedModConfig ) and useSaveData ~= false then
             for k, v in pairs( savedModConfig ) do
                 ModUtil.IndexArray.Set( _G, { modName, "config", k }, v ) -- Copy from <modName>.Data.config (saved data) to <modName>.config (actively used)
             end
@@ -136,7 +137,7 @@ function RunControl.LoadConfig()
 end
 
 ModUtil.LoadOnce( function()
-    UIData.CurrentRunDepth.X = 1780
+    UIData.CurrentRunDepth.X = 1780 -- Change positioning of chamber number indicator to fit better with our UI
     UIData.CurrentRunDepth.Y = 60
     UIData.CurrentRunDepth.TextFormat.ShadowColor = { 0, 0, 0, 0 }
     RunControl.LoadConfig()
