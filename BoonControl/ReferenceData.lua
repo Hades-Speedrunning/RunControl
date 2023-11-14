@@ -1,3 +1,12 @@
+BoonControl.RarityToIndex = {
+    Common = 1,
+    Rare = 2,
+    Epic = 3,
+    Heroic = 4,
+    Legendary = 5,
+}
+BoonControl.IndexToRarity = ModUtil.Table.Transpose( BoonControl.RarityToIndex )
+
 BoonControl.PathsToSet = {
     ChaosBlessings = {
         Strike = { "AddOutgoingDamageModifiers", "ValidWeaponMultiplier" },

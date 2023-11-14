@@ -12,6 +12,7 @@ local config = {
 	FillWithEligible = true, -- If true, any empty slots in a forced boon screen will be automatically filled with eligible boons
 	UseSpareWealth = false, -- Use spare wealth as a fallback instead of using the vanilla boon screen
 	DefaultRarity = "Common", -- Default rarity when not specified per-boon. If set to "Random", rarity will be rolled each time
+	CheckRarityEligibility = true, -- Only use a certain rarity if a higher one is not guaranteed
 	InferReplaces = false, -- If true, any boon that would take up an occupied slot will be offered as a replace. If false, boons will not appear as replaces unless you specify Replace = true.
 }
 BoonControl.config = config
@@ -115,8 +116,7 @@ function BoonControl.BuildEligibleReplaceSet( traitNames ) -- Return a list of t
 	return priorityOptions
 end
 
-function BoonControl.RollRarityForBoon( boon, rarityChances, lookupTable )
-	local boonName = lookupTable[boon]
+function BoonControl.GetValidRarities( boonCode )
 	local validRarities = {
 		Common = false,
 		Rare = false,
@@ -124,7 +124,7 @@ function BoonControl.RollRarityForBoon( boon, rarityChances, lookupTable )
 		Heroic = false,
 		Legendary = false,
 	}
-	local rarityLevels = RCLib.InferItemData( boonName ).RarityLevels
+	local rarityLevels = RCLib.InferItemData( boonCode ).RarityLevels
 
 	if rarityLevels == nil then
 		rarityLevels = { Common = true }
@@ -135,6 +135,12 @@ function BoonControl.RollRarityForBoon( boon, rarityChances, lookupTable )
 			validRarities[key] = true
 		end
 	end
+
+	return validRarities
+end
+
+function BoonControl.RollRarityForBoon( boonCode, rarityChances )
+	local validRarities = BoonControl.GetValidRarities( boonCode )
 
 	local chosenRarity = "Common"
 	if validRarities.Legendary and rarityChances.Legendary and RandomChance( rarityChances.Legendary ) then
@@ -147,6 +153,22 @@ function BoonControl.RollRarityForBoon( boon, rarityChances, lookupTable )
 		chosenRarity = "Rare"
 	end
 	return chosenRarity
+end
+
+function BoonControl.GetMinRarityForBoon( boonCode, rarityChances )
+	local validRarities = BoonControl.GetValidRarities( boonCode )
+	local minRarity = "Common"
+
+	for index, rarity in ipairs( BoonControl.IndexToRarity ) do
+		local rarityBelow = BoonControl.IndexToRarity[index - 1] or "Common"
+		local chanceOfRarity = rarityChances[rarity] or 0
+		local chanceOfRarityBelow = rarityChances[rarityBelow] or 0
+		if validRarities[rarity] and ( chanceOfRarity >= 1 or chanceOfRarityBelow <= 0 ) then
+			minRarity = rarity
+		end
+	end
+	DebugPrint({ Text = "Min rarity is " .. minRarity })
+	return minRarity
 end
 
 function BoonControl.BuildTraitList( forced, eligible, eligibleReplaces, rarityTable, lookupTable )
@@ -171,8 +193,12 @@ function BoonControl.BuildTraitList( forced, eligible, eligibleReplaces, rarityT
 			if validAsNew then
 				local boonType = RCLib.InferItemType( boonCode )
 				local rarityToUse = trait.ForcedRarity or BoonControl.config.DefaultRarity or "Common"
+				local minRarity = BoonControl.GetMinRarityForBoon( boonCode, rarityTable )
 				if rarityToUse == "Random" then
 					rarityToUse = BoonControl.RollRarityForBoon( traitName, rarityTable, lookupTable )
+				end
+				if BoonControl.config.CheckRarityEligibility and BoonControl.RarityToIndex[minRarity] > BoonControl.RarityToIndex[rarityToUse] then
+					rarityToUse = minRarity
 				end
 
 				table.insert( traitOptions,

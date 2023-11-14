@@ -136,6 +136,14 @@ RunControl.MenuPages = {
                 { Value = "Random" },
             },
         },
+        {
+            ElementName = "CheckRarityEligibility",
+            ElementType = "LabelledCheckbox",
+            Args = { Y = 540 },
+            TextboxArgs = { Text = "Only force rarity if eligible:" },
+
+            Config = "BoonControl.config.CheckRarityEligibility",
+        }
     },
     { -- RoomControl/RewardControl
         {
