@@ -103,10 +103,7 @@ ModUtil.Path.Wrap( "ChooseRoomReward", function( baseFunc, run, room, rewardStor
     local rewardToUse = baseFunc( run, room, rewardStoreName, previouslyChosenRewards, args )
     local forcedReward = RCLib.GetFromList( RewardControl.CurrentRunData, { dataType = "startingReward" } )
 
-    if not ( RewardControl.config.Enabled ) then
-		return rewardToUse
-	end
-    if room.Name ~= "RoomOpening" then -- Other rewards are handled separately
+    if not RewardControl.config.Enabled or room.Name ~= "RoomOpening" then -- Other rewards are handled separately
 		return rewardToUse
 	end
 
@@ -115,6 +112,40 @@ ModUtil.Path.Wrap( "ChooseRoomReward", function( baseFunc, run, room, rewardStor
     end
 
     return rewardToUse
+end, RewardControl )
+
+ModUtil.Path.Wrap( "SetupRoomReward", function( baseFunc, run, room, previouslyChosenRewards, args )
+    baseFunc( run, room, previouslyChosenRewards, args )
+
+    local forcedReward = RCLib.GetFromList( RewardControl.CurrentRunData, { dataType = "startingReward" } )
+    local keepsakeGod
+
+    if not RewardControl.config.Enabled or room.Name ~= "RoomOpening" then return end -- Other rewards are handled separately
+
+    if RewardControl.config.PrioritiseKeepsakes then -- Overwriting forced gods with keepsake, if applicable
+        keepsakeGod = RCLib.GetKeepsakeGod()
+    end
+
+    if room.ChosenRewardType == "Boon" then
+        local godCode = RCLib.EncodeBoonSet( forcedReward.GodName )
+
+        if not keepsakeGod and LootData[godCode]
+        and ( RCLib.CheckGodEligibility( godCode, previouslyChosenRewards ) or forcedReward.AlwaysEligible or not RewardControl.config.CheckEligibility ) then
+            room.ForceLootName = godCode
+        end
+    elseif room.ChosenRewardType == "Devotion" then
+        local firstGodCode = RCLib.EncodeBoonSet( forcedReward.FirstGodName )
+        local secondGodCode = RCLib.EncodeBoonSet( forcedReward.SecondGodName )
+
+        if not keepsakeGod and LootData[firstGodCode]
+        and ( Contains( GetInteractedGodsThisRun(), firstGodCode ) or forcedReward.AlwaysEligible or not RewardControl.config.CheckEligibility ) then
+            room.Encounter.LootAName = firstGodCode
+        end
+        if LootData[secondGodCode]
+        and ( Contains( GetInteractedGodsThisRun( room.Encounter.LootAName ), secondGodCode ) or forcedReward.AlwaysEligible or not RewardControl.config.CheckEligibility ) then
+            room.Encounter.LootBName = secondGodCode
+        end
+    end
 end, RewardControl )
 
 ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function() -- All other rewards
@@ -171,6 +202,7 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function() -- All other rewards
         doorIndex = doorIndex - doorNumOffset
 
         local forcedDoor = forcedDoors[doorIndex] or {}
+        local keepsakeGod
 
         if RewardControl.config.PrioritiseKeepsakes and not args.IgnoreForceLootName then -- Overwriting forced gods with keepsake, if applicable
             local excludedGods = RCLib.BuildExcludedGodList( previouslyChosenRewards )
