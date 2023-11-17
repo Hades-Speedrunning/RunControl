@@ -1,3 +1,5 @@
 :: Boon Control
-Import "BoonControl.lua"
+Import "Main.lua"
+Import "Chaos.lua"
+Import "Rarity.lua"
 Import "ReferenceData.lua"
