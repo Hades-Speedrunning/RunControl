@@ -141,7 +141,7 @@ function BoonControl.BuildTraitList( forced, eligible, eligibleReplaces, rarityT
 				local minRarity = BoonControl.GetMinRarityForBoon( boonCode, rarityTable )
 				local maxRarity = BoonControl.GetMaxRarityForBoon( boonCode, rarityTable )
 				if rarityToUse == "Random" then
-					rarityToUse = BoonControl.RollRarityForBoon( traitName, rarityTable, lookupTable )
+					rarityToUse = BoonControl.RollRarityForBoon( boonCode, rarityTable, lookupTable )
 				end
 				if BoonControl.config.CheckRarityEligibility and BoonControl.RarityToIndex[minRarity] > BoonControl.RarityToIndex[rarityToUse] then
 					DebugPrint({ Text = "Forcing " .. minRarity })

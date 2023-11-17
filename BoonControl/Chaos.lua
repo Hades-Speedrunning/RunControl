@@ -28,10 +28,10 @@ function BoonControl.BuildTransformingTraitList( forced, eligible, rarityTable, 
 
 		if isValid and TableLength( traitOptions ) < maxOptions then
 			local rarityToUse = trait.ForcedRarity or BoonControl.config.DefaultRarity or "Common"
-            local minRarity = BoonControl.GetMinRarityForBoon( boonCode, rarityTable )
-            local maxRarity = BoonControl.GetMaxRarityForBoon( boonCode, rarityTable )
+            local minRarity = BoonControl.GetMinRarityForBoon( permanentCode, rarityTable )
+            local maxRarity = BoonControl.GetMaxRarityForBoon( permanentCode, rarityTable )
 			if rarityToUse == "Random" then
-				rarityToUse = BoonControl.RollRarityForBoon( traitName, rarityTable, lookupTable.Permanent )
+				rarityToUse = BoonControl.RollRarityForBoon( permanentCode, rarityTable, lookupTable.Permanent )
 			end
 			if BoonControl.config.CheckRarityEligibility and BoonControl.RarityToIndex[minRarity] > BoonControl.RarityToIndex[rarityToUse] then
 				rarityToUse = minRarity
