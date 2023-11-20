@@ -95,6 +95,7 @@ end, RoomControl )
 
 ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function()
     local forcedDoors = RCLib.GetFromList( RoomControl.CurrentRunData, { dataType = "exitDoors" } )
+    local ignoreList = {}
 
     ModUtil.Path.Wrap( "ChooseNextRoomData", function( baseFunc, currentRun, args )
         if not RoomControl.config.Enabled then
@@ -178,11 +179,8 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function()
 
             local forcedRoomSet = ModUtil.IndexArray.Get( forcedDoors, { doorIndex, "ForcedRooms" } )
 
-            if not IsEmpty( forcedRoomSet ) and Contains( forcedRoomSet, nextRoomData.Name ) then
-                return true
-            end
-            if not IsEmpty( forcedRoomSet ) and not Contains( forcedRoomSet, nextRoomData.Name ) then
-                return false
+            if not IsEmpty( forcedRoomSet ) then
+                return Contains( forcedRoomSet, nextRoomData.Name )
             end
 
             return baseFunc( currentRun, currentRoom, nextRoomData, args )
