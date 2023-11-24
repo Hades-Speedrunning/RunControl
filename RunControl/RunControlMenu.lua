@@ -177,9 +177,17 @@ RunControl.MenuPages = {
             Config = "RoomControl.config.RequireForcedFeatures",
         },
         {
+            ElementName = "RequireForcedSkips",
+            ElementType = "LabelledCheckbox",
+            Args = { Y = 360 },
+            TextboxArgs = { Text = "Special rooms only appear when forced:" },
+
+            Config = "RoomControl.config.RequireForcedSkips",
+        },
+        {
             ElementName = "RewardControlEnabled",
             ElementType = "LabelledCheckbox",
-            Args = { Y = 420 },
+            Args = { Y = 480 },
             TextboxArgs = { Text = "Enable reward control:" },
 
             Config = "RewardControl.config.Enabled",
@@ -187,7 +195,7 @@ RunControl.MenuPages = {
         {
             ElementName = "RewardControlCheckEligibility",
             ElementType = "LabelledCheckbox",
-            Args = { Y = 480 },
+            Args = { Y = 540 },
             TextboxArgs = { Text = "Only force rewards when eligible:" },
 
             Config = "RewardControl.config.CheckEligibility",
@@ -195,7 +203,7 @@ RunControl.MenuPages = {
         {
             ElementName = "PrioritiseKeepsakes",
             ElementType = "LabelledCheckbox",
-            Args = { Y = 540 },
+            Args = { Y = 600 },
             TextboxArgs = { Text = "Allow keepsakes to take priority over forced gods:" },
 
             Config = "RewardControl.config.PrioritiseKeepsakes",
