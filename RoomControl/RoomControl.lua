@@ -83,6 +83,15 @@ function RoomControl.GetIgnoreCount( maxIndex, ignoreList )
     return count
 end
 
+function RoomControl.GetIndexFromDoorSet( doors, index, ignoreList )
+    if IsEmpty( ignoreList ) then
+        ignoreList = RoomControl.CreateIgnoreList( doors )
+    end
+
+    local doorNumOffset = RoomControl.GetIgnoreCount( index, ignoreList )
+    return index - doorNumOffset
+end
+
 ModUtil.Path.Wrap( "DoUnlockRoomExits", function( baseFunc, run, room )
     local forcedDoors = RCLib.GetFromList( RoomControl.CurrentRunData, { dataType = "exitDoors" } ) or {}
 
@@ -103,15 +112,8 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function()
         end
 
         args = args or {}
-
-        local doors = ModUtil.Locals.Stacked().exitDoorsIPairs
-        if IsEmpty( ignoreList ) then
-            ignoreList = RoomControl.CreateIgnoreList( doors )
-        end
-
-        local doorIndex = ModUtil.Locals.Stacked().index
-        local doorNumOffset = RoomControl.GetIgnoreCount( doorIndex, ignoreList )
-        doorIndex = doorIndex - doorNumOffset
+        local locals = ModUtil.Locals.Stacked()
+        local doorIndex = RoomControl.GetIndexFromDoorSet( locals.exitDoorsIPairs, locals.index, ignoreList )
 
         local forcedRoom = forcedDoors[doorIndex] or {}
     
@@ -126,6 +128,13 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function()
     end, RoomControl )
 
     ModUtil.Path.Context.Wrap( "ChooseNextRoomData", function()
+        local locals = ModUtil.Locals.Stacked()
+        local doorIndex = RoomControl.GetIndexFromDoorSet( locals.exitDoorsIPairs, locals.index, ignoreList )
+
+        local eligibleRoomSet = ModUtil.IndexArray.Get( forcedDoors, { doorIndex, "EligibleRooms" } )
+        local forcedRoomSet = ModUtil.IndexArray.Get( forcedDoors, { doorIndex, "ForcedRooms" } )
+        local forcedRoomName = ModUtil.IndexArray.Get( forcedDoors, { doorIndex, "RoomName" } )
+
         ModUtil.Path.Wrap( "IsRoomEligible", function( baseFunc, currentRun, currentRoom, nextRoomData, args )
             if not RoomControl.config.Enabled then
                 return baseFunc( currentRun, currentRoom, nextRoomData, args )
@@ -134,19 +143,6 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function()
             if nextRoomData == nil then
                 return false
             end
-
-            local doors = ModUtil.Locals.Stacked().exitDoorsIPairs
-            if IsEmpty( ignoreList ) then
-                ignoreList = RoomControl.CreateIgnoreList( doors )
-            end
-    
-            local doorIndex = ModUtil.Locals.Stacked().index
-            local doorNumOffset = RoomControl.GetIgnoreCount( doorIndex, ignoreList )
-            doorIndex = doorIndex - doorNumOffset
-
-            local eligibleRoomSet = ModUtil.IndexArray.Get( forcedDoors, { doorIndex, "EligibleRooms" } )
-            local forcedRoomSet = ModUtil.IndexArray.Get( forcedDoors, { doorIndex, "ForcedRooms" } )
-            local forcedRoomName = ModUtil.IndexArray.Get( forcedDoors, { doorIndex, "RoomName" } )
 
             if not IsEmpty( eligibleRoomSet ) and not Contains( eligibleRoomSet, nextRoomData.Name ) then
                 return false
@@ -168,17 +164,6 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function()
                 return baseFunc( currentRun, currentRoom, nextRoomData, args )
             end
 
-            local doors = ModUtil.Locals.Stacked().exitDoorsIPairs
-            if IsEmpty( ignoreList ) then
-                ignoreList = RoomControl.CreateIgnoreList( doors )
-            end
-    
-            local doorIndex = ModUtil.Locals.Stacked().index
-            local doorNumOffset = RoomControl.GetIgnoreCount( doorIndex, ignoreList )
-            doorIndex = doorIndex - doorNumOffset
-
-            local forcedRoomSet = ModUtil.IndexArray.Get( forcedDoors, { doorIndex, "ForcedRooms" } )
-
             if not IsEmpty( forcedRoomSet ) then
                 return Contains( forcedRoomSet, nextRoomData.Name )
             end
@@ -193,14 +178,8 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function()
             return room
         end
 
-        local doors = ModUtil.Locals.Stacked().exitDoorsIPairs
-        if IsEmpty( ignoreList ) then
-            ignoreList = RoomControl.CreateIgnoreList( doors )
-        end
-
-        local doorIndex = ModUtil.Locals.Stacked().index
-        local doorNumOffset = RoomControl.GetIgnoreCount( doorIndex, ignoreList )
-        doorIndex = doorIndex - doorNumOffset
+        local locals = ModUtil.Locals.Stacked()
+        local doorIndex = RoomControl.GetIndexFromDoorSet( locals.exitDoorsIPairs, locals.index, ignoreList )
 
         local forcedRoom = forcedDoors[doorIndex] or {}
 

@@ -99,6 +99,15 @@ function RewardControl.GetIgnoreCount( maxIndex, ignoreList )
     return count
 end
 
+function RewardControl.GetIndexFromDoorSet( doors, index, ignoreList )
+    if IsEmpty( ignoreList ) then
+        ignoreList = RewardControl.CreateIgnoreList( doors )
+    end
+
+    local doorNumOffset = RewardControl.GetIgnoreCount( index, ignoreList )
+    return index - doorNumOffset
+end
+
 ModUtil.Path.Wrap( "ChooseRoomReward", function( baseFunc, run, room, rewardStoreName, previouslyChosenRewards, args ) -- c1 reward
     local rewardToUse = baseFunc( run, room, rewardStoreName, previouslyChosenRewards, args )
     local forcedReward = RCLib.GetFromList( RewardControl.CurrentRunData, { dataType = "startingReward" } )
@@ -153,14 +162,8 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function() -- All other rewards
     local ignoreList = {}
 
     ModUtil.Path.Wrap( "ChooseRoomReward", function( baseFunc, run, room, rewardStoreName, previouslyChosenRewards, args )
-        local doors = ModUtil.Locals.Stacked().exitDoorsIPairs
-        if IsEmpty( ignoreList ) then
-            ignoreList = RewardControl.CreateIgnoreList( doors )
-        end
-
-        local doorIndex = ModUtil.Locals.Stacked().index
-        local doorNumOffset = RewardControl.GetIgnoreCount( doorIndex, ignoreList )
-        doorIndex = doorIndex - doorNumOffset
+        local locals = ModUtil.Locals.Stacked()
+        local doorIndex = RewardControl.GetIndexFromDoorSet( locals.exitDoorsIPairs, locals.index, ignoreList )
 
         local forcedReward = forcedDoors[doorIndex] or {}
         local rewardName = RCLib.EncodeRoomReward( forcedReward.Reward )
@@ -192,14 +195,8 @@ ModUtil.Path.Context.Wrap( "DoUnlockRoomExits", function() -- All other rewards
 
         if not RewardControl.config.Enabled then return end
 
-        local doors = ModUtil.Locals.Stacked().exitDoorsIPairs
-        if IsEmpty( ignoreList ) then
-            ignoreList = RewardControl.CreateIgnoreList( doors )
-        end
-
-        local doorIndex = ModUtil.Locals.Stacked().index
-        local doorNumOffset = RewardControl.GetIgnoreCount( doorIndex, ignoreList )
-        doorIndex = doorIndex - doorNumOffset
+        local locals = ModUtil.Locals.Stacked()
+        local doorIndex = RewardControl.GetIndexFromDoorSet( locals.exitDoorsIPairs, locals.index, ignoreList )
 
         local forcedDoor = forcedDoors[doorIndex] or {}
         local keepsakeGod
