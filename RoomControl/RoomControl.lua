@@ -9,6 +9,7 @@ ModUtil.Mod.Register( "RoomControl" )
 local config = {
     Enabled = true,
     CheckEligibility = true,
+    CheckGoldPotEligibility = true, -- Will not spawn more gold pots than are normally eligible for a room
     RequireForcedFeatures = true, -- Will not spawn special objects (Chaos gates, wells, etc) unless they are forced
     RequireForcedSkips = true, -- Will not roll special rooms (midbosses, story rooms, shops, and fountains) unless they are forced
 }
@@ -295,6 +296,8 @@ end, RoomControl )
 ModUtil.Path.Wrap( "HandleBreakableSwap", function( baseFunc, currentRoom )
     local roomData = RCLib.GetFromList( RoomControl.CurrentRunData, { dataType = "roomFeatures" } )
     local goldPotNum = ModUtil.Path.Get( "GoldPotNum", roomData )
+    local maxGoldPots = ModUtil.Path.Get( "BreakableValueOptions.MaxHighValueBreakables", currentRoom ) or 0
+
     if RoomControl.config.Enabled and not goldPotNum and RoomControl.config.RequireForcedFeatures then
         return
     elseif not RoomControl.config.Enabled or not goldPotNum then
@@ -307,7 +310,11 @@ ModUtil.Path.Wrap( "HandleBreakableSwap", function( baseFunc, currentRoom )
 		return
 	end
 
-    goldPotNum = math.min( goldPotNum, TableLength( legalBreakables ) )
+    if RoomControl.config.CheckGoldPotEligibility then
+        goldPotNum = math.min( goldPotNum, TableLength( legalBreakables ), maxGoldPots )
+    else
+        goldPotNum = math.min( goldPotNum, TableLength( legalBreakables ) )
+    end
 
     for index = 1, goldPotNum, 1 do
 		local breakableData = RemoveRandomValue( legalBreakables )
