@@ -35,7 +35,16 @@ ModUtil.Path.Wrap( "GenerateSellTraitShop", function( baseFunc, currentRun, curr
 
         local boonName = data.Name
         local boonCode = RCLib.EncodeBoon( boonName )
-        local boonValue = data.Value or 0
+        local boonValue = data.Value
+        if not boonValue then
+            boonValue = 0
+            for index, traitData in pairs( CurrentRun.Hero.Traits ) do
+                if traitData.Name == boonCode and IsGodTrait( traitData.Name, { ForShop = true } ) and traitData.Rarity then
+                    boonValue = GetTraitValue( traitData )
+                    DebugPrint({ Text = "Auto-generated value of " .. boonValue .. " for " .. boonName })
+                end
+            end
+        end
 
         if HeroHasTrait( boonCode ) then
             table.insert( sellOptions, { Name = boonCode, Value = boonValue } )
