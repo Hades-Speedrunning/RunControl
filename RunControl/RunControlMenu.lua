@@ -169,9 +169,17 @@ RunControl.MenuPages = {
             Config = "RoomControl.config.CheckEligibility",
         },
         {
-            ElementName = "RequireForcedFeatures",
+            ElementName = "CheckGoldPotEligibility",
             ElementType = "LabelledCheckbox",
             Args = { Y = 300 },
+            TextboxArgs = { Text = "Only force as many gold pots as are eligible:" },
+
+            Config = "RoomControl.config.CheckGoldPotEligibility",
+        },
+        {
+            ElementName = "RequireForcedFeatures",
+            ElementType = "LabelledCheckbox",
+            Args = { Y = 360 },
             TextboxArgs = { Text = "Room features only appear when forced:" },
 
             Config = "RoomControl.config.RequireForcedFeatures",
@@ -179,7 +187,7 @@ RunControl.MenuPages = {
         {
             ElementName = "RequireForcedSkips",
             ElementType = "LabelledCheckbox",
-            Args = { Y = 360 },
+            Args = { Y = 420 },
             TextboxArgs = { Text = "Special rooms only appear when forced:" },
 
             Config = "RoomControl.config.RequireForcedSkips",
@@ -187,7 +195,7 @@ RunControl.MenuPages = {
         {
             ElementName = "RewardControlEnabled",
             ElementType = "LabelledCheckbox",
-            Args = { Y = 480 },
+            Args = { Y = 540 },
             TextboxArgs = { Text = "Enable reward control:" },
 
             Config = "RewardControl.config.Enabled",
@@ -195,7 +203,7 @@ RunControl.MenuPages = {
         {
             ElementName = "RewardControlCheckEligibility",
             ElementType = "LabelledCheckbox",
-            Args = { Y = 540 },
+            Args = { Y = 600 },
             TextboxArgs = { Text = "Only force rewards when eligible:" },
 
             Config = "RewardControl.config.CheckEligibility",
@@ -203,7 +211,7 @@ RunControl.MenuPages = {
         {
             ElementName = "PrioritiseKeepsakes",
             ElementType = "LabelledCheckbox",
-            Args = { Y = 600 },
+            Args = { Y = 660 },
             TextboxArgs = { Text = "Allow keepsakes to take priority over forced gods:" },
 
             Config = "RewardControl.config.PrioritiseKeepsakes",
