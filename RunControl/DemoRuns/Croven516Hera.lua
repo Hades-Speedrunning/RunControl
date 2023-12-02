@@ -6,7 +6,7 @@ RunControl.Runs.Croven516Hera = {
         .. " and would go on to stand for an absolutely staggering 15 months, until finally being dethroned the following April by DrkFrst.",
         OriginalTime = "05:16.87",
         OriginalHeat = 9,
-        CreatedFor = "1.1.0",
+        CreatedFor = "1.2.0",
         Tags = { Aspect = "Hera", Weapon = "Bow", Category = "Unmodded Any Heat" },
     },
     IndexedBy = { "chamberNum", "dataType", "rerollNum" },
@@ -804,6 +804,13 @@ RunControl.Runs.Croven516Hera = {
                         { Name = "HunterDash" },
                         { Name = "ExitWounds" },
                     },
+                },
+            },
+        },
+        [36] = { -- Heroes
+            theseusEncounter = {
+                Data = {
+                    God = "Zeus",
                 },
             },
         },

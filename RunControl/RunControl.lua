@@ -17,29 +17,6 @@ RunControl.ModpackVersion = "1.2.0-beta.2"
 
 RunControl.CurrentRunData = {}
 RunControl.Runs = {}
-RunControl.DemoRuns = {
-    "Lili557Eris",
-    "Ananke552Eris",
-    "185549Achilles",
-    "Croven532Beowulf",
-    "ocaml526Rama",
-    "Croven516Hera",
-    "DrkFrst504Beowulf",
-
-    "BIGP524Beowulf",
-    "185455Achilles",
-    "Croven449Hera",
-    "BIGP448Beowulf",
-    "Croven447Hera",
-    "Ocke445Beowulf",
-    "Croven439Hera",
-    "Vorime430Beowulf",
-
-    "paradigmsortBeoRoute",
-    "pseudoErisRoute",
-
-    "Ananke629Demeter",
-}
 RunControl.SortedRuns = {
     "Lili557Eris",
     "Ananke552Eris",
@@ -58,8 +35,8 @@ RunControl.SortedRuns = {
     "Croven439Hera",
     "Vorime430Beowulf",
 
-    "paradigmsortBeoRoute",
-    "pseudoErisRoute",
+    "SleepSoul607Talos",
+    "CherryDad541Gilgamesh",
 
     "Ananke629Demeter",
 }

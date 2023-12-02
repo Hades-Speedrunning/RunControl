@@ -7,7 +7,7 @@ RunControl.Runs.Croven532Beowulf = {
         .. "\\n\\n ...Anyway, it remained the world record for 4 months, until it was beaten by ocaml in December of 2021.",
         OriginalTime = "05:32.11",
         OriginalHeat = 9,
-        CreatedFor = "1.1.0",
+        CreatedFor = "1.2.0",
         Tags = { Aspect = "Beowulf", Weapon = "Shield", Category = "Unmodded Any Heat" },
     },
     IndexedBy = { "chamberNum", "dataType", "rerollNum" },
@@ -741,6 +741,13 @@ RunControl.Runs.Croven532Beowulf = {
                     { Name = "FloodShot" },
                     { Name = "ThunderDash" },
                     { Name = "HuntersMark" },
+                },
+            },
+        },
+        [36] = { -- Heroes
+            theseusEncounter = {
+                Data = {
+                    God = "Dionysus",
                 },
             },
         },

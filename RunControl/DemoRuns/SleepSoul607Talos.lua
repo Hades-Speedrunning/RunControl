@@ -8,7 +8,7 @@ RunControl.Runs.SleepSoul607Talos = {
         .. " On my first attempt, I improved it by 27 seconds, to a 5:40- not half bad."
         .. "\\n\\n - Sleep",
         OriginalTime = "06:07.44",
-        CreatedFor = "1.1.0",
+        CreatedFor = "1.2.0",
         Tags = { Aspect = "Talos", Weapon = "Fists", Category = "Modded Any Heat" },
     },
     IndexedBy = { "chamberNum", "dataType", "rerollNum" },
@@ -821,6 +821,13 @@ RunControl.Runs.SleepSoul607Talos = {
                         { Name = "DivineDash" },
                         { Name = "ImpendingDoom" },
                     },
+                },
+            },
+        },
+        [36] = { -- Heroes
+            theseusEncounter = {
+                Data = {
+                    God = "Dionysus",
                 },
             },
         },

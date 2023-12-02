@@ -6,7 +6,7 @@ RunControl.Runs["185549Achilles"] = {
         .. " and remained the world record until it was beaten by Croven the following month.",
         OriginalTime = "05:49.63",
         OriginalHeat = 9,
-        CreatedFor = "1.1.0",
+        CreatedFor = "1.2.0",
         Tags = { Aspect = "Achilles", Weapon = "Spear", Category = "Unmodded Any Heat" },
     },
     IndexedBy = { "chamberNum", "dataType", "rerollNum" },
@@ -731,6 +731,13 @@ RunControl.Runs["185549Achilles"] = {
                         { Name = "DivineFlourish" },
                         { Name = "StormLightning" },
                     },
+                },
+            },
+        },
+        [36] = { -- Heroes
+            theseusEncounter = {
+                Data = {
+                    God = "Ares",
                 },
             },
         },

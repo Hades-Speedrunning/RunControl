@@ -7,7 +7,7 @@ RunControl.Runs.Ananke552Eris = {
         .. " it remained the world record for 3 months, and remained the Eris world record for a further month.",
         OriginalTime = "05:52.33",
         OriginalHeat = 9,
-        CreatedFor = "1.1.0",
+        CreatedFor = "1.2.0",
         Tags = { Aspect = "Eris", Weapon = "Rail", Category = "Unmodded Any Heat" },
     },
     IndexedBy = { "chamberNum", "dataType", "rerollNum" },
@@ -741,6 +741,13 @@ RunControl.Runs.Ananke552Eris = {
                         { Name = "DeadlyFlourish" },
                         { Name = "HydraulicMight" },
                     },
+                },
+            },
+        },
+        [36] = { -- Heroes
+            theseusEncounter = {
+                Data = {
+                    God = "Dionysus",
                 },
             },
         },

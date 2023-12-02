@@ -10,7 +10,7 @@ RunControl.Runs.Ananke629Demeter = {
         .. "\\n\\n - Sleep",
         OriginalTime = "06:29.39",
         OriginalHeat = 9,
-        CreatedFor = "1.1.0",
+        CreatedFor = "1.2.0",
         Tags = { Aspect = "Demeter", Weapon = "Fists", Category = "Unmodded Any Heat" },
     },
     IndexedBy = { "chamberNum", "dataType", "rerollNum" },
@@ -784,6 +784,13 @@ RunControl.Runs.Ananke629Demeter = {
                             },
                         },
                     },
+                },
+            },
+        },
+        [36] = { -- Heroes
+            theseusEncounter = {
+                Data = {
+                    God = "Demeter",
                 },
             },
         },

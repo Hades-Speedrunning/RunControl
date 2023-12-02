@@ -7,7 +7,7 @@ RunControl.Runs.Lili557Eris = {
         .. " until being dethroned by Ananke that April.",
         OriginalTime = "05:57.03",
         OriginalHeat = 15,
-        CreatedFor = "1.1.0",
+        CreatedFor = "1.2.0",
         Tags = { Aspect = "Eris", Weapon = "Rail", Category = "Unmodded Any Heat" },
     },
     IndexedBy = { "chamberNum", "dataType", "rerollNum" },
@@ -767,6 +767,13 @@ RunControl.Runs.Lili557Eris = {
                     { Item = "Boon", GodName = "Athena" },
                     { Item = "Food" },
                     { Item = "PomSlice" },
+                },
+            },
+        },
+        [36] = { -- Heroes
+            theseusEncounter = {
+                Data = {
+                    God = "Ares",
                 },
             },
         },

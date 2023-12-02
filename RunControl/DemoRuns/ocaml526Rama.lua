@@ -7,7 +7,7 @@ RunControl.Runs.ocaml526Rama = {
         .. " Croven would reclaim his record 5 days later.",
         OriginalTime = "05:26.16",
         OriginalHeat = 9,
-        CreatedFor = "1.1.0",
+        CreatedFor = "1.2.0",
         Tags = { Aspect = "Rama", Weapon = "Bow", Category = "Unmodded Any Heat" },
     },
     IndexedBy = { "chamberNum", "dataType", "rerollNum" },
@@ -791,6 +791,13 @@ RunControl.Runs.ocaml526Rama = {
                     { Item = "Boon", GodName = "Artemis" },
                     { Item = "Food" },
                     { Item = "CentaurHeart" },
+                },
+            },
+        },
+        [36] = { -- Heroes
+            theseusEncounter = {
+                Data = {
+                    God = "Aphrodite",
                 },
             },
         },

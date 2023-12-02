@@ -8,7 +8,7 @@
         .. " It remained the world record until it was beaten by 185 the following month.",
         OriginalTime = "05:24.69",
         OriginalHeat = 9,
-        CreatedFor = "1.1.0",
+        CreatedFor = "1.2.0",
         Tags = { Aspect = "Beowulf", Weapon = "Shield", Category = "Modded Any Heat" },
     },
 }]]
