@@ -172,7 +172,7 @@ RunControl.MenuPages = {
             ElementName = "CheckGoldPotEligibility",
             ElementType = "LabelledCheckbox",
             Args = { Y = 300 },
-            TextboxArgs = { Text = "Only force as many gold pots as are eligible:" },
+            TextboxArgs = { Text = "Respect gold pot limits:" },
 
             Config = "RoomControl.config.CheckGoldPotEligibility",
         },
