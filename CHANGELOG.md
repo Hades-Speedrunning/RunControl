@@ -5,6 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+- Support for high heat features- Benefits Package, Jury Summons, and Approval Process.
+- Support for Anvils.
+- Support for Hades' additional spawns.
+
+## [1.2.0-RC1] - 2023-12-01
+
+This update adds several features for better configurability and ease of run creation, as well as several bug fixes and under-the-hood refactors. If no critical bugs are found, this will be released as 1.2.0.
+
+### Added
+
+- Option for special rooms (fountain, story, shop, midboss) to only appear if forced.
+- Option for rarities to only be forced when eligible (e.g., Common boons won't appear when you have a Yarn).
+- Option for gold pots to only be forced up to the maximum amount a room allows.
+- Encounters can now specify enemy types and wave counts, rather than having to include exact spawn counts.
+- Runs can now specify which God Theseus should summon.
+- RunControl is now compatible with extensions like StartingBuildMod.
+- A specific God can now be forced in chamber 1, just like in other chambers.
+
+### Changed
+
+- The wells and pools in midbiomes will now appear even if a run does not force them. (They can still be forced not to appear.)
+- Encounters/Bosses have now been split into a new menu page, separate from Rooms/Rewards.
+- Sell wells will now infer the value of a boon if none is specified, instead of defaulting to 0.
+
+### Fixed
+
+- Wells and shops will no longer fail to force items if their data has gaps (e.g. if you specify items 1 and 3 but not 2).
+- You can now force Chaos gates not to appear, even if you have a Light of Ixion.
+- Rare Crop will no longer fail to appear when forced.
+- Fixed some errors in ExampleRun.lua.
+- The default rarity setting will no longer cause hammers to have rarity.
+
 ## [1.1.0] - 2023-10-04
 
 This is a smaller update, which doesn't add many new features to the runs themselves, but adds a little more polish to 1.0.0 (plus some new options).
