@@ -78,7 +78,7 @@ end, BossControl )
 ModUtil.Path.Wrap( "SelectTheseusGod", function( baseFunc, enemy, ... )
     local data = RCLib.GetFromList( BossControl.CurrentRunData, { dataType = "theseusEncounter" } )
     local forcedGod = RCLib.EncodeBoonSet( data.God )
-    local isValid = data.AlwaysEligible or BossControl.CheckTheseusGodEligibility( forcedGod )
+    local isValid = ( forcedGod ~= nil and data.AlwaysEligible ) or BossControl.CheckTheseusGodEligibility( forcedGod )
 
     if not isValid or not BossControl.config.Enabled then
         return baseFunc( enemy, ... )
