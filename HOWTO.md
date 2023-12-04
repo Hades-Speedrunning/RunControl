@@ -1,12 +1,13 @@
 # Introduction
 
-This document will explain how to write your own runs for the RunControl modpack. It is current as of version 1.0.0. I recommend some degree of coding experience to write your own runs, but the format does not require much knowledge of Lua.
+This document will explain how to write your own runs for the RunControl modpack. It is current as of version 1.2.0. I recommend some degree of coding experience to write your own runs, but the format does not require much knowledge of Lua.
 
 # Modpack Structure
 
 When your pack is installed, your Hades\\Content\\Mods\\ folder should contain these subfolders:
 
 - BoonControl\\
+- BossControl\\
 - EncounterControl\\
 - ErumiUILib\\
 - ModUtil\\
@@ -27,26 +28,26 @@ Most of these are modules which control individual mechanics- you will never int
 - RunControl.lua
 - RunControlMenu.lua
 
-Again, these can largely be ignored. Runs\\ is where all the runs you create will be stored. To start making a run, open Runs\\, and create a new file named `ExampleRun.lua` (or whatever else you want to call it).
+Again, these can largely be ignored. Runs\\ is where all the runs you create will be stored. To start making a run, open Runs\\, and create a new file named `MyRun.lua` (or whatever else you want to call it).
 
 # Run Structure
 
 Run files are defined in the form of a nested lua table, which you can then select ingame. Each file must start with this line:
 
 ```lua
-RunControl.Runs.ExampleRun = {
+RunControl.Runs.MyRun = {
 ```
 
 This starts a Lua table and adds it to the modpack's index. The table can include a `Metadata` subtable, which looks like this:
 
 ```lua
-RunControl.Runs.ExampleRun = {
+RunControl.Runs.MyRun = {
     Metadata = {
         Name = "My Hades Run",
         Description = "This is a description!",
         OriginalTime = "06:09.69",
         OriginalHeat = 9,
-        CreatedFor = "1.1.0",
+        CreatedFor = "1.2.0",
     },
 }
 ```
@@ -56,7 +57,7 @@ This is optional, but I'd recommend you at least give your run a name and write 
 Whether you choose to include `Metadata` or not, what you *will* need are the subtables `IndexedBy` and `List`. `List` contains all of the run's data, while `IndexedBy` describes how it's sorted:
 
 ```lua
-RunControl.Runs.ExampleRun = {
+RunControl.Runs.MyRun = {
     IndexedBy = { "chamberNum", "dataType" },
     List = {
         [1] = {
@@ -73,7 +74,7 @@ When an event occurs in-game, the modpack will start a search through your `List
 I would usually recommend indexing by `chamberNum`, `dataType`, and `rerollNum`.
 
 ```lua
-RunControl.Runs.ExampleRun = {
+RunControl.Runs.MyRun = {
     IndexedBy = { "chamberNum", "dataType", "rerollNum" },
     List = {
         [1] = {
@@ -94,7 +95,7 @@ This would force Tidal Dash in chamber 1 boon menus with a reroll num of 1 (i.e.
 You do not always have to index by everything you've defined in `IndexedBy`. If a mod finds `Data` early, it will stop the search then. This would force Epic Tidal Dash in every chamber 1 boon menu, regardless of reroll number:
 
 ```lua
-RunControl.Runs.ExampleRun = {
+RunControl.Runs.MyRun = {
     IndexedBy = { "chamberNum", "dataType", "rerollNum" },
     List = {
         [1] = {
@@ -111,7 +112,7 @@ RunControl.Runs.ExampleRun = {
 You can also be more specific for certain cases by putting another list inside your list. This would force Tidal Dash in chamber 1 boon menus, but only if they are Poseidon:
 
 ```lua
-RunControl.Runs.ExampleRun = {
+RunControl.Runs.MyRun = {
     IndexedBy = { "chamberNum", "dataType", "rerollNum" },
     List = {
         [1] = {
@@ -136,7 +137,7 @@ A full list of the possible data types, as well as how each one should look, can
 
 **NOTE**: In order for a `Data` table to used, you must have indexed by `dataType`, or the pack won't know what to use it for.
 
-When you've finished your run, you can check it by copy-pasting it into [glualint](https://fptje.github.io/glualint-web/). Then, put it in your Mods\\RunControl\\Runs folder, re-run modimporter, and it should appear ingame.  
+When you've finished your run, you can check it by copy-pasting it into [glualint](https://fptje.github.io/glualint-web/). Then, put it in your Mods\\RunControl\\Runs\\ folder, re-run modimporter, and it should appear ingame.  
 If the run still crashes or doesn't work properly, check the Troubleshooting section at the bottom. You can also ask in the #modification-station channel of the [Hades Speedrunning Discord](https://discord.gg/zN7cc8Z); If I'm around, I'll see if I can help you.
 
 For more examples, you can find a variety of runs in RunControl's GitHub repository. You can find them [here](https://github.com/Hades-Speedrunning/RunControl/tree/main/RunControl/DemoRuns).
@@ -145,21 +146,46 @@ For more examples, you can find a variety of runs in RunControl's GitHub reposit
 
 ## encounter
 
-A table which lets you define the events of a combat encounter. It has the following fields:
+A table which lets you define the events of a combat encounter. You can define either the wave count and enemy types to be used, or be more precise and describe the exact numbers of enemies in each wave. Note that the latter, if defined, will take priority over the former.
+
+The data type has the following fields:
 
 ### Name
 
 **Type**: string  
 The name of the desired encounter, e.g. `SurvivalTartarus` or `ThanatosElysium`. If left blank, it will always be a standard combat (*configurable*).
 
+### WaveCount
+
+**Type**: number
+The number of waves the encounter should contain. If both this and Waves are left blank, the number will remain random.
+
+### EnemyTypes
+
+**Type**: sequence of sequences
+The enemy types that should appear in waves. Each wave is a sequence of strings, containing the names of the enemies to be used.
+
 ### Waves
 
 **Type**: sequence of tables  
-The exact waves of enemies that should appear. Each enemy has the fields **Enemy** (a string) and **Num** (a number). If Waves are undefined, random enemies will appear.
+The exact waves of enemies that should appear. Each enemy has the fields **Enemy** (a string) and **Num** (a number). If this is filled out, WaveCount and EnemyTypes will be ignored.
 
-### Example
+### Example 1
 
-Here's a regular Tartarus combat you might see:
+The easiest way to write your own encounters is to use the `WaveCount` and `EnemyTypes` fields:
+
+```lua
+Data = {
+		WaveCount = 2,
+		EnemyTypes = {{ "Chariot" }, { "Chariot", "ArmoredSplitter" }},
+}
+```
+
+This would produce a 2-wave room, the first wave consisting of Chariots, and the second wave consisting of Chariots and Armored Splitters. The exact numbers of each enemy would be based on their difficulty value and the current biome depth, as they would normally.
+
+### Example 2
+
+If you want to be more precise, you can use the `Waves` field instead:
 
 ```lua
 Data = {
@@ -178,19 +204,6 @@ This would produce a 3-wave room consisting of:
 3.  A wave of 7 Witches and 2 Armored Pests
 
 (And then you would reset.)
-
-If you wanted the same enemies in a Thanatos room, it would look like this:
-
-```lua
-Data = {
-    Name = "ThanatosTartarus",
-    Waves = {
-        {{ Enemy = "Witch", Num = 9 }, { Enemy = "Numbskull", Num = 5 }},
-        {{ Enemy = "Witch" }, { Enemy = "Numbskull", Num = 3 }},
-        {{ Enemy = "Witch", Num = 7 }, { Enemy = "ArmoredPest", Num = 2 }},
-    },
-},
-```
 
 ## roomFeatures
 
@@ -244,7 +257,7 @@ Sets the number of gold pots that spawn in a room. This is normally 1-3 in vanil
 
 ### Example
 
-Here's how this might look for a random combat room:
+Here's how this might look for a standard combat room:
 
 ```lua
 Data = {
@@ -495,7 +508,7 @@ The name of the boon to sell.
 ### Value
 
 **Type**: number  
-The money the boon will give when sold. If undefined, default to 0.
+The money the boon will give when sold. If undefined, will be randomly generated.
 
 ### EmptySlot
 
@@ -542,6 +555,31 @@ Data = {
 ```
 
 This would produce a blue main head, with pink and orange side heads.
+
+## theseusEncounter
+
+Lets you define which Olympian Theseus will summon during his second phase. It has the fields **God** (a string) and **AlwaysEligible** (a boolean).
+
+### Example 1
+
+```lua
+Data = {
+    God = "Dionysus",
+}
+```
+
+This would produce a Dionysus summon, but only if he is not in your God pool (or you have eligibility checking disabled).
+
+### Example 2
+
+```lua
+Data = {
+    God = "Ares",
+    AlwaysEligible = true,
+}
+```
+
+This would produce an Ares summon, regardless of whether he is in your God pool or not.
 
 # Troubleshooting
 
