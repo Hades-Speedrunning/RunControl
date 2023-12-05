@@ -79,6 +79,18 @@ function ShopControl.BuildShopList( forced, lookupTable, args )
     return output
 end
 
+function ShopControl.GetCodesFromShopList( list )
+    local output = {}
+
+    for index, item in pairs( list ) do
+        if item.Name then
+            table.insert( output, item.Name )
+        end
+    end
+
+    return output
+end
+
 ModUtil.Path.Wrap( "StartRoom", function( baseFunc, ... )
 	ShopControl.WellRerollNum = 1 -- Always 1 at the start of a room. Added to when a menu is rerolled
 	baseFunc( ... )
@@ -90,13 +102,19 @@ ModUtil.Path.Wrap( "FillInShopOptions", function( baseFunc, args )
     local store = {}
     local forced = RCLib.GetFromList( ShopControl.CurrentRunData, { dataType = "shop", rerollNum = ShopControl.WellRerollNum } )
     local lookupTable = RCLib.NameToCode.WellItems
-    if CurrentRun.CurrentRoom.ChosenRewardType == "Shop" then
+    local isShop = CurrentRun.CurrentRoom.ChosenRewardType == "Shop"
+
+    if isShop then
         lookupTable = RCLib.NameToCode.ShopRewards
     end
 
     local options = ShopControl.BuildShopList( forced, lookupTable, args )
 
     if ShopControl.config.FillWithEligible then
+        local alreadyChosen = ShopControl.GetCodesFromShopList( options )
+        if not isShop and not IsEmpty( alreadyChosen ) then -- Wells can't have the same item appear twice, some shops can
+            args.ExclusionNames = ModUtil.Array.Join( alreadyChosen, args.ExclusionNames )
+        end
         local baseStore = baseFunc( args )
 
         for index, data in pairs( baseStore.StoreOptions ) do
@@ -106,21 +124,20 @@ ModUtil.Path.Wrap( "FillInShopOptions", function( baseFunc, args )
         end
     end
 
-    if ShopControl.config.SortWells and CurrentRun.CurrentRoom.ChosenRewardType ~= "Shop" then
+    if ShopControl.config.SortWells and not isShop then
         options = CollapseTableOrderedByKeys( options )
     end
     
     store.StoreOptions = options
 
+    ShopControl.DumpExclusionNames = args.ExclusionNames
     return store
 end, ShopControl )
 
 ModUtil.Path.Wrap( "CreateStoreButtons", function( baseFunc ) -- Twists
     baseFunc()
 
-    if not ShopControl.config.Enabled
-    or CurrentRun.CurrentRoom.ChosenRewardType == "Shop"
-    then return end
+    if not ShopControl.config.Enabled or CurrentRun.CurrentRoom.ChosenRewardType == "Shop" then return end
 
     local forced = RCLib.GetFromList( ShopControl.CurrentRunData, { dataType = "shop", rerollNum = ShopControl.WellRerollNum } )
 
