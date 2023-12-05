@@ -130,7 +130,6 @@ ModUtil.Path.Wrap( "FillInShopOptions", function( baseFunc, args )
     
     store.StoreOptions = options
 
-    ShopControl.DumpExclusionNames = args.ExclusionNames
     return store
 end, ShopControl )
 
