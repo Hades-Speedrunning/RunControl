@@ -11,6 +11,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for Anvils.
 - Support for Hades' additional spawns.
 
+## [1.2.0] - 2023-12-05
+
+Third full release! This version contains some minor fixes compared to RC1.
+
+### Added
+
+- There's now an AlwaysEligible field in the theseusEncounter data type.
+- Updated HOWTO.md to explain the new 1.2.0 features.
+
+### Fixed
+
+- Wells with only one forced item can no longer show duplicates of that item.
+
+*...plus changes from 1.2.0-RC1*
+
 ## [1.2.0-RC1] - 2023-12-01
 
 This update adds several features for better configurability and ease of run creation, as well as several bug fixes and under-the-hood refactors. If no critical bugs are found, this will be released as 1.2.0.

@@ -13,7 +13,7 @@ local config = {
 }
 RunControl.config = config
 
-RunControl.ModpackVersion = "1.2.0-RC1"
+RunControl.ModpackVersion = "1.2.0"
 
 RunControl.CurrentRunData = {}
 RunControl.Runs = {}
