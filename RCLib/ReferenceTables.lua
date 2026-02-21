@@ -324,3 +324,24 @@ RCLib.HammerRequirements = {
         RequiredMinDepth = 26,
     },
 }
+
+RCLib.Biomes = {
+    "Tartarus",
+    "Asphodel",
+    "Elysium",
+    "Styx",
+}
+
+RCLib.BiomeEnds = {
+    ["Tartarus"] = 12 + 1,
+    ["Asphodel"] = 22 + 1,
+    ["Elysium"] = 34 + 1,
+    -- Styx is handled separately
+}
+
+RCLib.BiomeExtensions = {
+    ["Tartarus"] = 0,
+    ["Asphodel"] = 0,
+    ["Elysium"] = 0,
+    ["Styx"] = 0, -- Styx will always be equal to Elysium, but storing it separately could make the logic cleaner, at time of writing I'm not quite sure yet of the implementation
+}

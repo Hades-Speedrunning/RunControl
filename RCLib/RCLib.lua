@@ -5,7 +5,8 @@
 ]]
 ModUtil.Mod.Register( "RCLib" )
 
-RCLib.CurrentBiome = "Tartarus" -- TODO
+-- see RCLib.GetFromList
+RCLib.CurrentBiome = "Styx"
 
 function RCLib.GetEligible( inputTable, lookupTable ) -- Read a table of bools, returning a table of the names of all that are true. Optionally use a lookup table to convert the names in inputTable.
     local eligible = {}
@@ -169,19 +170,95 @@ function RCLib.InferItemData( item )
     return TraitData[item] or ConsumableData[item] or {}
 end
 
+function RCLib.IsChaos(chambername) -- the game calls Chaos chambers "secret"s internally
+    if string.find(chambername, "Secret") then
+        return true
+    end
+    return false
+end
+
+function RCLib.GetExtensionSum()
+    local res = 0
+    for _, biome in ipairs(RCLib.Biomes) do
+        if biome == "Styx" then
+            break
+        end
+        res = res + 1
+    end
+    return res
+end
+
+function RCLib.GetBiome(chambernumber, extensions)
+    for _, biome in ipairs(RCLib.Biomes) do
+        --[[
+        ipairs is, as far as I can tell, deterministic as long as the order (keys, value) pairs in the used table stays the same.
+        this means that this will always retrieve elements in the same order.
+        
+        the moment that the upperbound no longer exceeds the current chamber, the current biome no longer gets updated.
+
+        if zagreus is in tartarus, it will (in order):
+        - check tartarus and break out of the loop
+
+        if zagreus is in asphodel, it will (in order):
+        - check tartarus, fail the second condition
+        - check asphodel and break out of the loop
+
+        if zagreus is in elysium, it will (in order):
+        - check tartarus, fail the second condition
+        - check asphodel, fail the second condition
+        - check elysium and break out of the loop
+
+        if zagreus is in styx, it will (in order):
+        - check tartarus, fail the second condition
+        - check asphodel, fail the second condition
+        - check elysium, fail the second condition
+        - check styx, and fail the first condition. "Styx" was assigned before the loop, so it keeps that value.
+
+        This only works as intended because of the specific order of elements in the RCLib.Biomes table.
+        ]]
+
+        if biome == "Styx" or RCLib.BiomeEnds[biome] + extensions > chambernumber then
+            return biome
+        end
+    end
+end
+
 function RCLib.GetFromList( list, conditions )
+    local extensions = RCLib.GetExtensionSum()
+    local chambernumber = GetRunDepth(CurrentRun)
+    RCLib.CurrentBiome = RCLib.GetBiome(chambernumber, extensions)
+
     list = list or {}
     conditions = conditions or {}
-    conditions.aspect = conditions.aspect or RCLib.GetAspectName()
+
+    conditions.chamberNum = conditions.chamberNum -- or chambernumber
 	conditions.biome = conditions.biome or RCLib.CurrentBiome
-	conditions.chamberNum = conditions.chamberNum or GetRunDepth( CurrentRun )
+    conditions.roomName = conditions.roomName or ModUtil.Path.Get("CurrentRun.CurrentRoom.Name")
+
+    conditions.aspect = conditions.aspect or RCLib.GetAspectName()
     conditions.keepsakeCharges = conditions.keepsakeCharges or RCLib.GetKeepsakeCharges()
-    conditions.roomName = conditions.roomName or ModUtil.Path.Get( "CurrentRun.CurrentRoom.Name" )
 
     conditions.listsToIgnore = conditions.listsToIgnore or 0
     conditions.dataTypeChecked = conditions.dataTypeChecked or false
 
     if list.IndexedBy then
+        if
+        (
+            conditions.chamberNum == RCLib.BiomeEnds["Tartarus"] + extensions or
+            conditions.chamberNum == RCLib.BiomeEnds["Asphodel"] + extensions or
+            conditions.chamberNum == RCLib.BiomeEnds["Elysium"] + extensions
+        )
+        and RCLib.IsChaos(conditions.roomName) then
+            --[[
+            TODO
+            currently just generating randomly, and pushing the rest "extensions" amount of chambers further along.
+            a cleaner fix would be to rework the RC-routefile-structure to have like a "extensions" subtable which lets the router define roomdata for these alternate paths
+            ]]
+
+            RCLib.BiomeExtensions[RCLib.CurrentBiome] = RCLib.BiomeExtensions[RCLib.CurrentBiome] + 1
+            return {} -- let the game do its thing
+        end
+
         return RCLib.GetFromIndexedList( list.List, list.IndexedBy, conditions ) or {}
     end
     return {}
@@ -194,10 +271,23 @@ function RCLib.GetFromIndexedList( list, indexedBy, conditions )
     local output = {}
 
     for _, condition in ipairs( indexedBy ) do
-        if condition == "dataType" then conditions.dataTypeChecked = true end
-        if condition == "priority" then return RCLib.GetFromPrioritisedList( force, conditions ) end
-        if force.Data then break end
-        if force.IndexedBy then return RCLib.GetFromList( force, conditions ) end
+        if condition == "dataType" then
+            conditions.dataTypeChecked = true
+        end
+
+        if condition == "priority" then
+            return RCLib.GetFromPrioritisedList( force, conditions )
+        end
+
+        if force.Data then
+            break
+        end
+
+        local currentroom = RCLib.GetFromList( force, conditions )
+        if force.IndexedBy then
+            return currentroom
+        end
+
         force = force[conditions[condition]] or {}
     end
     if RCLib.CheckConditions( force.NeededConditions, conditions ) and conditions.dataTypeChecked then
