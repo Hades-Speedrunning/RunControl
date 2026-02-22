@@ -183,7 +183,7 @@ function RCLib.GetExtensionSum()
         if biome == "Styx" then
             break
         end
-        res = res + 1
+        res = res + RCLib.BiomeExtensions[biome]
     end
     return res
 end

@@ -333,9 +333,9 @@ RCLib.Biomes = {
 }
 
 RCLib.BiomeEnds = {
-    ["Tartarus"] = 12 + 1,
-    ["Asphodel"] = 22 + 1,
-    ["Elysium"] = 34 + 1,
+    ["Tartarus"] = 12 + 3 + 1,
+    ["Asphodel"] = 22 + 3 + 1,
+    ["Elysium"] = 34 + 3 + 1,
     -- Styx is handled separately
 }
 
