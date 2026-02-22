@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox, filedialog
 from sys import argv
 
-RC_VERSION = "1.2.1"
+RC_VERSION = "1.2.2"
 RC_DEFAULT_RUN_NAME = "ExampleRun"
 RC_DEFAULT_DESC = ""
 

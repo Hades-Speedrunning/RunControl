@@ -1,6 +1,6 @@
 # Introduction
 
-This document will explain how to write your own runs for the RunControl modpack. It is current as of version 1.2.1. I recommend some degree of coding experience to write your own runs, but the format does not require much knowledge of Lua. Alternatively, as of 1.2.1, there exists a tool to remove this barrier-to-entry entirely, but which may be too cumbersome for repeated use, better-used to just quickly hack a basic route together.
+This document will explain how to write your own runs for the RunControl modpack. It is current as of version 1.2.2. I recommend some degree of coding experience to write your own runs, but the format does not require much knowledge of Lua. Alternatively, as of 1.2.1, there exists a tool to remove this barrier-to-entry entirely, but which may be too cumbersome for repeated use, better-used to just quickly hack a basic route together.
 
 # Modpack Structure
 

@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for Anvils.
 - Support for Hades' additional spawns.
 
+## [1.2.2] - 2026-02-22
+
+- Attempts to keep track of taken chaos-extensions
+- extensions generate randomly, for now, with no way to modify. To avoid this, specify the lack of chaos in the routefile.
+- Erebus is not supported yet
+
 ## [1.2.1] - 2026-01-17
 
 The programming barrier to entry still felt slightly high, so a tool was added to provide the user with a more pleasant User Interface instead.
