@@ -3,9 +3,19 @@ import tkinter as tk
 from tkinter import ttk, messagebox, filedialog
 from sys import argv
 
-RC_VERSION = "1.2.2"
-RC_DEFAULT_RUN_NAME = "ExampleRun"
-RC_DEFAULT_DESC = ""
+RC_VERSION: str = "1.2.2"
+RC_DEFAULT_RUN_NAME: str = "ExampleRun"
+RC_DEFAULT_DESC: str = ""
+
+numberType = None | float | int
+stringType = str
+boolType = str
+
+valueContainer = tk.StringVar | tk.BooleanVar | dict | None
+valueType = dict | list | float | str | None
+valueItem = dict[str, dict]
+valueChamberIndex = int
+valueChamber = dict[valueChamberIndex, valueItem]
 
 # clargs
 for elem in argv:
@@ -24,7 +34,7 @@ for elem in argv:
         RC_DEFAULT_DESC = elem[len(prefix):]
 
 # RunControl schema
-SCHEMA: dict[str, dict] = {
+SCHEMA: dict[stringType, dict] = {
     "startingReward": {
         "type": "dict",
         "fields": {
@@ -162,14 +172,14 @@ SCHEMA: dict[str, dict] = {
 }
 
 # commonly used
-DEFAULT_INDEXED_BY: list[str] = [
+DEFAULT_INDEXED_BY: list[stringType] = [
     "chamberNum",
     "dataType",
     "rerollNum"
-    ]
+]
 
 # utility
-def safe_number(value) -> None | float | int:
+def safe_number(value) -> numberType:
     if value is None:
         return None
     s: str = str(value).strip()
@@ -182,10 +192,10 @@ def safe_number(value) -> None | float | int:
     except ValueError:
         return None
 
-def lua_string(s: str) -> str:
+def lua_string(s: str) -> stringType:
     return f"\"{s}\""
 
-def lua_bool(b: bool) -> str:
+def lua_bool(b: bool) -> boolType:
     return "true" if b else "false"
 
 def indent(level: int) -> str:
@@ -239,7 +249,7 @@ class FieldEditor(tk.Frame):
     def __init__(self, master, schema_node, initial = None) -> None:
         super().__init__(master)
         self.schema = schema_node
-        self.value: tk.StringVar | tk.BooleanVar | dict | None = None
+        self.value: valueContainer = None
         self.widgets: list = []
         self.build(initial)
 
@@ -250,7 +260,7 @@ class FieldEditor(tk.Frame):
             row: int = 0
             for key, field_schema in self.schema.get("fields", {}).items():
                 lbl: ttk.Label = ttk.Label(self, text = key)
-                init_sub: tk.StringVar | tk.BooleanVar | dict | None = None if initial is None else initial.get(key)
+                init_sub: valueContainer = None if initial is None else initial.get(key)
                 editor: FieldEditor = FieldEditor(self, field_schema, init_sub)
 
                 lbl.grid(row = row, column = 0, sticky = "w", padx = 4, pady = 2)
@@ -314,7 +324,7 @@ class FieldEditor(tk.Frame):
             lbl.grid(row = 0, column = 0, sticky = "w")
 
     def add_item(self, item_init = None) -> None:
-        item_schema: dict[str, dict] = self.schema.get("item")
+        item_schema: valueItem = self.schema.get("item")
         idx: int = len(self.list_items)
         row_frame: ttk.Frame = ttk.Frame(self.items_frame)
         editor: FieldEditor = FieldEditor(row_frame, item_schema, item_init)
@@ -328,12 +338,12 @@ class FieldEditor(tk.Frame):
             editor: FieldEditor = self.list_items.pop()
             editor.destroy()
 
-    def get_value(self) -> dict | list["FieldEditor"] | float | str | None:
+    def get_value(self) -> valueType:
         t = self.schema.get("type")
         if t == "dict":
             out: dict = {}
             for key, editor in self.widgets:
-                val: dict | list[FieldEditor] | float | str | None = editor.get_value()
+                val: valueType = editor.get_value()
                 # drop None
                 if val is not None:
                     out[key] = val
@@ -366,11 +376,11 @@ class DataTypeEditor(tk.Frame):
     """
     Editor for one selected dataType in a chamber, including reroll support when applicable.
     """
-    def __init__(self, master: ttk.Frame, dtype: str) -> None:
+    def __init__(self, master: ttk.Frame, dtype: stringType) -> None:
         super().__init__(master, borderwidth = 1, relief = "groove")
-        self.dtype: str = dtype
+        self.dtype: stringType = dtype
         lbl: ttk.Label = ttk.Label(self, text = dtype, font = ("Segoe UI", 10, "bold"))
-        self.reroll_supported: dict[str, dict] = SCHEMA.get(dtype, {}).get("supports_reroll", False)
+        self.reroll_supported: valueItem = SCHEMA.get(dtype, {}).get("supports_reroll", False)
         self.use_reroll: tk.BooleanVar = tk.BooleanVar(value = False)
         self.editor: FieldEditor = FieldEditor(self, SCHEMA[dtype])
         if self.reroll_supported:
@@ -388,7 +398,7 @@ class DataTypeEditor(tk.Frame):
         - { dtype: { Data = <value> } } for no reroll on-route
         - { dtype: { [rerollNum] = { Data = <value> } } } to set post-reroll menu-options
         """
-        data_val_pre: dict | list | float | str | None = self.editor.get_value()
+        data_val_pre: valueType = self.editor.get_value()
         data_val: list | dict = prune_nils(data_val_pre)
 
         if self.use_reroll.get() and self.reroll_supported:
@@ -414,13 +424,13 @@ class ChamberPanel(tk.Frame):
         # dropdown to add properties for a given room
         self.add_d_type: ttk.Label = ttk.Label(self, text = "Add data type")
         self.dtype_var: tk.StringVar = tk.StringVar(value = "")
-        dtype_choices: list[str] = ["", "startingReward", "boonMenu", "exitDoors", "encounter", "roomFeatures", "shop", "sellWell", "lernieEncounter"]
+        dtype_choices: list[stringType] = ["", "startingReward", "boonMenu", "exitDoors", "encounter", "roomFeatures", "shop", "sellWell", "lernieEncounter"]
         self.dtype_combo: ttk.Combobox = ttk.Combobox(self, values = dtype_choices, textvariable = self.dtype_var, state = "readonly", width = 24)
         self.add_btn: ttk.Button = ttk.Button(self, text = "Add", command = self.add_dtype)
 
         # container for dtype editors (to the right and down)
         self.editors_frame = ttk.Frame(self)
-        self.dtype_editors: dict[str, DataTypeEditor] = {}
+        self.dtype_editors: dict[stringType, DataTypeEditor] = {}
 
         self.chamber_number.grid(row = 0, column = 0, sticky = "w", padx = 4, pady = 2)
         self.chamber_entry.grid(row = 0, column = 1, sticky = "w", padx = 4, pady = 2)
@@ -430,7 +440,7 @@ class ChamberPanel(tk.Frame):
         self.editors_frame.grid(row = 2, column = 0, columnspan = 3, sticky = "nw", padx = 4, pady = 6)
 
     def add_dtype(self) -> None:
-        dtype: str = self.dtype_var.get().strip()
+        dtype: stringType = self.dtype_var.get().strip()
 
         if not dtype:
             return
@@ -444,7 +454,7 @@ class ChamberPanel(tk.Frame):
 
         editor.grid(row = row, column = 0, sticky = "w", padx = 4, pady = 4)
 
-    def get_chamber_struct(self) -> tuple[int, dict]:
+    def get_chamber_struct(self) -> tuple[int, valueChamber]:
         """
         Returns chamber struct looks a bit like:
         {
@@ -456,7 +466,7 @@ class ChamberPanel(tk.Frame):
         }
         """
 
-        out: dict[int, dict] = {}
+        out: valueChamber = {}
         for dtype, editor in self.dtype_editors.items():
             out.update(editor.get_struct())
         
@@ -549,8 +559,8 @@ class RunBuilderApp(tk.Tk):
             panel: ChamberPanel = self.chamber_panels.pop()
             panel.destroy()
 
-    def get_indexed_by(self) -> list[str]:
-        ix: list[str] = []
+    def get_indexed_by(self) -> list[stringType]:
+        ix: list[stringType] = []
         if self.idx_chamber.get():
             ix.append("chamberNum")
         if self.idx_datatype.get():
@@ -563,7 +573,7 @@ class RunBuilderApp(tk.Tk):
 
     def export_lua(self) -> None:
         # build structure
-        run_name: str = self.run_name_var.get().strip()
+        run_name: stringType = self.run_name_var.get().strip()
         if not run_name:
             messagebox.showerror("Missing run name", "Please provide a run name.")
             return
@@ -581,11 +591,13 @@ class RunBuilderApp(tk.Tk):
         if self.version_var.get().strip():
             meta["CreatedFor"] = self.version_var.get().strip()
 
-        indexed_by: list[str] = self.get_indexed_by()
+        indexed_by: list[stringType] = self.get_indexed_by()
 
         # chambers
-        list_table: dict = {}
+        list_table: dict[valueChamberIndex, valueChamber] = {}
         for panel in self.chamber_panels:
+            chamber_num: valueChamberIndex
+            chamber_struct: valueChamber
             chamber_num, chamber_struct = panel.get_chamber_struct()
             if chamber_num <= 0:
                 messagebox.showerror("Invalid chamber", f"Chamber number {chamber_num} must be strictly positive.")
@@ -593,7 +605,7 @@ class RunBuilderApp(tk.Tk):
             list_table[chamber_num] = chamber_struct
 
         # serialize Lua
-        lines: list = []
+        lines: list[str] = []
         lines.append(f"RunControl.Runs.{run_name} = " + "{")
         if meta:
             lines.append(f"{indent(1)}Metadata = " + "{")
@@ -626,7 +638,7 @@ class RunBuilderApp(tk.Tk):
         lines.append(f"{indent(1)}}},")
         lines.append("}")
 
-        lua_text = "\n".join(lines)
+        lua_text: str = "\n".join(lines)
 
         # Save
         file_path: str = filedialog.asksaveasfilename(
