@@ -232,7 +232,7 @@ function RCLib.GetFromList( list, conditions )
     list = list or {}
     conditions = conditions or {}
 
-    conditions.chamberNum = conditions.chamberNum -- or chambernumber
+    conditions.chamberNum = conditions.chamberNum or chambernumber
 	conditions.biome = conditions.biome or RCLib.CurrentBiome
     conditions.roomName = conditions.roomName or ModUtil.Path.Get("CurrentRun.CurrentRoom.Name")
 
