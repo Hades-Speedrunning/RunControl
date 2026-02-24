@@ -226,7 +226,7 @@ end
 
 function RCLib.GetFromList( list, conditions )
     local extensions = RCLib.GetExtensionSum()
-    local chambernumber = GetRunDepth(CurrentRun)
+    local chambernumber = GetRunDepth(CurrentRun) or 0
     RCLib.CurrentBiome = RCLib.GetBiome(chambernumber, extensions)
 
     list = list or {}
