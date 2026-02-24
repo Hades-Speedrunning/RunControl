@@ -6,6 +6,7 @@
 ModUtil.Mod.Register( "RCLib" )
 
 -- see RCLib.GetFromList
+-- currently unused, might be useful later
 RCLib.CurrentBiome = "Styx"
 
 function RCLib.GetEligible( inputTable, lookupTable ) -- Read a table of bools, returning a table of the names of all that are true. Optionally use a lookup table to convert the names in inputTable.
