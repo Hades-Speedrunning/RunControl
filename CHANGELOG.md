@@ -11,17 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for Anvils.
 - Support for Hades' additional spawns.
 
-## [1.2.1] - 2026-01-17
-
-The programming barrier to entry still felt slightly high, so a tool was added to provide the user with a more pleasant User Interface instead.
-To use it, the user must have [Python](https://www.python.org/) installed.
+## [1.3.0] - 2026-09-16
 
 ### Added
-- RC_Maker.py, a tool written in Python using the tkinter library.
-- Support for extending biomes. The route now gets shifted one chamber back too.
-
-### Changed
-- HOWTO.md to reflect the alternative.
+- Support for extending biomes. The route now gets properly shifted one chamber back too as expected.
 
 ## [1.2.0] - 2023-12-05
 

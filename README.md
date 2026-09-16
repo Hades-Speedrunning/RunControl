@@ -6,7 +6,7 @@ This is a Hades modpack designed to replicate, in detail, the events of an alrea
 
 ## Installation and Usage
 
-To install the modpack, download your desired version from the releases page, extract it into your Hades\Content folder, and run modimporter.exe. If you have any problems, you can ask in the #modification-station channel in the Hades Speedrunning Discord, or #install-help in the Hades Modding Discord.
+To install the modpack, download your desired version from the releases page, extract it into your Hades\Content folder, and run modimporter.exe. If you have any problems, you can ask in the #h1-modding channel in the Hades Speedrunning Discord, or create a new post in #help-h1 in the Hades Modding Discord.
 
 Once the modpack is installed, enter the courtyard in-game and press the boon menu button. If you've installed correctly, you'll see a RunControl button, where you can select a run and configure the mods.
 

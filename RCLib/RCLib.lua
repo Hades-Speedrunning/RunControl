@@ -248,34 +248,23 @@ function RCLib.CheckConditions( table, conditions ) -- TODO 1.1.0
     return true
 end
 
-ModUtil.Path.Wrap("StartNewRun", function(basefunc, prevRun, args)
+ModUtil.Path.Wrap( "StartNewRun", function( basefunc, prevRun, args )
     RCLib.ExtensionsTaken = 0
     RCLib.CurrentBiome = "Tartarus"
 
-    return basefunc(prevRun, args)
-end, RCLib)
+    return basefunc( prevRun, args )
+end, RCLib )
 
-ModUtil.Path.Wrap("LeaveRoom", function(basefunc, currentRun, door)
-    local prebossTaken = Contains(RCLib.PreBosses, door.Room.Name)
-    for _, preboss in pairs(RCLib.PreBosses) do
-        for _, exitdoor in pairs(OfferedExitDoors) do
-            if preboss == exitdoor.Room.Name and not prebossTaken and RCLib.config.Extensions then
-                RCLib.ExtensionsTaken = RCLib.ExtensionsTaken + 1
+ModUtil.Path.Wrap( "LeaveRoom", function( basefunc, currentRun, door )
+    local prebossTaken = Contains( RCLib.PreBosses, door.Room.Name )
 
-                return basefunc(currentRun, door)
-            end
+    for _, exitdoor in pairs( OfferedExitDoors ) do
+        if Contains( RCLib.PreBosses, exitdoor ) and not prebossTaken and RCLib.config.Extensions then
+            RCLib.ExtensionsTaken = RCLib.ExtensionsTaken + 1
+
+            return basefunc( currentRun, door )
         end
     end
 
-    return basefunc(currentRun, door)
-end, RCLib)
-
-ModUtil.Path.Wrap("DoUnlockRoomExits", function(basefunc, run, room)
-    RCLib.CurrentBiome = run.CurrentRoom.RoomSetName or "Tartarus"
-    basefunc(run, room)
-end, RCLib)
-
-ModUtil.Path.Wrap("StartRoom", function(basefunc, currentRun, currentRoom)
-    RCLib.CurrentBiome = currentRoom.RoomSetName or "Tartarus"
-    basefunc(currentRun, currentRoom)
-end, RCLib)
+    return basefunc( currentRun, door )
+end, RCLib )
