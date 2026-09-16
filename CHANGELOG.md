@@ -11,6 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for Anvils.
 - Support for Hades' additional spawns.
 
+## [1.3.0] - 2026-09-16
+
+### Added
+- Support for extending biomes. The route now gets properly shifted one chamber back too as expected.
+
 ## [1.2.0] - 2023-12-05
 
 Third full release! This version contains some minor fixes compared to RC1.

@@ -1,6 +1,6 @@
 # Introduction
 
-This document will explain how to write your own runs for the RunControl modpack. It is current as of version 1.2.0. I recommend some degree of coding experience to write your own runs, but the format does not require much knowledge of Lua.
+This document will explain how to write your own runs for the RunControl modpack. It is current as of version 1.3.0. I recommend some degree of coding experience to write your own runs, but the format does not require much knowledge of Lua.
 
 # Modpack Structure
 
@@ -30,6 +30,8 @@ Most of these are modules which control individual mechanics- you will never int
 
 Again, these can largely be ignored. Runs\\ is where all the runs you create will be stored. To start making a run, open Runs\\, and create a new file named `MyRun.lua` (or whatever else you want to call it).
 
+You can also install [Python](https://www.python.org/), run RC_Maker.py with Python, and mess around with the UI until you understand the general structure of these .lua RunControl-route files. You however still need to know chamber-, enemy- and boon-names, as seen below. When you are done, use the tool to save your output to the `Runs\` folder mentioned above.
+
 # Run Structure
 
 Run files are defined in the form of a nested lua table, which you can then select ingame. Each file must start with this line:
@@ -47,7 +49,7 @@ RunControl.Runs.MyRun = {
         Description = "This is a description!",
         OriginalTime = "06:09.69",
         OriginalHeat = 9,
-        CreatedFor = "1.2.0",
+        CreatedFor = "1.3.0",
     },
 }
 ```

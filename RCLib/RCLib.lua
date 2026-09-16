@@ -5,7 +5,13 @@
 ]]
 ModUtil.Mod.Register( "RCLib" )
 
-RCLib.CurrentBiome = "Tartarus" -- TODO
+local config = {
+    Extensions = true
+}
+RCLib.config = config
+
+RCLib.CurrentBiome = "Tartarus"
+RCLib.ExtensionsTaken = 0
 
 function RCLib.GetEligible( inputTable, lookupTable ) -- Read a table of bools, returning a table of the names of all that are true. Optionally use a lookup table to convert the names in inputTable.
     local eligible = {}
@@ -174,7 +180,7 @@ function RCLib.GetFromList( list, conditions )
     conditions = conditions or {}
     conditions.aspect = conditions.aspect or RCLib.GetAspectName()
 	conditions.biome = conditions.biome or RCLib.CurrentBiome
-	conditions.chamberNum = conditions.chamberNum or GetRunDepth( CurrentRun )
+	conditions.chamberNum = (conditions.chamberNum or GetRunDepth( CurrentRun )) - RCLib.ExtensionsTaken
     conditions.keepsakeCharges = conditions.keepsakeCharges or RCLib.GetKeepsakeCharges()
     conditions.roomName = conditions.roomName or ModUtil.Path.Get( "CurrentRun.CurrentRoom.Name" )
 
@@ -194,10 +200,19 @@ function RCLib.GetFromIndexedList( list, indexedBy, conditions )
     local output = {}
 
     for _, condition in ipairs( indexedBy ) do
-        if condition == "dataType" then conditions.dataTypeChecked = true end
-        if condition == "priority" then return RCLib.GetFromPrioritisedList( force, conditions ) end
-        if force.Data then break end
-        if force.IndexedBy then return RCLib.GetFromList( force, conditions ) end
+        if condition == "dataType" then
+            conditions.dataTypeChecked = true
+        end
+        if condition == "priority" then
+            return RCLib.GetFromPrioritisedList( force, conditions )
+        end
+        if force.Data then
+            break
+        end
+        if force.IndexedBy then
+            return RCLib.GetFromList( force, conditions )
+        end
+
         force = force[conditions[condition]] or {}
     end
     if RCLib.CheckConditions( force.NeededConditions, conditions ) and conditions.dataTypeChecked then
@@ -232,3 +247,24 @@ function RCLib.CheckConditions( table, conditions ) -- TODO 1.1.0
     conditions = conditions or {}
     return true
 end
+
+ModUtil.Path.Wrap( "StartNewRun", function( basefunc, prevRun, args )
+    RCLib.ExtensionsTaken = 0
+    RCLib.CurrentBiome = "Tartarus"
+
+    return basefunc( prevRun, args )
+end, RCLib )
+
+ModUtil.Path.Wrap( "LeaveRoom", function( basefunc, currentRun, door )
+    local prebossTaken = Contains( RCLib.PreBosses, door.Room.Name )
+
+    for _, exitdoor in pairs( OfferedExitDoors ) do
+        if Contains( RCLib.PreBosses, exitdoor ) and not prebossTaken and RCLib.config.Extensions then
+            RCLib.ExtensionsTaken = RCLib.ExtensionsTaken + 1
+
+            return basefunc( currentRun, door )
+        end
+    end
+
+    return basefunc( currentRun, door )
+end, RCLib )

@@ -324,3 +324,9 @@ RCLib.HammerRequirements = {
         RequiredMinDepth = 26,
     },
 }
+
+RCLib.PreBosses = {
+    "A_PreBoss01",
+    "B_PreBoss01",
+    "C_PreBoss01"
+}
